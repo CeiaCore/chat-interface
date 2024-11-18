@@ -1,0 +1,20 @@
+.box_options {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.option {
+  border: 0.5px solid #c9c9c9;
+  border-radius: 10px;
+  padding: 5px;
+  transition: 0.3s;
+}
+
+.option:hover {
+  background-color: #efefef;
+  cursor: pointer;
+  color: #333;
+}

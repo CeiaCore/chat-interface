@@ -1,0 +1,14 @@
+.icons {
+  margin-top: 5px;
+  display: flex;
+}
+
+.icons svg {
+  cursor: pointer;
+  color: #7e7e7e;
+  transition: 0.1s;
+}
+
+.icons svg:hover {
+  color: #333333;
+}

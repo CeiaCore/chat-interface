@@ -1,0 +1,117 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 730px;
+  max-width: 50%;
+  margin: 0 auto;
+  margin-bottom: 100px; /* Altura máxima do contêiner para ativar o scroll */
+  /* overflow-y: auto; */
+  color: #0d0d0d;
+  font-weight: 400;
+  position: relative;
+  font-size: 15px;
+  font-family: "Inter";
+}
+
+.container::-webkit-scrollbar {
+  width: 0; /* Oculta a barra de rolagem vertical do contêiner */
+}
+
+.message_user {
+  padding: 13px 20px;
+  margin-top: 0px;
+  position: relative;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  border-top-right-radius: 10px;
+  max-width: 80%; /* Ajuste conforme necessário */
+
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message {
+  padding-left: 15px;
+  padding-top: 15px;
+  margin-top: 10px;
+  position: relative;
+  padding-bottom: 150px;
+  border-radius: 8px;
+  max-width: 100%; /* Ajuste conforme necessário */
+  line-height: 30px; /* Aumento do espaçamento vertical entre as letras */
+  /* Aumento do espaçamento vertical entre as letras */
+  animation: fadeIn 0.5s ease-in-out; /* Adiciona a animação de fade-in */
+}
+
+.bot {
+  align-self: flex-start;
+}
+
+.user {
+  align-self: flex-end;
+  background-color: #f5f5f5;
+}
+
+.cursor {
+  display: inline-block;
+  width: 1ch;
+  animation: flicker 1s infinite;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* ChatBox.module.css */
+.container {
+  margin: 0 auto;
+  height: 90vh; /* Altura da caixa de chat */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex: 1; /* Ocupa o espaço restante */
+  margin-bottom: auto; /* Empurra o input para a parte inferior */
+}
+
+.inputContainer {
+  padding-bottom: 10px;
+  display: flex;
+  width: 740px;
+
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  align-items: center;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  outline: none;
+}

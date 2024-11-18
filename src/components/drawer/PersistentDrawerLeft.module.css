@@ -1,0 +1,93 @@
+ul,
+li {
+  list-style: none; /* Removes bullet points */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  font-family: "Inter";
+}
+.chats {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  font-family: "Inter";
+  gap: 2px;
+}
+
+/* Seleciona o contêiner inteiro da barra de rolagem */
+::-webkit-scrollbar {
+  width: 12px; /* Largura da barra de rolagem */
+  height: 12px; /* Altura da barra de rolagem para rolagem horizontal */
+}
+
+/* Estiliza o "trilho" da barra de rolagem */
+::-webkit-scrollbar-track {
+  background: #f4f4f4; /* Cor clara para o trilho */
+  border-radius: 10px; /* Arredonda as bordas do trilho */
+}
+
+/* Estiliza o "polegar" da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background: #dfdfdf; /* Cor clara para o polegar */
+  border-radius: 10px; /* Arredonda as bordas do polegar */
+  border: 2px solid #f4f4f4; /* Bordas para criar um efeito "espaço" */
+}
+
+/* Opcional: muda a aparência ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: #a6a6a6; /* Cor mais escura no hover */
+}
+
+.chats_options {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  gap: 2px;
+}
+
+.p_li {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: inherit;
+  width: 75%;
+}
+
+.li {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  text-indent: 5px;
+  border-radius: 10px;
+
+  position: relative;
+  font-size: 14px;
+  background-color: 20px;
+}
+.li:hover {
+  background-color: rgb(236, 236, 236);
+}
+
+.options {
+  position: absolute;
+  right: 5px;
+  opacity: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.options:hover {
+  opacity: 100%;
+}
+
+.date_label {
+  padding-left: 20px;
+  color: #333;
+  padding: 0;
+  margin-left: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
