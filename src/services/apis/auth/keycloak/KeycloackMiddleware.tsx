@@ -1,6 +1,8 @@
 import { useKeycloak } from "@react-keycloak/web";
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import Loading from "../../../../pages/loading/Loading";
+import { ContextAuth, User } from "../../../../context/AuthContext";
+import { LOAD_USER } from "../../../../context/types/types";
 
 // Retorno UserInfo
 type TUserInfo = {
@@ -19,14 +21,18 @@ interface KeycloackMiddlewareProps {
 
 function KeycloackMiddleware({ children }: KeycloackMiddlewareProps) {
   const { keycloak, initialized } = useKeycloak();
-  const [userInfo, setUserInfo] = useState("");
-
+  const { dispatchAuth } = useContext(ContextAuth);
   const fetchUserInfo = useCallback(async () => {
     if (initialized && keycloak.authenticated) {
-      const { name } = (await keycloak.loadUserInfo()) as TUserInfo;
-      console.log();
+      const { preferred_username, sub, email } =
+        (await keycloak.loadUserInfo()) as TUserInfo;
 
-      setUserInfo(name);
+      const user: User = {
+        user_id: sub,
+        user_name: preferred_username,
+        email: email,
+      };
+      dispatchAuth({ type: LOAD_USER, payload: user });
     }
   }, [initialized, keycloak]);
 
@@ -34,26 +40,8 @@ function KeycloackMiddleware({ children }: KeycloackMiddlewareProps) {
     fetchUserInfo();
   }, [initialized, keycloak, fetchUserInfo]);
 
-  // Desloga o usuário
-  const handleLogout = () => {
-    try {
-      keycloak.logout();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  // Senão estiver logado, redireciona para fazer login
   if (keycloak.authenticated) {
-    return (
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1>Seja bem-vindo {userInfo}</h1>
-        {children}
-        <button style={{ cursor: "pointer" }} onClick={handleLogout}>
-          Log Out
-        </button>
-      </div>
-    );
+    return children;
   } else {
     return <Loading />;
   }

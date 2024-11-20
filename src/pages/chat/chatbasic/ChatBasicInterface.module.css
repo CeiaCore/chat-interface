@@ -12,6 +12,8 @@
   position: relative;
   font-size: 15px;
   font-family: "Inter";
+  box-sizing: border-box;
+  min-height: auto; /* Altura da caixa de chat */
 }
 
 .container::-webkit-scrollbar {
@@ -28,32 +30,18 @@
   border-bottom-right-radius: 25px;
   border-top-right-radius: 10px;
   max-width: 80%; /* Ajuste conforme necessário */
-
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .message {
   padding-left: 15px;
   padding-top: 15px;
+  padding-bottom: 15px;
   margin-top: 10px;
   position: relative;
-  padding-bottom: 150px;
   border-radius: 8px;
   max-width: 100%; /* Ajuste conforme necessário */
   line-height: 30px; /* Aumento do espaçamento vertical entre as letras */
   /* Aumento do espaçamento vertical entre as letras */
-  animation: fadeIn 0.5s ease-in-out; /* Adiciona a animação de fade-in */
 }
 
 .bot {
@@ -84,13 +72,6 @@
 }
 
 /* ChatBox.module.css */
-.container {
-  margin: 0 auto;
-  height: 90vh; /* Altura da caixa de chat */
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
 
 .messages {
   flex: 1; /* Ocupa o espaço restante */

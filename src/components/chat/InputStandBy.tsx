@@ -6,43 +6,51 @@ import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 
 import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
 import { BOT_NAME } from "../../config/templates.conf";
+import {
+  ADD_MESSAGE,
+  LOADING_GENERATE_LLM_TRUE,
+  SET_NEW_CHAT_TRUE,
+} from "../../context/types/types";
+import { ContextChat } from "../../context/ChatContext";
 
-export default function Input({ chat_id, user_id, setUserMessage }: any) {
+interface InputStandByProps {
+  setState: React.Dispatch<boolean>;
+}
+
+export default function InputStandBy({ setState }: InputStandByProps) {
   const [message, setMessage] = React.useState("");
+  const { dispatchChat } = React.useContext(ContextChat) || {};
 
-  const handleMessageChange = (event: any) => {
+  if (!dispatchChat) {
+    return;
+  }
+
+  const handleMessageChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setMessage(event.target.value);
   };
 
-  //   const handleSendMessage = () => {
-  //     dispatchChat({ type: ACTIVE_SCROLL });
-  //     if (message.trim() !== "") {
-  //       const user_message = { rule: "user", message: message };
-  //       dispatchChat({ type: ADD_MESSAGE, payload: user_message });
-  //       dispatchChat({ type: LOADING_GENERATE_LLM_TRUE });
+  const handleSendMessage = () => {
+    if (message.trim() !== "") {
+      const user_message = { rule: "user", message: message };
+      dispatchChat({ type: ADD_MESSAGE, payload: user_message });
+      dispatchChat({ type: LOADING_GENERATE_LLM_TRUE });
+      const bot_message = { rule: "bot", message: "", metadata: "" };
+      dispatchChat({ type: ADD_MESSAGE, payload: bot_message });
+      setState(false);
+      dispatchChat({ type: SET_NEW_CHAT_TRUE });
+      setMessage("");
+    }
+  };
 
-  //       const props = {
-  //         query: message,
-  //         dispatch: dispatchChat,
-  //         chat_id: chat_id,
-  //         user_id: user_id,
-  //         history: stateChat && stateChat.history,
-  //       };
-
-  //       const bot_message = { rule: "bot", message: "", metadata: "" };
-  //       dispatchChat({ type: ADD_MESSAGE, payload: bot_message });
-
-  //       llm_generate(props);
-
-  //       setMessage("");
-  //     }
-  //   };
-
-  //   const handleKeyDown = (event: any) => {
-  //     if (event.key === "Enter" && !event.shiftKey) {
-  //       event.preventDefault(); // Evita a quebra de linha
-  //       handleSendMessage();
-  //     }
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // Evita a quebra de linha
+      setState(false);
+      handleSendMessage();
+    }
+  };
 
   return (
     <Paper
@@ -58,21 +66,14 @@ export default function Input({ chat_id, user_id, setUserMessage }: any) {
         borderRadius: "20px",
       }}
     >
-      <IconButton
-        color="primary"
-        size="small"
-        aria-label="send message"
-        // onClick={handleSendMessage}
-        // disabled={stateChat && stateChat.loading_generate_llm}
-      >
+      <IconButton color="primary" size="small" aria-label="send message">
         <AttachFileRoundedIcon style={{ color: "#333" }} />
       </IconButton>
       <TextareaAutosize
         placeholder={`Mensagem ${BOT_NAME}`}
         value={message}
         onChange={handleMessageChange}
-        // onKeyDown={handleKeyDown}
-        // disabled={stateChat && stateChat.loading_generate_llm}
+        onKeyDown={handleKeyDown}
         style={{
           flex: 1,
           border: "none",
@@ -90,19 +91,11 @@ export default function Input({ chat_id, user_id, setUserMessage }: any) {
         color="primary"
         size="small"
         aria-label="send message"
-        onClick={() => setTeste(true)}
-
-        // onClick={handleSendMessage}
-        // disabled={stateChat && stateChat.loading_generate_llm}
+        onClick={handleSendMessage}
       >
         <ArrowCircleRightRoundedIcon
           fontSize="large"
           style={{ color: "#333" }}
-          //   style={
-          //     stateChat && stateChat.loading_generate_llm
-          //       ? { opacity: "50%" }
-          //       : { color: "#333" }
-          //   }
         />
       </IconButton>
     </Paper>

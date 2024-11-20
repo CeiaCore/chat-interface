@@ -118,6 +118,15 @@ export default function FormDialog({
           variant="standard"
           value={observation}
           onChange={(e) => setObservation(e.target.value)}
+          sx={{
+            "& .MuiInput-underline:before": { borderBottomColor: "#333" }, // Cor antes do foco
+            "& .MuiInput-underline:after": { borderBottomColor: "#333" }, // Cor depois do foco
+            "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+              borderBottomColor: "#333",
+            }, // Cor ao passar o mouse
+            "& .MuiFormLabel-root": { color: "#333" }, // Cor do label
+            "& .MuiFormLabel-root.Mui-focused": { color: "#333" }, // Cor do label ao focar
+          }}
         />
         <TextField
           margin="dense"
@@ -126,11 +135,24 @@ export default function FormDialog({
           variant="standard"
           value={expectedResponse}
           onChange={(e) => setExpectedResponse(e.target.value)}
+          sx={{
+            "& .MuiInput-underline:before": { borderBottomColor: "#333" }, // Cor antes do foco
+            "& .MuiInput-underline:after": { borderBottomColor: "#333" }, // Cor depois do foco
+            "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+              borderBottomColor: "#333",
+            }, // Cor ao passar o mouse
+            "& .MuiFormLabel-root": { color: "#333" }, // Cor do label
+            "& .MuiFormLabel-root.Mui-focused": { color: "#333" }, // Cor do label ao focar
+          }}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancelar</Button>
-        <Button type="submit">Submeter</Button>
+        <Button style={{ color: "#333" }} onClick={handleClose}>
+          Cancelar
+        </Button>
+        <Button style={{ color: "#333" }} type="submit">
+          Submeter
+        </Button>
       </DialogActions>
     </Dialog>
   );

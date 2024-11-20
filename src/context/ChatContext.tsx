@@ -18,6 +18,9 @@ import {
   LOAD_CHATS,
   LOADING_DRAWER_TRUE,
   LOADING_DRAWER_FALSE,
+  CLEAR_MESSAGES,
+  SET_NEW_CHAT_TRUE,
+  SET_NEW_CHAT_FALSE,
 } from "./types/types";
 
 // Interfaces
@@ -50,6 +53,7 @@ export interface StateChat {
   is_active_scroll: boolean;
   history: Record<string, unknown>[];
   load_notification: Record<string, unknown>[];
+  new_chat: boolean;
 }
 
 export interface ActionChat {
@@ -79,6 +83,7 @@ const initialState: StateChat = {
   message_test: "",
   is_active_scroll: true,
   load_notification: [],
+  new_chat: false,
 };
 
 // Reducer
@@ -121,6 +126,10 @@ function reducer(stateChat: StateChat, actionChat: ActionChat): StateChat {
       return { ...stateChat, message_test: actionChat.payload as string };
     }
 
+    case CLEAR_MESSAGES: {
+      return { ...stateChat, messages: [] };
+    }
+
     case ADD_METADATA_MESSAGE_BOT: {
       const lastMessageIndex = stateChat.messages.length - 1;
       if (stateChat.messages[lastMessageIndex]?.rule) {
@@ -129,6 +138,12 @@ function reducer(stateChat: StateChat, actionChat: ActionChat): StateChat {
       }
       return stateChat;
     }
+
+    case SET_NEW_CHAT_TRUE:
+      return { ...stateChat, new_chat: true };
+
+    case SET_NEW_CHAT_FALSE:
+      return { ...stateChat, new_chat: false };
 
     case LOADING_GENERATE_LLM_TRUE:
       return { ...stateChat, loading_generate_llm: true };

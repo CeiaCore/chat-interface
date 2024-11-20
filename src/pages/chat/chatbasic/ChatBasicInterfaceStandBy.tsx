@@ -1,52 +1,53 @@
 import styles from "./ChatBasicInterface.module.css";
+import Logo from "../../../assets/logos/chat_logo.png";
 
-import Logo from "../../../assets/logos/logodrawer.png";
 import ReactMarkdown from "react-markdown";
-import Feedback from "../../../components/chat/Feedback";
-import Input from "../../../components/chat/Input";
-import FormDialog from "../../../components/chat/Dislike";
 import React, { useContext } from "react";
 import { ContextChat } from "../../../context/ChatContext";
-const ChatBasicInterfaceStandBy = ({ user_message }) => {
+import InputStandBy from "../../../components/chat/InputStandBy";
+import { useNavigate } from "react-router-dom";
+import useCreateChat from "../../../hooks/chat/useCreateChat";
+import useInteract from "../../../hooks/chat/useInteraction";
+import useGetAllMethod from "../../../hooks/chat/useGetAllMethod";
+
+interface ChatBasicInterfaceStandByProps {
+  user_id: string;
+}
+const ChatBasicInterfaceStandBy = ({
+  user_id,
+}: ChatBasicInterfaceStandByProps) => {
   const { stateChat } = useContext(ContextChat) || {};
+  const { getData } = useGetAllMethod();
 
-  const messages = [
-    {
-      rule: "user",
-      message: user_message,
-    },
-  ];
+  const { createChat } = useCreateChat();
 
-  const [open, setOpen] = React.useState(false);
-  const [indexFeedback, setIndexFeedback]: any = React.useState("");
+  const navigate = useNavigate();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const { interactChat } = useInteract();
+  React.useEffect(() => {
+    if (stateChat?.messages.length !== 0 && user_id) {
+      createChat({ user_id: user_id }).then((result) => {
+        if (result?.chat_id) {
+          navigate(`/c/${result?.chat_id}`);
+          const message = stateChat?.messages[0]?.message;
+          getData({ user_id: user_id });
+          if (message) {
+            interactChat({
+              query: message,
+              chat_id: result?.chat_id,
+            });
+          }
+        }
+      });
+    }
+  }, []);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const [feedback, setFeedback]: any = React.useState("");
-
-  const user_id = 1;
-  const chat_id = 1;
   return (
     <>
-      <FormDialog
-        handleClose={handleClose}
-        open={open}
-        // metadata={metadata}
-        user_id={user_id}
-        chat_id={chat_id}
-        setFeedback={setFeedback}
-        indexFeedback={indexFeedback}
-      />
-
       <div className={styles.container}>
-        {messages?.length !== 0 ? (
+        {stateChat?.messages?.length !== 0 && (
           <>
-            {messages?.map((element: any, index: any) => (
+            {stateChat?.messages?.map((element) => (
               <>
                 {element.rule === "user" ? (
                   <div className={`${styles.message_user} ${styles.user}`}>
@@ -57,9 +58,9 @@ const ChatBasicInterfaceStandBy = ({ user_message }) => {
                     <img
                       style={{
                         position: "absolute",
-                        top: "12px",
-                        left: "-35px",
-                        width: "30px",
+                        top: "15px",
+                        left: "-45px",
+                        width: "32px",
                       }}
                       src={Logo}
                       alt="Logo"
@@ -108,24 +109,16 @@ const ChatBasicInterfaceStandBy = ({ user_message }) => {
                         className={styles.cursor}
                       ></div>
                     )}
-                    <Feedback
-                      handleClickOpen={handleClickOpen}
-                      setIndexFeedback={setIndexFeedback}
-                      indexFeedback={indexFeedback}
-                      index={index}
-                    />
                   </div>
                 )}
               </>
             ))}
           </>
-        ) : (
-          "teste"
         )}
 
         <div className={styles.inputContainer}>
           <div className={styles.input}>
-            <Input />
+            <InputStandBy />
           </div>
         </div>
       </div>

@@ -1,61 +1,62 @@
 import styles from "./ChatBasicInterface.module.css";
 
-import Logo from "../../../assets/logos/logodrawer.png";
+import Logo from "../../../assets/logos/chat_logo.png";
 import ReactMarkdown from "react-markdown";
 import Feedback from "../../../components/chat/Feedback";
 import Input from "../../../components/chat/Input";
 import FormDialog from "../../../components/chat/Dislike";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { ContextChat } from "../../../context/ChatContext";
-const ChatBasicInterface = () => {
-  const { stateChat } = useContext(ContextChat) || {};
+import useGetById from "../../../hooks/chat/useGetById";
+import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
+import { ContextAuth } from "../../../context/AuthContext";
 
-  const messages = [
-    {
-      rule: "user",
-      message: "Qual a estrutura de dados usado para mensagens no chatgpt?",
-    },
-    {
-      rule: "bot",
-      message: `
-Você levantou um ponto interessante! A estrutura que descrevi é mais uma lista sequencial de mensagens, que é o formato usado mais comumente para gerenciar o histórico de conversas em uma sessão linear (como um bate-papo contínuo). No entanto, a ideia de uma **estrutura em árvore** também é relevante, especialmente em situações onde há ramificações de contexto ou quando múltiplos caminhos de resposta precisam ser considerados. 
-
-### Estrutura Linear vs. Estrutura em Árvore
-
-1. **Estrutura Linear (Lista Sequencial)**:
-   - Usada em muitos sistemas de chat, como o ChatGPT, quando o contexto é seguido de forma linear, sem desvios ou ramificações.
-   - Cada mensagem é processada na sequência em que foi enviada, e o contexto é acumulado em ordem cronológica.
-   - Isso simplifica o gerenciamento de contexto, pois o modelo vê toda a sequência de mensagens de forma linear.
-
-2. **Estrutura em Árvore**:
-   - Pode ser útil em contextos onde o modelo precisa considerar múltiplas ramificações ou cenários de respostas, como em diálogos complexos ou jogos de narrativa interativa.
-   - Em uma árvore, cada mensagem (ou nó) poderia gerar múltiplas respostas possíveis, criando uma ramificação de contexto que permite explorar diferentes caminhos de conversa.
-   - Essa abordagem permite revisitar "nós" anteriores e escolher diferentes ramos de interação, o que é útil para simular diálogos não-lineares.
-
-### Quando a Árvore é Mais Adequada
-
-Uma estrutura em árvore é mais adequada em cenários como:
-- **Simulações de Diálogo Não-Linear**: Por exemplo, em sistemas de IA para jogos, onde o jogador pode fazer escolhas e cada escolha leva a um caminho diferente na conversa.
-- **Aplicações de Suporte ao Cliente**: Onde uma pergunta inicial pode levar a diferentes fluxos de resposta com base nas escolhas do usuário.
-- **Exploração de Cenários ou “What-Ifs”**: Em situações em que é útil ver como diferentes perguntas ou respostas influenciam o diálogo.
-
-### Por que o ChatGPT usa a Estrutura Linear?
-
-No caso do ChatGPT, a estrutura linear é usada principalmente porque o modelo é projetado para seguir uma sequência direta de mensagens, acumulando contexto sem precisar ramificar em várias direções. Essa abordagem é eficiente para conversas de fluxo contínuo, onde o histórico é sequencial e não há a necessidade de "voltar atrás" ou explorar caminhos alternativos dentro de uma mesma conversa.
-
-### Possibilidade de Estrutura Híbrida
-
-Em sistemas mais avançados, uma **estrutura híbrida** pode ser usada, onde o histórico é linear, mas permite a criação de sub-conversas em árvore para explorar respostas alternativas ou diferentes cenários.
-        `,
-    },
-  ];
-
+const ChatBasicInterface = ({ chat_id }) => {
+  const { stateChat, dispatchChat } = useContext(ContextChat) || {};
   const [open, setOpen] = React.useState(false);
   const [indexFeedback, setIndexFeedback]: any = React.useState("");
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+  const { stateAuth } = useContext(ContextAuth) || undefined;
+
+  useEffect(() => {
+    if (stateChat && stateChat.is_active_scroll && messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [
+    stateChat?.message_test,
+    stateChat?.messages,
+    stateChat?.is_active_scroll,
+  ]);
+  const previousScrollY = useRef(window.scrollY); //
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (
+        currentScrollY < previousScrollY.current &&
+        stateChat &&
+        stateChat.message_test
+      ) {
+        dispatchChat({ type: DEACTIVE_SCROLL });
+      } else if (currentScrollY === previousScrollY.current) {
+        dispatchChat({ type: ACTIVE_SCROLL });
+      }
+
+      previousScrollY.current = currentScrollY; // Atualiza a posição anterior
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [stateChat?.message_test]);
 
   const handleClose = () => {
     setOpen(false);
@@ -63,7 +64,8 @@ Em sistemas mais avançados, uma **estrutura híbrida** pode ser usada, onde o h
   const [feedback, setFeedback]: any = React.useState("");
 
   const user_id = 1;
-  const chat_id = 1;
+
+  useGetById({ chat_id: String(chat_id) });
   return (
     <>
       <FormDialog
@@ -77,88 +79,191 @@ Em sistemas mais avançados, uma **estrutura híbrida** pode ser usada, onde o h
       />
 
       <div className={styles.container}>
-        {messages?.length !== 0 ? (
+        {stateChat?.messages?.map((element: any, index: any) => (
           <>
-            {messages?.map((element: any, index: any) => (
-              <>
-                {element.rule === "user" ? (
-                  <div className={`${styles.message_user} ${styles.user}`}>
+            {element.rule === "user" ? (
+              <div className={`${styles.message_user} ${styles.user}`}>
+                {element.message}
+              </div>
+            ) : (
+              <div className={`${styles.message} ${styles.bot}`}>
+                <img
+                  style={{
+                    position: "absolute",
+                    top: "15px",
+                    left: "-45px",
+                    width: "32px",
+                  }}
+                  src={Logo}
+                  alt="Logo"
+                />
+                {element.message && element.message.length > 0 ? (
+                  <ReactMarkdown
+                    components={{
+                      h1: ({ node, ...props }) => (
+                        <h1
+                          style={{
+                            fontSize: "2em",
+                            fontWeight: "bold",
+                            marginBottom: "0.5em",
+                          }}
+                          {...props}
+                        />
+                      ),
+                      h2: ({ node, ...props }) => (
+                        <h2
+                          style={{
+                            fontSize: "1.75em",
+                            fontWeight: "bold",
+                            marginBottom: "0.5em",
+                          }}
+                          {...props}
+                        />
+                      ),
+                      h3: ({ node, ...props }) => (
+                        <h3
+                          style={{
+                            fontSize: "1.5em",
+                            fontWeight: "bold",
+                            marginBottom: "0.5em",
+                          }}
+                          {...props}
+                        />
+                      ),
+                      p: ({ node, ...props }) => (
+                        <p
+                          style={{ lineHeight: "1.6", marginBottom: "1em" }}
+                          {...props}
+                        />
+                      ),
+                      a: ({ node, href, ...props }) => (
+                        <a
+                          href={href}
+                          style={{
+                            color: "#007bff",
+                            textDecoration: "underline",
+                          }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          {...props}
+                        >
+                          {props.children}
+                        </a>
+                      ),
+                      img: ({ node, src, alt, ...props }) => (
+                        <img
+                          src={src}
+                          alt={alt}
+                          style={{
+                            maxWidth: "100%",
+                            borderRadius: "8px",
+                            margin: "1em 0",
+                          }}
+                          {...props}
+                        />
+                      ),
+                      code: ({ inline, className, children, ...props }) => (
+                        <code
+                          style={{
+                            backgroundColor: "#f5f5f5",
+                            padding: inline ? "0.2em 0.4em" : "1em",
+                            borderRadius: "4px",
+                            fontFamily: "monospace",
+                            display: inline ? "inline" : "block",
+                            whiteSpace: "pre-wrap",
+                          }}
+                          {...props}
+                        >
+                          {children}
+                        </code>
+                      ),
+                      blockquote: ({ node, ...props }) => (
+                        <blockquote
+                          style={{
+                            borderLeft: "4px solid #ccc",
+                            margin: "1em 0",
+                            paddingLeft: "1em",
+                            fontStyle: "italic",
+                            color: "#666",
+                          }}
+                          {...props}
+                        >
+                          {props.children}
+                        </blockquote>
+                      ),
+                      ul: ({ node, ...props }) => (
+                        <ul
+                          style={{
+                            paddingLeft: "1.5em",
+                            marginBottom: "1em",
+                            listStyleType: "disc",
+                          }}
+                          {...props}
+                        />
+                      ),
+                      ol: ({ node, ...props }) => (
+                        <ol
+                          style={{
+                            paddingLeft: "1.5em",
+                            marginBottom: "1em",
+                            listStyleType: "decimal",
+                          }}
+                          {...props}
+                        />
+                      ),
+                      li: ({ node, ...props }) => (
+                        <li
+                          style={{
+                            marginBottom: "0.5em",
+                            position: "relative",
+                            paddingLeft: "1.5em",
+                          }}
+                          {...props}
+                        >
+                          <span
+                            style={{
+                              position: "absolute",
+                              left: "0",
+                              top: "1em",
+                              width: "0.38em",
+                              height: "0.38em",
+                              backgroundColor: "#333",
+                              borderRadius: "50%",
+                              display: "inline-block",
+                            }}
+                          />
+                          {props.children}
+                        </li>
+                      ),
+                    }}
+                  >
                     {element.message}
-                  </div>
+                  </ReactMarkdown>
                 ) : (
-                  <div className={`${styles.message} ${styles.bot}`}>
-                    <img
-                      style={{
-                        position: "absolute",
-                        top: "12px",
-                        left: "-35px",
-                        width: "30px",
-                      }}
-                      src={Logo}
-                      alt="Logo"
-                    />
-                    {element.message && element.message.length > 0 ? (
-                      <ReactMarkdown
-                        components={{
-                          li: ({ ...props }) => (
-                            <li
-                              style={{
-                                listStyleType: "none",
-                                position: "relative",
-                                paddingLeft: "1.5em",
-                                marginBottom: "0.5em",
-                              }}
-                              {...props}
-                            >
-                              <span
-                                style={{
-                                  position: "absolute",
-                                  left: "0",
-                                  top: "0.85em",
-                                  width: "0.4em",
-                                  height: "0.4em",
-                                  backgroundColor: "#333",
-                                  borderRadius: "50%",
-                                  content: '""',
-                                  display: "inline-block",
-                                }}
-                              />
-                              {props.children}
-                            </li>
-                          ),
-                        }}
-                      >
-                        {element.message}
-                      </ReactMarkdown>
-                    ) : (
-                      <div
-                        style={{
-                          height: "12px",
-                          width: "12px",
-                          borderRadius: "7px",
-                          backgroundColor: "#333",
-                        }}
-                        className={styles.cursor}
-                      ></div>
-                    )}
-                    <Feedback
-                      handleClickOpen={handleClickOpen}
-                      setIndexFeedback={setIndexFeedback}
-                      indexFeedback={indexFeedback}
-                      index={index}
-                    />
-                  </div>
+                  <div
+                    style={{
+                      height: "12px",
+                      width: "12px",
+                      borderRadius: "7px",
+                      backgroundColor: "#333",
+                    }}
+                    className={styles.cursor}
+                  ></div>
                 )}
-              </>
-            ))}
+                <Feedback
+                  handleClickOpen={handleClickOpen}
+                  setIndexFeedback={setIndexFeedback}
+                  indexFeedback={indexFeedback}
+                  index={index}
+                />
+              </div>
+            )}
           </>
-        ) : (
-          "teste"
-        )}
-
+        ))}
+        <div ref={messageEndRef} />
         <div className={styles.inputContainer}>
           <div className={styles.input}>
-            <Input />
+            <Input chat_id={chat_id} />
           </div>
         </div>
       </div>

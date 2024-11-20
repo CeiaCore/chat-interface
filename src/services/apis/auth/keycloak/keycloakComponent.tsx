@@ -14,7 +14,7 @@ const keycloakConfig: keycloakConfigProps = {
   clientId: import.meta.env.VITE_KEY_CLOAK_CLIENT_ID || "",
 };
 
-const initOptions = { onLoad: "login-required" };
+const initOptions = { onLoad: "login-required", checkLoginIframe: false };
 
 interface KeycloakPros {
   children: React.ReactNode;

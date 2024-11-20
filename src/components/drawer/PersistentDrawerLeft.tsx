@@ -14,6 +14,7 @@ import {
   MenuItem,
   Divider,
   LinearProgress,
+  Avatar,
 } from "@mui/material";
 import {
   Settings,
@@ -36,7 +37,12 @@ import { PiChatTeardropText } from "react-icons/pi";
 import logodrawer from "../../assets/logos/logodrawer.png";
 import { ContextChat } from "../../context/ChatContext";
 import useGetAll from "../../hooks/chat/useGetAll";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useDeleteChat from "../../hooks/chat/useDeleteChat";
+import useGetAllMethod from "../../hooks/chat/useGetAllMethod";
+import { useKeycloak } from "@react-keycloak/web";
+import { ContextAuth } from "../../context/AuthContext";
+import { deepOrange } from "@mui/material/colors";
 
 const drawerWidth = 260;
 
@@ -104,9 +110,14 @@ export default function PersistentDrawerLeft({
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(
     null
   );
-  const { stateChat } = useContext(ContextChat) || {};
+  const { deleteChat } = useDeleteChat();
+  const { getData } = useGetAllMethod();
+  const { stateAuth } = useContext(ContextAuth) || {};
 
-  console.log();
+  const navigate = useNavigate();
+
+  const { stateChat } = useContext(ContextChat) || {};
+  const { keycloak } = useKeycloak();
 
   const [notificationsAnchorEl, setNotificationsAnchorEl] =
     useState<null | HTMLElement>(null);
@@ -146,24 +157,21 @@ export default function PersistentDrawerLeft({
     setProfileAnchorEl(null);
     setNotificationsAnchorEl(null);
   };
-
-  useGetAll({ user_id: "12345" });
-
-  const handleCreateChat = () => {};
+  useGetAll({ user_id: stateAuth?.user.user_id });
 
   // Lista de notificações fictícias com data
   const notifications = [
-    { id: 1, message: "Nova mensagem recebida", date: "2024-11-05 10:15 AM" },
-    {
-      id: 2,
-      message: "Atualização do sistema disponível",
-      date: "2024-11-04 02:30 PM",
-    },
-    {
-      id: 3,
-      message: "Reunião agendada para amanhã",
-      date: "2024-11-03 09:00 AM",
-    },
+    // { id: 1, message: "Nova mensagem recebida", date: "2024-11-05 10:15 AM" },
+    // {
+    //   id: 2,
+    //   message: "Atualização do sistema disponível",
+    //   date: "2024-11-04 02:30 PM",
+    // },
+    // {
+    //   id: 3,
+    //   message: "Reunião agendada para amanhã",
+    //   date: "2024-11-03 09:00 AM",
+    // },
   ];
   const today = new Date();
   const startOfToday = new Date(
@@ -175,6 +183,34 @@ export default function PersistentDrawerLeft({
   startOfYesterday.setDate(startOfToday.getDate() - 1);
   const startOfLast7Days = new Date(startOfToday);
   startOfLast7Days.setDate(startOfToday.getDate() - 7);
+
+  const location = useLocation();
+  const fullPath = location.pathname;
+
+  const chat_id = fullPath.startsWith("/c") ? fullPath.slice(3) : null;
+  const handleDeleteChat = (chat_id: string) => {
+    deleteChat({ chat_id: chat_id }).then(() => {
+      navigate("/");
+
+      if (stateAuth?.user.user_id) {
+        getData({ user_id: stateAuth.user.user_id });
+      } else {
+        console.error("User ID is undefined.");
+      }
+    });
+
+    handleMoreOptionsMenuClose();
+  };
+
+  const handleLogout = () => {
+    handleMoreOptionsMenuClose();
+
+    try {
+      keycloak.logout();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -195,7 +231,11 @@ export default function PersistentDrawerLeft({
           </IconButton>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}></Typography>
           {/* Ícone de Notificações com Menu */}
-          <IconButton color="inherit" onClick={handleNotificationsMenuOpen}>
+          <IconButton
+            color="inherit"
+            disabled={true}
+            onClick={handleNotificationsMenuOpen}
+          >
             <Badge badgeContent={notifications.length} color="error">
               <IoNotificationsOutline size={20} color="#707070" />
             </Badge>
@@ -229,27 +269,38 @@ export default function PersistentDrawerLeft({
           </CustomMenu>
           {/* Ícone de Perfil com Menu */}
           <IconButton color="inherit" onClick={handleProfileMenuOpen}>
-            <CgProfile size={20} color="#707070" />
+            <Avatar
+              sx={{ bgcolor: deepOrange[500], width: "30px", height: "30px" }}
+            >
+              {stateAuth?.user &&
+                stateAuth?.user?.user_name &&
+                stateAuth?.user?.user_name[0].toLocaleUpperCase()}
+            </Avatar>
           </IconButton>
+
           <CustomMenu
             anchorEl={profileAnchorEl}
             open={Boolean(profileAnchorEl)}
             onClose={handleMenuClose}
             keepMounted
           >
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem disabled={true} onClick={handleMenuClose}>
               <ListItemIcon>
                 <Person fontSize="small" />
               </ListItemIcon>
               Perfil
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem disabled={true} onClick={handleMenuClose}>
               <ListItemIcon>
                 <Settings fontSize="small" />
               </ListItemIcon>
               Configurações
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem
+              onClick={() => {
+                handleLogout();
+              }}
+            >
               <ListItemIcon>
                 <ExitToApp fontSize="small" />
               </ListItemIcon>
@@ -286,7 +337,7 @@ export default function PersistentDrawerLeft({
         <div style={{ overflow: "auto", position: "relative" }}>
           <ul className={styles.chats_options}>
             <Link to="/">
-              <li onClick={handleCreateChat} className={styles.li}>
+              <li className={styles.li}>
                 <PiChatTeardropText
                   style={{
                     marginLeft: "5px",
@@ -322,8 +373,18 @@ export default function PersistentDrawerLeft({
                       typeof element.create_at === "number" ||
                       element.create_at instanceof Date) &&
                     new Date(element.create_at) >= startOfToday && (
-                      <Link to="/c/uuid-1345-612312">
-                        <li className={styles.li} key={index}>
+                      <Link to={`/c/${element.chat_id}`}>
+                        <li
+                          style={{
+                            backgroundColor:
+                              chat_id &&
+                              String(chat_id) === String(element.chat_id)
+                                ? "rgb(236, 236, 236)"
+                                : "",
+                          }}
+                          className={styles.li}
+                          key={index}
+                        >
                           <History
                             style={{
                               marginLeft: "5px",
@@ -358,21 +419,35 @@ export default function PersistentDrawerLeft({
                               onClose={handleMoreOptionsMenuClose}
                               keepMounted
                             >
-                              <MenuItem onClick={handleMoreOptionsMenuClose}>
+                              <MenuItem
+                                disabled={true}
+                                onClick={handleMoreOptionsMenuClose}
+                              >
                                 <ListItemIcon>
                                   <Edit fontSize="small" />
                                 </ListItemIcon>
                                 Renomear
                               </MenuItem>
-                              <MenuItem onClick={handleMoreOptionsMenuClose}>
+                              <MenuItem
+                                disabled={true}
+                                onClick={handleMoreOptionsMenuClose}
+                              >
                                 <ListItemIcon>
                                   <Archive fontSize="small" />
                                 </ListItemIcon>
                                 Arquivar
                               </MenuItem>
-                              <MenuItem onClick={handleMoreOptionsMenuClose}>
+                              <MenuItem
+                                style={{ color: "rgb(255, 74, 74)" }}
+                                onClick={() => {
+                                  handleDeleteChat(element.chat_id);
+                                }}
+                              >
                                 <ListItemIcon>
-                                  <Delete fontSize="small" />
+                                  <Delete
+                                    style={{ color: "rgb(255, 74, 74)" }}
+                                    fontSize="small"
+                                  />
                                 </ListItemIcon>
                                 Excluir
                               </MenuItem>
@@ -523,7 +598,6 @@ export default function PersistentDrawerLeft({
         </div>
         <div
           style={{
-            height: "50px",
             display: "flex",
             alignItems: "center",
             width: "100%",
@@ -534,7 +608,7 @@ export default function PersistentDrawerLeft({
             position: "absolute",
           }}
         >
-          v 2
+          v 1
         </div>
       </Drawer>
       <Main open={open}>

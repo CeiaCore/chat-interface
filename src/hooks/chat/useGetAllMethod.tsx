@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ContextChat } from "../../context/ChatContext";
 import axios from "axios";
 import {
@@ -10,19 +10,17 @@ import {
 const URL = import.meta.env.VITE_URL_API;
 const PATH_DEFAULT = "/api/v1/chat_router";
 
-interface UseGetAllProps {
+interface useGetAllMethodProps {
   user_id: string; // Change this type based on your use case (e.g., `number` or `string | number` if flexible)
 }
-const useGetAll = ({ user_id }: UseGetAllProps) => {
+const useGetAllMethod = () => {
   const { dispatchChat } = useContext(ContextChat) || {};
 
-  const getData = async () => {
+  const getData = async ({ user_id }: useGetAllMethodProps) => {
     if (!dispatchChat) {
       console.error("dispatchChat não está disponível.");
       return;
     }
-
-    dispatchChat({ type: LOADING_DRAWER_TRUE });
 
     const config = {
       headers: {
@@ -30,27 +28,18 @@ const useGetAll = ({ user_id }: UseGetAllProps) => {
         Accept: "application/json",
       },
     };
-
     try {
       const response = await axios.get(
         URL + PATH_DEFAULT + `/get_all_chat/${user_id}`,
         config
       );
       dispatchChat({ type: LOAD_CHATS, payload: response.data.chats });
-      dispatchChat({ type: LOADING_DRAWER_FALSE });
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
-      dispatchChat({ type: LOADING_DRAWER_FALSE });
     }
   };
-
-  useEffect(() => {
-    if (user_id) {
-      getData();
-    }
-  }, [user_id]);
 
   return { getData };
 };
 
-export default useGetAll;
+export default useGetAllMethod;

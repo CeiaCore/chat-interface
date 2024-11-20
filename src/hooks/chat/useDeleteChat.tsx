@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ContextChat } from "../../context/ChatContext";
 import axios from "axios";
 import {
@@ -10,13 +10,14 @@ import {
 const URL = import.meta.env.VITE_URL_API;
 const PATH_DEFAULT = "/api/v1/chat_router";
 
-interface UseGetAllProps {
-  user_id: string; // Change this type based on your use case (e.g., `number` or `string | number` if flexible)
+interface UseDeleteChatProps {
+  chat_id: string; // Change this type based on your use case (e.g., `number` or `string | number` if flexible)
 }
-const useGetAll = ({ user_id }: UseGetAllProps) => {
+
+const useDeleteChat = () => {
   const { dispatchChat } = useContext(ContextChat) || {};
 
-  const getData = async () => {
+  const deleteChat = async ({ chat_id }: UseDeleteChatProps) => {
     if (!dispatchChat) {
       console.error("dispatchChat não está disponível.");
       return;
@@ -32,8 +33,8 @@ const useGetAll = ({ user_id }: UseGetAllProps) => {
     };
 
     try {
-      const response = await axios.get(
-        URL + PATH_DEFAULT + `/get_all_chat/${user_id}`,
+      const response = await axios.delete(
+        URL + PATH_DEFAULT + `/delete_chat/${chat_id}`,
         config
       );
       dispatchChat({ type: LOAD_CHATS, payload: response.data.chats });
@@ -44,13 +45,7 @@ const useGetAll = ({ user_id }: UseGetAllProps) => {
     }
   };
 
-  useEffect(() => {
-    if (user_id) {
-      getData();
-    }
-  }, [user_id]);
-
-  return { getData };
+  return { deleteChat };
 };
 
-export default useGetAll;
+export default useDeleteChat;
