@@ -8,7 +8,8 @@ import {
   SET_NEW_CHAT_FALSE,
 } from "../../context/types/types";
 
-const URL = import.meta.env.VITE_URL_API;
+const URL = window._env_.URL_API;
+
 const PATH_DEFAULT = "/api/v1/chat_router";
 
 interface UseGetByIdProps {
@@ -44,6 +45,10 @@ const useGetById = ({ chat_id }: UseGetByIdProps) => {
   };
 
   useEffect(() => {
+    if (!dispatchChat) {
+      console.error("dispatchChat não está disponível.");
+      return;
+    }
     if (chat_id && !stateChat?.new_chat) {
       getData();
     }

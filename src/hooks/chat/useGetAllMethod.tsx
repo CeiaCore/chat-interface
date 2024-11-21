@@ -1,13 +1,9 @@
 import { useContext } from "react";
 import { ContextChat } from "../../context/ChatContext";
 import axios from "axios";
-import {
-  LOAD_CHATS,
-  LOADING_DRAWER_FALSE,
-  LOADING_DRAWER_TRUE,
-} from "../../context/types/types";
+import { LOAD_CHATS } from "../../context/types/types";
 
-const URL = import.meta.env.VITE_URL_API;
+const URL = window._env_.URL_API;
 const PATH_DEFAULT = "/api/v1/chat_router";
 
 interface useGetAllMethodProps {

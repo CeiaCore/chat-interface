@@ -7,7 +7,8 @@ import {
   LOADING_DRAWER_TRUE,
 } from "../../context/types/types";
 
-const URL = import.meta.env.VITE_URL_API;
+const URL = window._env_.URL_API;
+
 const PATH_DEFAULT = "/api/v1/chat_router";
 
 interface UseGetAllProps {

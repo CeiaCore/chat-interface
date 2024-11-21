@@ -5,36 +5,40 @@ export const HOME_BASIC_DESCRIPTION =
 
 export const buttonsArray = [
   {
-    text: "Obtenha informações sobre bolsas de estudo",
-    query: "informações sobre bolsas de estudo disponíveis",
+    text: "Saiba mais sobre a Escola Virtual de Governo (EV.G)",
+    query: "informações detalhadas sobre a Escola Virtual de Governo EV.G",
   },
   {
-    text: "Consulte os horários de funcionamento da secretaria",
-    query: "horários de funcionamento da secretaria",
+    text: "Descubra como funcionam os cursos na EV.G",
+    query: "detalhes sobre funcionamento e estrutura dos cursos EV.G",
   },
   {
-    text: "Obtenha suporte para dificuldades com matrícula online",
-    query: "suporte para problemas com matrícula online",
+    text: "Pesquise um curso no catálogo da EV.G",
+    query: "como pesquisar cursos no catálogo da EV.G",
   },
   {
-    text: "Consulte transporte para o campus",
-    query: "opções de transporte disponíveis para o campus",
-  },
-  { text: "Acompanhe seu processo no SEI", query: "status do processo no SEI" },
-  {
-    text: "Verifique regras de cancelamento de matrícula",
-    query: "regras e procedimentos para cancelamento de matrícula",
+    text: "Saiba mais sobre o Concurso Inovação no Setor Público",
+    query: "detalhes sobre o Concurso Inovação no Setor Público",
   },
   {
-    text: "Informe-se sobre os cursos e disciplinas oferecidos",
-    query: "lista de cursos e disciplinas disponíveis",
+    text: "Verifique quem pode participar do Concurso Inovação",
+    query: "requisitos de participação no Concurso Inovação no Setor Público",
   },
   {
-    text: "Peça orientações sobre disciplina eletiva",
-    query: "orientações sobre como escolher disciplina eletiva",
+    text: "Acesse o Plano de Desenvolvimento Institucional da Enap",
+    query:
+      "informações sobre o Plano de Desenvolvimento Institucional da Enap (PDI)",
   },
   {
-    text: "Envie comprovante de ausência para a secretaria",
-    query: "procedimento para enviar comprovante de ausência para a secretaria",
+    text: "Consulte o mapa estratégico da Enap",
+    query: "detalhes sobre o mapa estratégico da Enap",
+  },
+  {
+    text: "Conheça as ações de responsabilidade social da Enap",
+    query: "projetos e programas de responsabilidade social da Enap",
+  },
+  {
+    text: "Quem é quem na ENAP",
+    query: "Quem é quem na ENAP?",
   },
 ];

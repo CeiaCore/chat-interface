@@ -9,8 +9,6 @@ import React, { useContext, useEffect, useRef } from "react";
 import { ContextChat } from "../../../context/ChatContext";
 import useGetById from "../../../hooks/chat/useGetById";
 import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
-import { ContextAuth } from "../../../context/AuthContext";
-
 const ChatBasicInterface = ({ chat_id }) => {
   const { stateChat, dispatchChat } = useContext(ContextChat) || {};
   const [open, setOpen] = React.useState(false);
@@ -20,8 +18,6 @@ const ChatBasicInterface = ({ chat_id }) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
-  const { stateAuth } = useContext(ContextAuth) || undefined;
 
   useEffect(() => {
     if (stateChat && stateChat.is_active_scroll && messageEndRef.current) {
@@ -66,6 +62,7 @@ const ChatBasicInterface = ({ chat_id }) => {
   const user_id = 1;
 
   useGetById({ chat_id: String(chat_id) });
+
   return (
     <>
       <FormDialog
@@ -168,7 +165,6 @@ const ChatBasicInterface = ({ chat_id }) => {
                             backgroundColor: "#f5f5f5",
                             padding: inline ? "0.2em 0.4em" : "1em",
                             borderRadius: "4px",
-                            fontFamily: "monospace",
                             display: inline ? "inline" : "block",
                             whiteSpace: "pre-wrap",
                           }}
@@ -265,6 +261,7 @@ const ChatBasicInterface = ({ chat_id }) => {
           <div className={styles.input}>
             <Input chat_id={chat_id} />
           </div>
+          {/* <div onClick={() => teste()}>AQUII</div> */}
         </div>
       </div>
     </>

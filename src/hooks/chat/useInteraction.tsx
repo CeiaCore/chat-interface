@@ -10,7 +10,8 @@ interface interactProps {
   query: string;
   chat_id: string;
 }
-const URL = import.meta.env.VITE_URL_API;
+const URL = window._env_.URL_API;
+
 const PATH_DEFAULT = "/api/v1/chat_router";
 
 const useInteract = () => {
