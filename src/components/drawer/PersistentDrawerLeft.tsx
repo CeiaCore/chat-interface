@@ -537,61 +537,63 @@ export default function PersistentDrawerLeft({
                       typeof element.create_at === "number" ||
                       element.create_at instanceof Date) &&
                       new Date(element.create_at) < startOfYesterday)) && (
-                    <li className={styles.li} key={index}>
-                      <History
-                        style={{
-                          marginLeft: "5px",
-                          height: "20px",
-                          width: "20px",
-                          color: "#9E9E9E",
-                        }}
-                      />
-                      <p className={styles.p_li}>{element.chat_label}</p>
-                      <div className={styles.options}>
-                        <div
+                    <Link to={`/c/${element.chat_id}`}>
+                      <li className={styles.li} key={index}>
+                        <History
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            cursor: "pointer",
+                            marginLeft: "5px",
+                            height: "20px",
+                            width: "20px",
+                            color: "#9E9E9E",
                           }}
-                          onClick={(event) =>
-                            handleMoreOptionsMenuOpen(event, index)
-                          }
-                        >
-                          <MoreHorizOutlined style={{ height: "20px" }} />
+                        />
+                        <p className={styles.p_li}>{element.chat_label}</p>
+                        <div className={styles.options}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              cursor: "pointer",
+                            }}
+                            onClick={(event) =>
+                              handleMoreOptionsMenuOpen(event, index)
+                            }
+                          >
+                            <MoreHorizOutlined style={{ height: "20px" }} />
+                          </div>
+                          <CustomMenu
+                            anchorEl={
+                              moreOptionsAnchorEl.index === index
+                                ? moreOptionsAnchorEl.anchorEl
+                                : null
+                            }
+                            open={moreOptionsAnchorEl.index === index}
+                            onClose={handleMoreOptionsMenuClose}
+                            keepMounted
+                          >
+                            <MenuItem onClick={handleMoreOptionsMenuClose}>
+                              <ListItemIcon>
+                                <Edit fontSize="small" />
+                              </ListItemIcon>
+                              Renomear
+                            </MenuItem>
+                            <MenuItem onClick={handleMoreOptionsMenuClose}>
+                              <ListItemIcon>
+                                <Archive fontSize="small" />
+                              </ListItemIcon>
+                              Arquivar
+                            </MenuItem>
+                            <MenuItem onClick={handleMoreOptionsMenuClose}>
+                              <ListItemIcon>
+                                <Delete fontSize="small" />
+                              </ListItemIcon>
+                              Excluir
+                            </MenuItem>
+                          </CustomMenu>
                         </div>
-                        <CustomMenu
-                          anchorEl={
-                            moreOptionsAnchorEl.index === index
-                              ? moreOptionsAnchorEl.anchorEl
-                              : null
-                          }
-                          open={moreOptionsAnchorEl.index === index}
-                          onClose={handleMoreOptionsMenuClose}
-                          keepMounted
-                        >
-                          <MenuItem onClick={handleMoreOptionsMenuClose}>
-                            <ListItemIcon>
-                              <Edit fontSize="small" />
-                            </ListItemIcon>
-                            Renomear
-                          </MenuItem>
-                          <MenuItem onClick={handleMoreOptionsMenuClose}>
-                            <ListItemIcon>
-                              <Archive fontSize="small" />
-                            </ListItemIcon>
-                            Arquivar
-                          </MenuItem>
-                          <MenuItem onClick={handleMoreOptionsMenuClose}>
-                            <ListItemIcon>
-                              <Delete fontSize="small" />
-                            </ListItemIcon>
-                            Excluir
-                          </MenuItem>
-                        </CustomMenu>
-                      </div>
-                    </li>
+                      </li>
+                    </Link>
                   )}
                 </>
               ))}
