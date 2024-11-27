@@ -29,7 +29,6 @@ import {
 import { HiMenuAlt1 } from "react-icons/hi";
 import { TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
 import { IoNotificationsOutline } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
 
 import styles from "./PersistentDrawerLeft.module.css";
 import { PiChatTeardropText } from "react-icons/pi";
