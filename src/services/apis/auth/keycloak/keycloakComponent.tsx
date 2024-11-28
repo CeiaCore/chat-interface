@@ -9,9 +9,9 @@ interface keycloakConfigProps {
 }
 
 const keycloakConfig: keycloakConfigProps = {
-  url: import.meta.env.VITE_KEY_CLOAK_URL || "",
-  realm: import.meta.env.VITE_KEY_CLOAK_REALM || "",
-  clientId: import.meta.env.VITE_KEY_CLOAK_CLIENT_ID || "",
+  url: window._env_.KEY_CLOAK_URL || "",
+  realm: window._env_.KEY_CLOAK_REALM || "",
+  clientId: window._env_.KEY_CLOAK_CLIENT_ID || "",
 };
 
 const initOptions = { onLoad: "login-required", checkLoginIframe: false };

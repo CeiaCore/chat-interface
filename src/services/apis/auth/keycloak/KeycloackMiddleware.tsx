@@ -1,5 +1,5 @@
 import { useKeycloak } from "@react-keycloak/web";
-import { ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import { ReactNode, useCallback, useContext, useEffect } from "react";
 import Loading from "../../../../pages/loading/Loading";
 import { ContextAuth, User } from "../../../../context/AuthContext";
 import { LOAD_USER } from "../../../../context/types/types";

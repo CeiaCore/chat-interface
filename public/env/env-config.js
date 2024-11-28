@@ -4,3 +4,8 @@ window._env_ = {
   KEY_CLOAK_REALM: "enap",
   KEY_CLOAK_CLIENT_ID: "chat-secretaria",
 };
+
+//LOCALHOST
+// KEY_CLOAK_URL="https://sso.enap.gov.br"
+// KEY_CLOAK_REALM="enap"
+// KEY_CLOAK_CLIENT_ID="chat-secretaria"
