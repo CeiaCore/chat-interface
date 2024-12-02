@@ -41,7 +41,7 @@ update_image_tag:
     - shell
   script:
     - git clone https://$CI_REPOSITORY_GITOPS_USER:$CI_REPOSITORY_GITOPS_PASSWORD@gitlab.enap.gov.br/cgti-infra/gitops.git
-    - cd gitops/reserva-salas-frontend
+    - cd gitops/chat-secretaria-frontend
     - chmod +x update_image_tag.sh
     - bash update_image_tag.sh
     - git add .
