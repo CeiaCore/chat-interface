@@ -6,6 +6,7 @@ import {
   LOADING_DRAWER_FALSE,
   LOADING_DRAWER_TRUE,
 } from "../../context/types/types";
+import { useKeycloak } from "@react-keycloak/web";
 
 const URL = window._env_.URL_API;
 
@@ -16,6 +17,7 @@ interface UseGetAllProps {
 }
 const useGetAll = ({ user_id }: UseGetAllProps) => {
   const { dispatchChat } = useContext(ContextChat) || {};
+  const { keycloak } = useKeycloak();
 
   const getData = async () => {
     if (!dispatchChat) {
@@ -29,6 +31,7 @@ const useGetAll = ({ user_id }: UseGetAllProps) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: `Bearer ${keycloak.token}`,
       },
     };
 
@@ -37,6 +40,7 @@ const useGetAll = ({ user_id }: UseGetAllProps) => {
         URL + PATH_DEFAULT + `/get_all_chat/${user_id}`,
         config
       );
+
       dispatchChat({ type: LOAD_CHATS, payload: response.data.chats });
       dispatchChat({ type: LOADING_DRAWER_FALSE });
     } catch (error) {

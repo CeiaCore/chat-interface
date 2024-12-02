@@ -6,6 +6,7 @@ import {
   LOADING_DRAWER_FALSE,
   LOADING_DRAWER_TRUE,
 } from "../../context/types/types";
+import { useKeycloak } from "@react-keycloak/web";
 
 const URL = window._env_.URL_API;
 
@@ -17,7 +18,7 @@ interface UseDeleteChatProps {
 
 const useDeleteChat = () => {
   const { dispatchChat } = useContext(ContextChat) || {};
-
+  const { keycloak } = useKeycloak();
   const deleteChat = async ({ chat_id }: UseDeleteChatProps) => {
     if (!dispatchChat) {
       console.error("dispatchChat não está disponível.");
@@ -29,6 +30,7 @@ const useDeleteChat = () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${keycloak.token}`,
         Accept: "application/json",
       },
     };

@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ContextChat } from "../../context/ChatContext";
 import axios from "axios";
 import { LOAD_CHATS } from "../../context/types/types";
+import { useKeycloak } from "@react-keycloak/web";
 
 const URL = window._env_.URL_API;
 const PATH_DEFAULT = "/api/v1/chat_router";
@@ -11,7 +12,7 @@ interface useGetAllMethodProps {
 }
 const useGetAllMethod = () => {
   const { dispatchChat } = useContext(ContextChat) || {};
-
+  const { keycloak } = useKeycloak();
   const getData = async ({ user_id }: useGetAllMethodProps) => {
     if (!dispatchChat) {
       console.error("dispatchChat não está disponível.");
@@ -22,6 +23,7 @@ const useGetAllMethod = () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: `Bearer ${keycloak.token}`,
       },
     };
     try {

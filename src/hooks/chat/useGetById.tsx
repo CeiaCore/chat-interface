@@ -7,6 +7,7 @@ import {
   LOADING_TRUE,
   SET_NEW_CHAT_FALSE,
 } from "../../context/types/types";
+import { useKeycloak } from "@react-keycloak/web";
 
 const URL = window._env_.URL_API;
 
@@ -17,6 +18,8 @@ interface UseGetByIdProps {
 }
 const useGetById = ({ chat_id }: UseGetByIdProps) => {
   const { stateChat, dispatchChat } = useContext(ContextChat) || {};
+  const { keycloak } = useKeycloak();
+
   const getData = async () => {
     if (!dispatchChat) {
       console.error("dispatchChat não está disponível.");
@@ -29,6 +32,7 @@ const useGetById = ({ chat_id }: UseGetByIdProps) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: `Bearer ${keycloak.token}`,
       },
     };
     try {

@@ -27,6 +27,8 @@ function KeycloackMiddleware({ children }: KeycloackMiddlewareProps) {
       const { preferred_username, sub, email } =
         (await keycloak.loadUserInfo()) as TUserInfo;
 
+      console.log(await keycloak.token);
+
       const user: User = {
         user_id: sub,
         user_name: preferred_username,
