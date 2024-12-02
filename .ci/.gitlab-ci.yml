@@ -1,0 +1,53 @@
+image: docker:24.0.5-dind
+services:
+  - name: docker:24.0.5-dind
+    alias: docker
+    command: ["--tls=false"]
+
+variables:
+  DOCKER_HOST: tcp://localhost:2375
+  DOCKERFILE: .ci/Dockerfile
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+  RELEASE_IMAGE: registry.enap.gov.br/cgti-sistemas/chat-secretaria/chat-secretaria-frontend/$CI_PROJECT_NAME:$CI_PIPELINE_ID
+  RELEASE_NAME: $CI_PROJECT_NAME
+
+stages:
+  - build
+  - update_image_tag
+
+build:
+  stage: build
+  tags:
+    - devops-runner
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  image: docker:24.0.5-dind
+  before_script:
+    - until docker info; do sleep 5; done
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.enap.gov.br
+    - docker build --pull -t $RELEASE_IMAGE -f $DOCKERFILE .
+    - docker push $RELEASE_IMAGE
+  allow_failure: false
+  when: on_success
+  only:
+    - main
+
+update_image_tag:
+  stage: update_image_tag
+  image: docker:24.0.5-dind 
+  tags:
+    - shell
+  script:
+    - git clone https://$CI_REPOSITORY_GITOPS_USER:$CI_REPOSITORY_GITOPS_PASSWORD@gitlab.enap.gov.br/cgti-infra/gitops.git
+    - cd gitops/reserva-salas-frontend
+    - chmod +x update_image_tag.sh
+    - bash update_image_tag.sh
+    - git add .
+    - git commit -m "Atualização da tag da imagem Docker"
+    - git push
+  only:
+    - main
+
+
