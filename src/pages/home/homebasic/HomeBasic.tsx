@@ -1,10 +1,4 @@
-import {
-  buttonsArray,
-  HOME_BASIC_DESCRIPTION,
-  HOME_BASIC_TITLE,
-} from "../../../config/templates.conf";
 import styles from "./HomeBasic.module.css";
-import logo from "../../../assets/logos/logodrawer.png";
 import { TbBrandGoogleBigQuery } from "react-icons/tb";
 import { useContext, useEffect, useState } from "react";
 import ChatBasicInterfaceStandBy from "../../chat/chatbasic/ChatBasicInterfaceStandBy";
@@ -18,9 +12,26 @@ import {
 } from "../../../context/types/types";
 import { ContextAuth } from "../../../context/AuthContext";
 
-const HomeBasic = () => {
+interface InfoItem {
+  text: string;
+  query: string;
+}
+
+interface HomeBasicProps {
+  HOME_BASIC_TITLE: string;
+  HOME_BASIC_DESCRIPTION: string;
+  CARDS: InfoItem[];
+  LOGO: string;
+}
+
+const HomeBasic = ({
+  config: { CARDS, HOME_BASIC_DESCRIPTION, HOME_BASIC_TITLE, LOGO },
+}: {
+  config: HomeBasicProps;
+}) => {
   const { dispatchChat } = useContext(ContextChat) || {};
   const { stateAuth } = useContext(ContextAuth) || {};
+
   useEffect(() => {
     dispatchChat({ type: CLEAR_MESSAGES });
   }, []);
@@ -39,17 +50,16 @@ const HomeBasic = () => {
     setState(false);
     dispatchChat({ type: SET_NEW_CHAT_TRUE });
   }
-
   return (
     <>
       {state && (
         <div className={styles.container}>
-          <img style={{ height: "25px" }} src={logo} />
+          <img style={{ height: "25px" }} src={LOGO} />
           <h1 className={styles.title}>{HOME_BASIC_TITLE}</h1>
           <p className={styles.description}>{HOME_BASIC_DESCRIPTION}</p>
 
           <div className={styles.buttonContainer}>
-            {buttonsArray.map((element) => (
+            {CARDS.map((element: InfoItem) => (
               <button
                 onClick={() => {
                   handleCreateChat(element.query);

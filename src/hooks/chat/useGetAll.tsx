@@ -6,18 +6,18 @@ import {
   LOADING_DRAWER_FALSE,
   LOADING_DRAWER_TRUE,
 } from "../../context/types/types";
-import { useKeycloak } from "@react-keycloak/web";
+import { ConfigHeader } from "../config/ConfigHeader";
 
 const URL = window._env_.URL_API;
-
 const PATH_DEFAULT = "/api/v1/chat_router";
 
 interface UseGetAllProps {
   user_id: string; // Change this type based on your use case (e.g., `number` or `string | number` if flexible)
 }
+
 const useGetAll = ({ user_id }: UseGetAllProps) => {
   const { dispatchChat } = useContext(ContextChat) || {};
-  const { keycloak } = useKeycloak();
+  const { config } = ConfigHeader();
 
   const getData = async () => {
     if (!dispatchChat) {
@@ -26,14 +26,6 @@ const useGetAll = ({ user_id }: UseGetAllProps) => {
     }
 
     dispatchChat({ type: LOADING_DRAWER_TRUE });
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${keycloak.token}`,
-      },
-    };
 
     try {
       const response = await axios.get(

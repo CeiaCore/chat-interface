@@ -5,7 +5,6 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 
 import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
-import { BOT_NAME } from "../../config/templates.conf";
 import {
   ADD_MESSAGE,
   LOADING_GENERATE_LLM_TRUE,
@@ -70,7 +69,7 @@ export default function InputStandBy({ setState }: InputStandByProps) {
         <AttachFileRoundedIcon style={{ color: "#333" }} />
       </IconButton>
       <TextareaAutosize
-        placeholder={`Mensagem ${BOT_NAME}`}
+        placeholder={`Mensagem `}
         value={message}
         onChange={handleMessageChange}
         onKeyDown={handleKeyDown}

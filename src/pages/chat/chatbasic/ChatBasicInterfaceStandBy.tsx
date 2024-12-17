@@ -24,7 +24,10 @@ const ChatBasicInterfaceStandBy = ({
   const navigate = useNavigate();
 
   const { interactChat } = useInteract();
+
   React.useEffect(() => {
+    console.log("AQUIIi", user_id);
+
     if (stateChat?.messages.length !== 0 && user_id) {
       createChat({ user_id: user_id }).then((result) => {
         if (result?.chat_id) {

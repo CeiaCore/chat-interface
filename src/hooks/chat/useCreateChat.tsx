@@ -6,7 +6,7 @@ import {
   LOADING_FALSE,
   LOADING_TRUE,
 } from "../../context/types/types";
-import { useKeycloak } from "@react-keycloak/web";
+import { ConfigHeader } from "../config/ConfigHeader";
 
 const URL = window._env_.URL_API;
 
@@ -18,7 +18,7 @@ interface UseCreateChatProps {
 
 const useCreateChat = () => {
   const { dispatchChat } = useContext(ContextChat) || {};
-  const { keycloak } = useKeycloak();
+  const { config } = ConfigHeader();
   const createChat = async ({ user_id }: UseCreateChatProps) => {
     if (!dispatchChat) {
       console.error(
@@ -27,19 +27,10 @@ const useCreateChat = () => {
       return null;
     }
 
-    // Define estado de carregamento
     dispatchChat({ type: LOADING_TRUE });
 
     const body = {
       user_id,
-    };
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${keycloak.token}`,
-        Accept: "application/json",
-      },
     };
 
     try {

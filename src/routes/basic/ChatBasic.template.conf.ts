@@ -1,9 +1,14 @@
+import logo from "../../assets/logos/logodrawer.png";
+import logo_chat from "../../assets/logos/chat_logo.png";
+
 export const BOT_NAME = "Enap";
+
 export const HOME_BASIC_TITLE = "Bem vindo ao Enap Chat";
+
 export const HOME_BASIC_DESCRIPTION =
   "Acesse informações e acompanhe processos acadêmicos de forma simples e rápida.";
 
-export const buttonsArray = [
+export const CARDS = [
   {
     text: "Saiba mais sobre a Escola Virtual de Governo (EV.G)",
     query: "informações detalhadas sobre a Escola Virtual de Governo EV.G",
@@ -42,3 +47,7 @@ export const buttonsArray = [
     query: "Quem é quem na ENAP?",
   },
 ];
+
+export const LOGO = logo;
+
+export const LOGO_CHAT = logo_chat;

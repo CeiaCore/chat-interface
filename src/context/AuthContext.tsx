@@ -31,9 +31,9 @@ export const ContextAuth = createContext<ContextAuthProps | undefined>(
 // Initial State
 const initialState: StateAuth = {
   user: {
-    email: "",
-    name: "",
-    user_id: "",
+    email: "teste@teste.com",
+    name: "teste",
+    user_id: "12345",
   },
 };
 

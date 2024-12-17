@@ -39,7 +39,7 @@ import useGetAll from "../../hooks/chat/useGetAll";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useDeleteChat from "../../hooks/chat/useDeleteChat";
 import useGetAllMethod from "../../hooks/chat/useGetAllMethod";
-import { useKeycloak } from "@react-keycloak/web";
+// import { useKeycloak } from "@react-keycloak/web";
 import { ContextAuth } from "../../context/AuthContext";
 import { deepOrange } from "@mui/material/colors";
 
@@ -116,7 +116,7 @@ export default function PersistentDrawerLeft({
   const navigate = useNavigate();
 
   const { stateChat } = useContext(ContextChat) || {};
-  const { keycloak } = useKeycloak();
+  // const { keycloak } = useKeycloak();
 
   const [notificationsAnchorEl, setNotificationsAnchorEl] =
     useState<null | HTMLElement>(null);
@@ -205,7 +205,7 @@ export default function PersistentDrawerLeft({
     handleMoreOptionsMenuClose();
 
     try {
-      keycloak.logout();
+      // keycloak.logout();
     } catch (e) {
       console.log(e);
     }

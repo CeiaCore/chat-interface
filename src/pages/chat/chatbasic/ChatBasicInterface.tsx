@@ -1,15 +1,24 @@
 import styles from "./ChatBasicInterface.module.css";
 
-import Logo from "../../../assets/logos/chat_logo.png";
 import ReactMarkdown from "react-markdown";
 import Feedback from "../../../components/chat/Feedback";
 import Input from "../../../components/chat/Input";
 import FormDialog from "../../../components/chat/Dislike";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ContextChat } from "../../../context/ChatContext";
 import useGetById from "../../../hooks/chat/useGetById";
 import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
-const ChatBasicInterface = ({ chat_id }) => {
+
+export interface ChatBasicInterfaceProps {
+  chat_id: string | undefined;
+  LOGO_CHAT: string;
+}
+
+const ChatBasicInterface = ({
+  props: { chat_id, LOGO_CHAT },
+}: {
+  props: ChatBasicInterfaceProps;
+}) => {
   const { stateChat, dispatchChat } = useContext(ContextChat) || {};
   const [open, setOpen] = React.useState(false);
   const [indexFeedback, setIndexFeedback]: any = React.useState("");
@@ -63,6 +72,20 @@ const ChatBasicInterface = ({ chat_id }) => {
 
   useGetById({ chat_id: String(chat_id) });
 
+  // Estado para controlar mensagens já renderizadas
+  const [renderedMessages, setRenderedMessages] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (stateChat?.messages) {
+      // Adiciona os índices das mensagens ao estado quando renderizadas
+      setRenderedMessages((prev) =>
+        stateChat.messages.map((_, index) =>
+          prev.includes(index) ? index : index
+        )
+      );
+    }
+  }, [stateChat?.messages]);
+
   return (
     <>
       <FormDialog
@@ -91,7 +114,7 @@ const ChatBasicInterface = ({ chat_id }) => {
                     left: "-45px",
                     width: "32px",
                   }}
-                  src={Logo}
+                  src={LOGO_CHAT}
                   alt="Logo"
                 />
                 {element.message && element.message.length > 0 ? (

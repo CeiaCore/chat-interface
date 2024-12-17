@@ -5,7 +5,6 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 
 import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
-import { BOT_NAME } from "../../config/templates.conf";
 import useInteract from "../../hooks/chat/useInteraction";
 import { ContextChat } from "../../context/ChatContext";
 import {
@@ -16,9 +15,10 @@ import {
 
 interface InputProps {
   chat_id: string;
+  BOT_NAME: string;
 }
 
-export default function Input({ chat_id }: InputProps) {
+export default function Input({ chat_id, BOT_NAME }: InputProps) {
   const [message, setMessage] = React.useState("");
   const { interactChat } = useInteract();
 
