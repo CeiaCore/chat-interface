@@ -8,6 +8,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ContextChat } from "../../../context/ChatContext";
 import useGetById from "../../../hooks/chat/useGetById";
 import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
+import InputAdvanced from "../../../components/chat/InputAdvanced";
 
 export interface ChatBasicInterfaceProps {
   chat_id: string | undefined;
@@ -282,7 +283,8 @@ const ChatBasicInterface = ({
         <div ref={messageEndRef} />
         <div className={styles.inputContainer}>
           <div className={styles.input}>
-            <Input chat_id={chat_id} />
+            {/* <Input chat_id={chat_id} /> */}
+            <InputAdvanced chat_id={chat_id} />
           </div>
           {/* <div onClick={() => teste()}>AQUII</div> */}
         </div>

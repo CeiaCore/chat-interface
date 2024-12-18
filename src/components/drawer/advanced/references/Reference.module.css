@@ -1,0 +1,76 @@
+.box_reference {
+  width: 380px;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.container_reference {
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox: Remove a barra de rolagem */
+}
+.container_reference ::-webkit-scrollbar {
+  display: none;
+}
+.header_reference {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.reference p {
+  margin: 0;
+  margin-top: 7px;
+  width: 100%;
+  color: #3f3f3f;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+.reference h3 {
+  font-weight: 400;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.reference {
+  width: 350px;
+  overflow-x: hidden;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.reference:hover {
+  background-color: #f1f1f1;
+}
+
+.chats_options {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  gap: 2px;
+}
+
+.p_li {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: inherit;
+  width: 75%;
+}
+
+.li {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  text-indent: 5px;
+  border-radius: 10px;
+
+  position: relative;
+  font-size: 14px;
+  background-color: 20px;
+}
+.li:hover {
+  background-color: rgb(236, 236, 236);
+}

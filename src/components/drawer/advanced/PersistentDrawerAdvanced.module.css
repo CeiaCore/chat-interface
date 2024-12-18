@@ -1,0 +1,152 @@
+ul,
+li {
+  list-style: none; /* Removes bullet points */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  font-family: "Inter";
+}
+.chats {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  font-family: "Inter";
+  gap: 2px;
+}
+
+.add_project {
+  margin-left: 5px;
+  height: 15px;
+  cursor: pointer;
+  width: 15px;
+  color: #333;
+}
+
+.add_project:hover {
+  color: #1a1a1a;
+}
+
+/* Seleciona o contêiner inteiro da barra de rolagem */
+::-webkit-scrollbar {
+  width: 12px; /* Largura da barra de rolagem */
+  height: 12px; /* Altura da barra de rolagem para rolagem horizontal */
+}
+
+/* Estiliza o "trilho" da barra de rolagem */
+::-webkit-scrollbar-track {
+  background: #f4f4f4; /* Cor clara para o trilho */
+  border-radius: 10px; /* Arredonda as bordas do trilho */
+}
+
+/* Estiliza o "polegar" da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background: #dfdfdf; /* Cor clara para o polegar */
+  border-radius: 10px; /* Arredonda as bordas do polegar */
+  border: 2px solid #f4f4f4; /* Bordas para criar um efeito "espaço" */
+}
+
+/* Opcional: muda a aparência ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: #a6a6a6; /* Cor mais escura no hover */
+}
+
+.box_reference {
+  width: 380px;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.container_reference {
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox: Remove a barra de rolagem */
+}
+.container_reference ::-webkit-scrollbar {
+  display: none;
+}
+.header_reference {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.reference p {
+  margin: 0;
+  margin-top: 7px;
+  width: 100%;
+  color: #3f3f3f;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+.reference h3 {
+  font-weight: 400;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.reference {
+  width: 350px;
+  overflow-x: hidden;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.reference:hover {
+  background-color: #f1f1f1;
+}
+
+.chats_options {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  gap: 2px;
+}
+
+.p_li {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: inherit;
+  width: 75%;
+}
+
+.li {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  text-indent: 5px;
+  border-radius: 10px;
+
+  position: relative;
+  font-size: 14px;
+  background-color: 20px;
+}
+.li:hover {
+  background-color: rgb(236, 236, 236);
+}
+
+.options {
+  position: absolute;
+  right: 5px;
+  opacity: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.options:hover {
+  opacity: 100%;
+}
+
+.date_label {
+  padding-left: 20px;
+  color: #333;
+  padding: 0;
+  margin-left: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}

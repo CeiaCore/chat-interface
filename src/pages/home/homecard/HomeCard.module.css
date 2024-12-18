@@ -1,0 +1,327 @@
+@media (min-width: 1100px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 200px;
+    font-family: "Inter";
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .logo {
+    margin-bottom: 20px;
+  }
+
+  .headerText {
+    font-size: 2rem;
+    color: #303030;
+    margin-bottom: 30px;
+    font-family: "Inter";
+  }
+
+  .cardLayout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    height: 600px;
+    font-family: "Inter";
+    max-width: 900px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 35px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgb(255, 250, 245);
+    cursor: pointer;
+    font-family: "Inter";
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Adiciona suavidade */
+  }
+
+  .card:hover {
+    transform: scale(1.02); /* Aumenta o tamanho em 5% */
+  }
+  .largeCard {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .smallCardsColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .smallCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cardImage {
+    width: 400px;
+    height: 75%;
+    object-fit: cover;
+    border-radius: 40px;
+  }
+
+  .cardText h3 {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    text-align: left;
+    font-family: "Inter";
+    font-weight: 400;
+    color: #333;
+  }
+
+  .cardText p {
+    font-size: 0.9rem;
+    color: #555;
+    font-family: "Inter";
+  }
+
+  .footerText {
+    font-size: 1.4rem;
+    margin-top: 30px;
+    margin-top: 80px;
+    color: #333;
+    font-family: "Inter";
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .title {
+    font-family: "Inter";
+    padding: 0;
+    margin: 0;
+    color: rgb(34, 34, 34);
+    font-size: 2.5rem;
+    margin-top: 50px;
+  }
+
+  .description {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter";
+
+    font-size: 1.3rem;
+    margin-top: 20px;
+    color: rgb(116, 116, 116);
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  .buttonContainer {
+    display: flex;
+    gap: 15px;
+    width: 700px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .optionButton {
+    display: flex;
+    height: 70px;
+    text-align: left;
+    width: 200px;
+    font-family: "Inter";
+    align-items: center;
+    color: #333333;
+    gap: 8px;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(36, 63, 63, 0.05) 0px 6px 24px 0px,
+      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .chatIcon {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 20px; /* Ajuste o tamanho do ícone conforme necessário */
+    color: #c4933a; /* Cor do ícone */
+  }
+  .optionButton:hover {
+    background-color: rgba(241, 241, 241, 0.404);
+  }
+
+  .icon {
+    font-size: 1.2em;
+    color: #666;
+  }
+
+  .inputContainer {
+    padding: 10px;
+    display: flex;
+    width: 100%; /* Ocupa 100% da largura disponível */
+    max-width: 550px; /* Limita a largura máxima */
+    align-self: center;
+    position: fixed;
+    bottom: 0;
+    border-radius: 20px;
+    align-items: center;
+  }
+
+  .input {
+    flex: 1;
+    margin-bottom: 20px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+      rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    font-size: 14px;
+    border-radius: 20px;
+    outline: none;
+  }
+
+  .inputContainer input::placeholder {
+    color: #aaa;
+  }
+
+  .iconContainer {
+    display: flex;
+  }
+}
+@media (max-width: 1100px) {
+  .container {
+    font-family: "Inter";
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    align-self: center;
+    width: 95%; /* Ocupa 100% da largura disponível */
+    max-width: 800px;
+    animation: fadeIn 0.5s ease-in-out;
+    margin: 0 auto;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .title {
+    font-family: "Inter";
+    padding: 0;
+    margin: 0;
+    color: rgb(34, 34, 34);
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  .description {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter";
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 20px;
+    color: rgb(116, 116, 116);
+  }
+
+  .buttonContainer {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 800px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .optionButton {
+    display: flex;
+    height: 70px;
+    text-align: left;
+    width: 200px;
+    font-family: "Inter";
+    align-items: center;
+    color: #333333;
+    gap: 8px;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(36, 63, 63, 0.05) 0px 6px 24px 0px,
+      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .chatIcon {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 20px; /* Ajuste o tamanho do ícone conforme necessário */
+    color: #c4933a; /* Cor do ícone */
+  }
+  .optionButton:hover {
+    background-color: rgba(241, 241, 241, 0.404);
+  }
+
+  .icon {
+    font-size: 1.2em;
+    color: #666;
+  }
+
+  .inputContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 550px;
+    margin-top: 50px;
+  }
+
+  .input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1em;
+  }
+
+  .inputContainer input::placeholder {
+    color: #aaa;
+  }
+
+  .iconContainer {
+    display: flex;
+  }
+}
