@@ -13,8 +13,10 @@ import {
   LOADING_GENERATE_LLM_TRUE,
 } from "../../context/types/types";
 import { FaRegLightbulb } from "react-icons/fa";
-import { Tooltip } from "@mui/material";
+import { Alert, Snackbar, Tooltip } from "@mui/material";
 import { TbWorldSearch } from "react-icons/tb";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoIosCloseCircle } from "react-icons/io";
 
 interface InputProps {
   chat_id: string;
@@ -24,6 +26,9 @@ interface InputProps {
 export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
   const [message, setMessage] = React.useState("");
   const { interactChat } = useInteract();
+  const [feature, setFeature] = React.useState("");
+  const [files, setFiles] = React.useState<File[]>([]); // Gerenciar arquivos carregados
+  const [error, setError] = React.useState<string | null>(null);
 
   const { stateChat, dispatchChat } =
     React.useContext(ContextChat) || undefined;
@@ -57,6 +62,19 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
       handleSendMessage();
     }
   };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(event.target.files || []);
+    if (files.length + selectedFiles.length > 5) {
+      setError("Você pode carregar no máximo 5 arquivos.");
+      return;
+    }
+    setFiles([...files, ...selectedFiles]);
+  };
+
+  const removeFile = (index: number) => {
+    setFiles(files.filter((_, i) => i !== index));
+  };
   return (
     <Paper
       component="form"
@@ -71,6 +89,79 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
         borderRadius: "20px",
       }}
     >
+      <Snackbar
+        open={!!error}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={4000}
+        onClose={() => setError(null)}
+      >
+        <Alert variant="filled" severity="error" onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      </Snackbar>
+      <div
+        style={{
+          width: "600px",
+          overflowX: "auto",
+        }}
+      >
+        {files.map((file, index) => (
+          <div
+            style={{
+              fontSize: "0.9rem",
+              color: "#333",
+              marginLeft: "10px",
+              marginBottom: "10px",
+              marginTop: "5px",
+              backgroundColor: "#fff",
+              width: "200px",
+              display: "flex",
+              alignItems: "center",
+              height: "50px",
+              borderRadius: "10px",
+              padding: "5px",
+              gap: "10px",
+              position: "relative",
+              border: "1px solid #dddddd",
+            }}
+          >
+            <div style={{ position: "absolute", right: "-5px", top: "-5px" }}>
+              <IoIosCloseCircle
+                style={{ cursor: "pointer" }}
+                onClick={() => removeFile(index)}
+                size={"20px"}
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                backgroundColor: "#0385ff",
+                height: "100%",
+                borderRadius: "5px",
+                width: "40px",
+                justifyContent: "center",
+              }}
+            >
+              <IoDocumentTextOutline
+                style={{ width: "20px", height: "20px", color: "#fff" }}
+              />
+            </div>
+            <p
+              style={{
+                margin: "0",
+                fontFamily: "Inter",
+                fontWeight: "500",
+                textWrap: "nowrap",
+                overflow: "hidden",
+                width: "150px",
+              }}
+            >
+              {file.name}
+            </p>
+          </div>
+        ))}
+      </div>
       <div>
         <TextareaAutosize
           placeholder={`Envie uma mensagem para  ${BOT_NAME}`}
@@ -85,9 +176,10 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
             outline: "none",
             fontWeight: 400,
             width: "95%",
-            fontSize: ".9rem",
+            fontSize: ".93rem",
             backgroundColor: "#f5f5f5",
             lineHeight: "1.5",
+            marginTop: "5px",
             marginLeft: "10px",
             fontFamily: "Inter",
           }}
@@ -107,35 +199,69 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
         >
           <Tooltip title="Anexar arquivos" arrow placement="left">
             <IconButton
+              component="label"
               color="primary"
               size="small"
-              aria-label="send message"
-              onClick={handleSendMessage}
-              disabled={stateChat && stateChat.loading_generate_llm}
+              style={{ color: "#333" }}
             >
-              <AttachFileRoundedIcon style={{ color: "#333" }} />
+              <AttachFileRoundedIcon />
+              <input type="file" multiple hidden onChange={handleFileUpload} />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Refletir" arrow placement="right">
+          <Tooltip title="Reflexão avançada" arrow placement="right">
             <IconButton
               color="primary"
               size="small"
               aria-label="send message"
-              onClick={handleSendMessage}
+              style={
+                feature.includes("reasoning")
+                  ? { backgroundColor: "#cde5f7" }
+                  : {}
+              }
+              onClick={() => {
+                if (feature.includes("reasoning")) {
+                  setFeature("");
+                } else {
+                  setFeature("reasoning");
+                }
+              }}
               disabled={stateChat && stateChat.loading_generate_llm}
             >
-              <FaRegLightbulb style={{ color: "#333" }} />
+              <FaRegLightbulb
+                style={
+                  feature.includes("reasoning")
+                    ? { color: "#0385ff" }
+                    : { color: "#333" }
+                }
+              />
             </IconButton>
           </Tooltip>
           <Tooltip title="Buscar na web" arrow placement="right">
             <IconButton
               color="primary"
               size="small"
+              style={
+                feature.includes("web_search")
+                  ? { backgroundColor: "#cde5f7" }
+                  : {}
+              }
               aria-label="send message"
-              onClick={handleSendMessage}
+              onClick={() => {
+                if (feature.includes("web_search")) {
+                  setFeature("");
+                } else {
+                  setFeature("web_search");
+                }
+              }}
               disabled={stateChat && stateChat.loading_generate_llm}
             >
-              <TbWorldSearch style={{ color: "#333" }} />
+              <TbWorldSearch
+                style={
+                  feature.includes("web_search")
+                    ? { color: "#0385ff" }
+                    : { color: "#333" }
+                }
+              />
             </IconButton>
           </Tooltip>
         </div>
