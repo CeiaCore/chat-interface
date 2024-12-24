@@ -28,38 +28,38 @@ import {
   Delete,
 } from "@mui/icons-material";
 import { HiMenuAlt1, HiOutlineFolderOpen } from "react-icons/hi";
-import { TbBooks, TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
 import {
-  IoClose,
-  IoFolderOutline,
-  IoNotificationsOutline,
-} from "react-icons/io5";
-
+  TbBooks,
+  TbLayoutSidebarLeftCollapse,
+  TbLayoutSidebarLeftCollapseFilled,
+} from "react-icons/tb";
+import { IoClose, IoNotificationsOutline } from "react-icons/io5";
+import { GrAppsRounded } from "react-icons/gr";
 import styles from "./PersistentDrawerAdvanced.module.css";
 import { PiBooks, PiChatTeardropText } from "react-icons/pi";
 
 import logodrawer from "../../../assets/logos/logodrawer.png";
 import { ContextChat } from "../../../context/ChatContext";
 import useGetAll from "../../../hooks/chat/useGetAll";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useDeleteChat from "../../../hooks/chat/useDeleteChat";
 import useGetAllMethod from "../../../hooks/chat/useGetAllMethod";
 import { ContextAuth } from "../../../context/AuthContext";
 import { deepOrange } from "@mui/material/colors";
-import { BsFolder2Open } from "react-icons/bs";
-import { MdAdd } from "react-icons/md";
 import { CgAddR } from "react-icons/cg";
-import { GoWorkflow } from "react-icons/go";
 import { TiFlowChildren } from "react-icons/ti";
-import { FaRegFilePdf } from "react-icons/fa";
 import PdfReference from "./references/PdfReference";
 import LinkReference from "./references/LinkReference";
+import DocReference from "./references/DocReference";
+import DBReference from "./references/DBReference";
+import CSVReference from "./references/CSVReference";
 
 const drawerWidth = 260;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
-}>(({ theme, open }) => ({
+  openReference?: boolean;
+}>(({ theme, open, openReference }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
   marginLeft: open ? 0 : `-${drawerWidth}px`,
@@ -111,13 +111,18 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 interface PersistentDrawerLeftProps {
   children: React.ReactNode;
+  setOpenReference: (value: boolean) => void;
+  openReference: boolean;
 }
 
 export default function PersistentDrawerAdvanced({
   children,
+  openReference,
+  setOpenReference,
 }: PersistentDrawerLeftProps) {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
+
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(
     null
   );
@@ -222,6 +227,7 @@ export default function PersistentDrawerAdvanced({
       console.log(e);
     }
   };
+  const params = useLocation();
 
   const references = [
     {
@@ -230,17 +236,48 @@ export default function PersistentDrawerAdvanced({
         content:
           "Aqui contem os chunks dos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
         link: "https://www.google.com/",
+        detail: {
+          page: 5,
+        },
       },
       type: "link",
     },
     {
       data: {
-        title: "Nome do arquivo",
+        title: "Nome do arquivo .doc",
         content:
-          "Aqui contem os chunks dos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
+          "Aqui contem os chunks  ui contem os chunk ui contem os chunk ui contem os chunk ui contem os chunkui contem os chunkui contem os chunk  ui contem os chunk ui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunk ui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunk ui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem osui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunk chunkui contem os chunkui contem os chunkui contem os chunkdos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
+        detail: {
+          page: 5,
+        },
+        link: "https://www.google.com/",
+      },
+      type: "doc",
+    },
+
+    {
+      data: {
+        title: "Nome do arquivo",
+        content: "Requisitos Não Funcionais",
+        detail: {
+          page: 5,
+        },
         link: "https://www.google.com/",
       },
       type: "pdf",
+    },
+    {
+      data: {
+        title: "Nome do banco de dados",
+        content:
+          "Aqui contem os chunks dos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
+        detail: {
+          page: 5,
+          table_name: "nome da tabela",
+        },
+        link: "https://www.google.com/",
+      },
+      type: "db",
     },
 
     {
@@ -248,19 +285,12 @@ export default function PersistentDrawerAdvanced({
         title: "Nome do arquivo",
         content:
           "Aqui contem os chunks dos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
+        detail: {
+          page: 5,
+        },
         link: "https://www.google.com/",
       },
-      type: "pdf",
-    },
-
-    {
-      data: {
-        title: "Nome do arquivo",
-        content:
-          "Aqui contem os chunks dos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
-        link: "https://www.google.com/",
-      },
-      type: "link",
+      type: "csv",
     },
   ];
 
@@ -273,6 +303,13 @@ export default function PersistentDrawerAdvanced({
         open={open}
       >
         <Toolbar>
+          {/* <Link to="/gpts">
+            <div className={styles.model_identity}>
+              <img className={styles.model_image} src={"/teste.png"} />
+              <h2 style={{ color: "#333" }}>Dalle 2</h2>
+            </div>
+          </Link> */}
+
           <IconButton
             color="inherit"
             onClick={toggleDrawer}
@@ -329,7 +366,6 @@ export default function PersistentDrawerAdvanced({
                 stateAuth?.user?.user_name[0].toLocaleUpperCase()}
             </Avatar>
           </IconButton>
-
           <CustomMenu
             anchorEl={profileAnchorEl}
             open={Boolean(profileAnchorEl)}
@@ -370,7 +406,7 @@ export default function PersistentDrawerAdvanced({
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
-            backgroundColor: "#F9F9F9",
+            backgroundColor: "#fff",
             border: "none",
             boxShadow: "rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;",
           },
@@ -380,7 +416,7 @@ export default function PersistentDrawerAdvanced({
           <img style={{ height: "15px" }} src={logodrawer} />
           <IconButton onClick={toggleDrawer}>
             {theme.direction === "ltr" ? (
-              <TbLayoutSidebarLeftCollapseFilled color="#7B7B7B" />
+              <TbLayoutSidebarLeftCollapse color="#7B7B7B" />
             ) : (
               <TbLayoutSidebarLeftCollapseFilled />
             )}
@@ -388,7 +424,12 @@ export default function PersistentDrawerAdvanced({
         </DrawerHeader>
         <div style={{ overflow: "auto", position: "relative" }}>
           <ul className={styles.chats_options}>
-            <Link to="/">
+            <Link
+              onClick={() => {
+                setOpenReference(false);
+              }}
+              to="/"
+            >
               <li className={styles.li}>
                 <PiChatTeardropText
                   style={{
@@ -401,30 +442,27 @@ export default function PersistentDrawerAdvanced({
                 <p>Novo Chat</p>
               </li>
             </Link>
-            <Link to="/">
-              <li className={styles.li}>
-                <TbBooks
+            <Link to="/gpts">
+              <li
+                onClick={() => {
+                  setOpenReference(false);
+                }}
+                className={styles.li}
+                style={{
+                  backgroundColor: String(params.pathname).includes("gpts")
+                    ? "rgb(236, 236, 236)"
+                    : "",
+                }}
+              >
+                <GrAppsRounded
                   style={{
                     marginLeft: "5px",
-                    height: "20px",
-                    width: "20px",
+                    height: "18px",
+                    width: "18px",
                     color: "#6A6A6A",
                   }}
                 />
-                <p>Explorar GPTs</p>
-              </li>
-            </Link>
-            <Link to="/">
-              <li className={styles.li}>
-                <TiFlowChildren
-                  style={{
-                    marginLeft: "5px",
-                    height: "20px",
-                    width: "20px",
-                    color: "#6A6A6A",
-                  }}
-                />
-                <p>Fluxo de Trabalho</p>
+                <p>GPTs</p>
               </li>
             </Link>
           </ul>
@@ -458,7 +496,12 @@ export default function PersistentDrawerAdvanced({
           </p>
           <ul className={styles.chats_options}>
             <Link to="/">
-              <li className={styles.li}>
+              <li
+                onClick={() => {
+                  setOpenReference(false);
+                }}
+                className={styles.li}
+              >
                 <HiOutlineFolderOpen
                   style={{
                     marginLeft: "5px",
@@ -484,7 +527,12 @@ export default function PersistentDrawerAdvanced({
                       typeof element.create_at === "number" ||
                       element.create_at instanceof Date) &&
                     new Date(element.create_at) >= startOfToday && (
-                      <Link to={`/c/${element.chat_id}`}>
+                      <Link
+                        onClick={() => {
+                          setOpenReference(false);
+                        }}
+                        to={`/c/${element.chat_id}`}
+                      >
                         <li
                           style={{
                             backgroundColor:
@@ -579,8 +627,23 @@ export default function PersistentDrawerAdvanced({
                       element.create_at instanceof Date) &&
                     new Date(element.create_at) >= startOfYesterday &&
                     new Date(element.create_at) < startOfToday && (
-                      <Link to={`/c/${element.chat_id}`}>
-                        <li className={styles.li} key={index}>
+                      <Link
+                        onClick={() => {
+                          setOpenReference(false);
+                        }}
+                        to={`/c/${element.chat_id}`}
+                      >
+                        <li
+                          style={{
+                            backgroundColor:
+                              chat_id &&
+                              String(chat_id) === String(element.chat_id)
+                                ? "rgb(236, 236, 236)"
+                                : "",
+                          }}
+                          className={styles.li}
+                          key={index}
+                        >
                           <History
                             style={{
                               marginLeft: "5px",
@@ -648,8 +711,23 @@ export default function PersistentDrawerAdvanced({
                       typeof element.create_at === "number" ||
                       element.create_at instanceof Date) &&
                       new Date(element.create_at) < startOfYesterday)) && (
-                    <Link to={`/c/${element.chat_id}`}>
-                      <li className={styles.li} key={index}>
+                    <Link
+                      onClick={() => {
+                        setOpenReference(false);
+                      }}
+                      to={`/c/${element.chat_id}`}
+                    >
+                      <li
+                        style={{
+                          backgroundColor:
+                            chat_id &&
+                            String(chat_id) === String(element.chat_id)
+                              ? "rgb(236, 236, 236)"
+                              : "",
+                        }}
+                        className={styles.li}
+                        key={index}
+                      >
                         <History
                           style={{
                             marginLeft: "5px",
@@ -726,7 +804,7 @@ export default function PersistentDrawerAdvanced({
           v 1
         </div>
       </Drawer>
-      <Main open={open}>
+      <Main open={open} openReference={openReference}>
         <DrawerHeader />
         {children}
       </Main>
@@ -734,14 +812,18 @@ export default function PersistentDrawerAdvanced({
       <Drawer
         variant="persistent"
         anchor="right"
-        open={open}
+        open={openReference}
         sx={{
-          width: open ? drawerWidth : "",
+          width: openReference ? 380 : "",
         }}
       >
         <DrawerHeader style={{ height: "20px" }}>
-          <p style={{ fontWeight: 400 }}>Referencias</p>
-          <IconButton onClick={toggleDrawer}>
+          <p style={{ fontWeight: 700, fontSize: "0.9rem" }}>Referências</p>
+          <IconButton
+            onClick={() => {
+              setOpenReference(false);
+            }}
+          >
             <IoClose color="#7B7B7B" />
           </IconButton>
         </DrawerHeader>
@@ -749,8 +831,8 @@ export default function PersistentDrawerAdvanced({
           className={styles.container_reference}
           style={{ position: "relative" }}
         >
-          <Divider style={{ marginTop: "10px", marginBottom: "10px" }} />
-          <ul className={styles.box_reference}>
+          <Divider style={{ marginBottom: "10px" }} />
+          <ul className={openReference && `${styles.box_reference}`}>
             {references.map((reference) => (
               <>
                 <>
@@ -761,6 +843,21 @@ export default function PersistentDrawerAdvanced({
                 <>
                   {reference.type === "link" && (
                     <LinkReference reference={reference} />
+                  )}
+                </>
+                <>
+                  {reference.type === "doc" && (
+                    <DocReference reference={reference} />
+                  )}
+                </>
+                <>
+                  {reference.type === "db" && (
+                    <DBReference reference={reference} />
+                  )}
+                </>
+                <>
+                  {reference.type === "csv" && (
+                    <CSVReference reference={reference} />
                   )}
                 </>
               </>

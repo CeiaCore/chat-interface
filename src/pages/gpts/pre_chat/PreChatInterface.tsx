@@ -1,4 +1,4 @@
-import styles from "./ChatBasicInterface.module.css";
+import styles from "./PreChat.module.css";
 
 import ReactMarkdown from "react-markdown";
 import Feedback from "../../../components/chat/Feedback";
@@ -13,12 +13,10 @@ import InputAdvanced from "../../../components/chat/InputAdvanced";
 export interface ChatBasicInterfaceProps {
   chat_id: string | undefined;
   LOGO_CHAT: string;
-  setOpenReference: (isOpen: boolean) => void;
-  openReference: boolean | undefined;
 }
 
-const ChatBasicInterface = ({
-  props: { chat_id, LOGO_CHAT, openReference, setOpenReference },
+const PreChatInterface = ({
+  props: { chat_id, LOGO_CHAT },
 }: {
   props: ChatBasicInterfaceProps;
 }) => {
@@ -101,6 +99,7 @@ const ChatBasicInterface = ({
       />
 
       <div className={styles.container}>
+        <h5 className={styles.title}>Testar</h5>
         {stateChat?.messages?.map((element: any, index: any) => (
           <>
             {element.rule === "user" ? (
@@ -109,16 +108,6 @@ const ChatBasicInterface = ({
               </div>
             ) : (
               <div className={`${styles.message} ${styles.bot}`}>
-                <img
-                  style={{
-                    position: "absolute",
-                    top: "15px",
-                    left: "-45px",
-                    width: "32px",
-                  }}
-                  src={LOGO_CHAT}
-                  alt="Logo"
-                />
                 {element.message && element.message.length > 0 ? (
                   <ReactMarkdown
                     components={{
@@ -271,21 +260,6 @@ const ChatBasicInterface = ({
                     className={styles.cursor}
                   ></div>
                 )}
-
-                <div
-                  className={styles.source}
-                  onClick={() => {
-                    setOpenReference(!openReference);
-                  }}
-                >
-                  Fontes
-                </div>
-                <Feedback
-                  handleClickOpen={handleClickOpen}
-                  setIndexFeedback={setIndexFeedback}
-                  indexFeedback={indexFeedback}
-                  index={index}
-                />
               </div>
             )}
           </>
@@ -294,7 +268,7 @@ const ChatBasicInterface = ({
         <div className={styles.inputContainer}>
           <div className={styles.input}>
             {/* <Input chat_id={chat_id} /> */}
-            <InputAdvanced chat_id={chat_id} />
+            <Input chat_id={chat_id} />
           </div>
           {/* <div onClick={() => teste()}>AQUII</div> */}
         </div>
@@ -303,4 +277,4 @@ const ChatBasicInterface = ({
   );
 };
 
-export default ChatBasicInterface;
+export default PreChatInterface;

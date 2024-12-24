@@ -1,22 +1,96 @@
+import { useState } from "react";
 import { FaRegFilePdf } from "react-icons/fa";
+import { Dialog, DialogTitle, DialogContent, Typography } from "@mui/material";
 import styles from "./Reference.module.css";
 
-const PdfReference = () => {
+import { Viewer } from "@react-pdf-viewer/core";
+
+// Plugins
+import { Worker } from "@react-pdf-viewer/core";
+// Import styles
+import "@react-pdf-viewer/core/lib/styles/index.css";
+
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+// Import styles
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+// Create new plugin instance
+interface ReferenceProps {
+  data: {
+    link: string;
+    content: string;
+    title: string;
+    detail: {
+      page: number;
+    };
+  };
+  type: string;
+}
+
+const PdfReference = ({ reference }: { reference: ReferenceProps }) => {
+  const [open, setOpen] = useState(false);
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <li className={styles.reference}>
-      <div className={styles.header_reference}>
-        <FaRegFilePdf />
-        Nome do arquivo
-      </div>
-      <p style={{ fontSize: ".7rem" }}>Pagina 32</p>
-      <p>
-        Aqui contem os chunks dos documentos recuperados Aqui contem osdas as
-        dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd
-        documentos recuperados Aqui contem os chunks dos documentos ads
-        recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui
-        contem os chunks dos documentos recuperados
-      </p>
-    </li>
+    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+      <li className={styles.reference} onClick={handleOpen}>
+        <div className={styles.header_reference}>
+          <span
+            style={{
+              position: "absolute",
+              right: "10px",
+              width: "50px",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+              height: "20px",
+              borderRadius: "50px",
+              fontSize: ".7rem",
+              fontWeight: "700",
+              textAlign: "center",
+              boxShadow:
+                "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
+            }}
+          >
+            pdf
+          </span>
+          <FaRegFilePdf />
+          <p className={styles.reference_title}>{reference?.data?.title}</p>
+        </div>
+        <p style={{ fontSize: ".7rem" }}>
+          Página {reference?.data?.detail?.page}
+        </p>
+        <p style={{ fontSize: ".85rem", height: "200px" }}>
+          {reference?.data?.content}
+        </p>
+      </li>
+
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
+        <DialogTitle>{reference.data.title}</DialogTitle>
+        <DialogContent dividers>
+          <Typography variant="body2" style={{ whiteSpace: "pre-line" }}>
+            <div
+              style={{
+                height: "750px",
+              }}
+            >
+              <Viewer
+                fileUrl="/teste.pdf"
+                initialPage={reference?.data?.detail?.page - 1}
+                plugins={[defaultLayoutPluginInstance]}
+              />
+            </div>
+          </Typography>
+        </DialogContent>
+      </Dialog>
+    </Worker>
   );
 };
 

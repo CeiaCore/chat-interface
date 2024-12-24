@@ -145,7 +145,9 @@ const HomeCard = ({
               />
             </div>
           </div>
-          <div className={styles.inputContainer}>
+          <div
+            className={`${styles.inputContainer} fade-in`} // Adiciona classe de animação
+          >
             <div className={styles.input}>
               <InputStandByAdvanced setState={setState} />
             </div>

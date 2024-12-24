@@ -14,7 +14,7 @@ import {
   Download as DownloadIcon,
 } from "@mui/icons-material";
 import styles from "./Reference.module.css";
-import { FiDatabase } from "react-icons/fi";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 interface ReferenceProps {
   data: {
@@ -28,7 +28,7 @@ interface ReferenceProps {
   type: string;
 }
 
-const DBReference = ({ reference }: { reference: ReferenceProps }) => {
+const CSVReference = ({ reference }: { reference: ReferenceProps }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -37,6 +37,13 @@ const DBReference = ({ reference }: { reference: ReferenceProps }) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = reference.data.link;
+    link.download = reference.data.title;
+    link.click();
   };
 
   return (
@@ -62,10 +69,12 @@ const DBReference = ({ reference }: { reference: ReferenceProps }) => {
           >
             {reference.type}
           </span>
-          <FiDatabase />
+          <IoDocumentTextOutline style={{ width: "18px", height: "18px" }} />
           <p className={styles.reference_title}> {reference?.data?.title}</p>
         </div>
-        <p style={{ fontSize: ".7rem" }}>Nome da tabela</p>
+        <p style={{ fontSize: ".7rem" }}>
+          Página {reference?.data?.detail?.page}
+        </p>
         <p style={{ fontSize: ".85rem", height: "200px" }}>
           {reference?.data?.content}
         </p>
@@ -103,11 +112,22 @@ const DBReference = ({ reference }: { reference: ReferenceProps }) => {
               fontSize: ".8rem",
               fontWeight: "700",
             }}
-          ></Typography>
+          >
+            Página {reference?.data?.detail?.page}
+          </Typography>
         </DialogContent>
+        <DialogActions>
+          <Button
+            startIcon={<DownloadIcon style={{ color: "#fff" }} />}
+            style={{ backgroundColor: "#333" }}
+            variant="contained"
+          >
+            Download
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );
 };
 
-export default DBReference;
+export default CSVReference;

@@ -35,7 +35,8 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
     overflow: hidden;
     text-align: center;
-    background-color: rgb(255, 250, 245);
+    /* background-color: rgb(255, 250, 245); */
+    background-color: rgb(252, 252, 252);
     cursor: pointer;
     font-family: "Inter";
     padding: 15px;

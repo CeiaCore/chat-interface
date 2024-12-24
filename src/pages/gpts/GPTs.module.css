@@ -1,0 +1,124 @@
+.tabs {
+  margin-top: 20px;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  margin-bottom: 100px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.title {
+  font-family: "Inter";
+  font-weight: 500;
+  margin: 0;
+  font-size: 2rem;
+}
+
+.subtitle {
+  font-family: "Inter";
+  margin: 0;
+  width: 600px;
+  margin-top: 5px;
+  color: rgb(150, 150, 150);
+}
+
+.searchSection {
+  margin-top: 30px;
+}
+
+.container_topics {
+  margin-top: 40px;
+}
+
+.title_topics {
+  font-size: 1.5rem;
+  margin: 10px 10px 10px 0px;
+  font-family: "Inter";
+  font-weight: 400;
+}
+
+.container_cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.box_image {
+  justify-content: center;
+  display: flex;
+}
+
+.image {
+  width: 120px;
+  margin-top: 40px;
+  border-radius: 20px;
+  align-self: center;
+}
+
+.author p {
+  margin: 0;
+  margin-top: 5px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgb(119, 119, 119);
+  font-weight: 500;
+  font-family: Inter;
+}
+.description p {
+  margin: 0;
+}
+.description {
+  font-size: 0.9rem;
+  margin-top: 20px;
+  font-family: Inter;
+  text-align: center;
+  color: rgb(78, 78, 78);
+}
+
+.items {
+  display: flex;
+  margin-top: 5px;
+  align-items: center;
+  gap: 5px;
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+.capabilities {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.capabilities h5 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.box_title h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.dialog_loading {
+  height: 400px;
+}
+
+.dialog_loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
