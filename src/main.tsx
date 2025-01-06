@@ -2,14 +2,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
-import { ChatBasicRoute } from "./routes/basic/ChatBasic.route";
-import { ChatAdvancedRoute } from "./routes/advanced/ChatAdvanced.route";
+import { CustomRoute } from "./routes/custom/Custom.route";
 
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
   <BrowserRouter>
     <Routes>
-      <Route path="/*" element={<ChatAdvancedRoute />} />
+      <Route path="/*" element={<CustomRoute />} />
     </Routes>
   </BrowserRouter>
   // </StrictMode>

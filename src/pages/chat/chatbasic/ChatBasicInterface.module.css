@@ -3,15 +3,17 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 720px;
+    width: 730px;
     margin: 0 auto;
     margin-bottom: 120px; /* Altura máxima do contêiner para ativar o scroll */
     /* overflow-y: auto; */
     color: #0d0d0d;
     font-weight: 400;
     position: relative;
-    font-size: 15px;
-    font-family: "Inter";
+    font-size: 0.95rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+      sans-serif;
     box-sizing: border-box;
     min-height: auto; /* Altura da caixa de chat */
   }
@@ -19,6 +21,85 @@
   .container::-webkit-scrollbar {
     width: 0; /* Oculta a barra de rolagem vertical do contêiner */
   }
+
+  .markdown ol {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 2em;
+    list-style: none; /* Remove o marcador padrão */
+    counter-reset: list-item; /* Inicializa o contador de itens */
+  }
+
+  .markdown ol li {
+    display: list-item; /* Garante que o elemento seja tratado como item de lista */
+    counter-increment: list-item; /* Incrementa o contador */
+  }
+
+  .markdown ol li::marker {
+    content: counter(list-item) ". "; /* Define o número como marcador */
+    color: #303030;
+  }
+
+  .markdown ul {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 2em;
+    list-style: none; /* Remove o marcador padrão */
+  }
+
+  .markdown ul li::marker {
+    content: "●    "; /* Define um círculo como marcador */
+    font-size: 0.45rem;
+  }
+
+  .markdown strong {
+    font-weight: 600;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+      sans-serif;
+  }
+  .markdown p {
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: pre-wrap;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+      sans-serif;
+  }
+
+  .markdown h1 {
+    font-weight: 700;
+    letter-spacing: -0.04rem;
+    background-color: transparent;
+    font-size: 2.25em;
+    line-height: 1.1111111;
+    margin-bottom: 0.8888889em;
+  }
+
+  .markdown h4 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  .markdown hr {
+    border-color: rgba(255, 255, 255, 0.727);
+    border-top-width: 0.1px;
+    border-bottom-width: 0.1px;
+    margin-bottom: 3em;
+    margin-top: 3em;
+  }
+
+  .markdown h3 {
+    font-weight: 600;
+    font-size: 1.3em;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+      sans-serif;
+    margin-bottom: 0.5em;
+  }
+
   span {
     color: rgb(83, 83, 83);
     font-style: italic;
@@ -46,7 +127,8 @@
     padding: 13px 20px;
     margin-top: 0px;
     position: relative;
-    color: #0f0f0f;
+    color: #242424;
+    font-family: "Inter";
     border-top-right-radius: 10px;
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
@@ -63,7 +145,7 @@
     position: relative;
     border-radius: 8px;
     max-width: 100%; /* Ajuste conforme necessário */
-    line-height: 30px; /* Aumento do espaçamento vertical entre as letras */
+    line-height: 1.75; /* Aumento do espaçamento vertical entre as letras */
     /* Aumento do espaçamento vertical entre as letras */
   }
 
@@ -102,19 +184,18 @@
   }
 
   .inputContainer {
-    padding-bottom: 10px;
+    padding-bottom: 25px;
     display: flex;
     width: 740px;
 
     position: fixed;
     bottom: 0;
-    background-color: #fff;
+    background-color: #ffffff;
     align-items: center;
   }
 
   .input {
     flex: 1;
-    padding: 10px;
     font-size: 14px;
     border-radius: 4px;
     outline: none;

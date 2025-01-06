@@ -21,6 +21,7 @@ import {
   CLEAR_MESSAGES,
   SET_NEW_CHAT_TRUE,
   SET_NEW_CHAT_FALSE,
+  ADD_MESSAGE_BOT_CHUNK_LIST,
 } from "./types/types";
 
 // Interfaces
@@ -54,6 +55,7 @@ export interface StateChat {
   history: Record<string, unknown>[];
   load_notification: Record<string, unknown>[];
   new_chat: boolean;
+  list_chunks: string[];
 }
 
 export interface ActionChat {
@@ -84,6 +86,7 @@ const initialState: StateChat = {
   is_active_scroll: true,
   load_notification: [],
   new_chat: false,
+  list_chunks: [],
 };
 
 // Reducer
@@ -123,6 +126,10 @@ function reducer(stateChat: StateChat, actionChat: ActionChat): StateChat {
         stateChat.messages[lastMessageIndex].message =
           actionChat.payload as string;
       }
+      return { ...stateChat, message_test: actionChat.payload as string };
+    }
+
+    case ADD_MESSAGE_BOT_CHUNK_LIST: {
       return { ...stateChat, message_test: actionChat.payload as string };
     }
 

@@ -1,7 +1,9 @@
 import { useContext } from "react";
 import {
   ADD_MESSAGE_BOT,
+  ADD_MESSAGE_BOT_CHUNK_LIST,
   LOADING_GENERATE_LLM_FALSE,
+  LOADING_GENERATE_LLM_TRUE,
 } from "../../context/types/types";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { ContextChat } from "../../context/ChatContext";
@@ -10,6 +12,7 @@ import { ContextChat } from "../../context/ChatContext";
 interface interactProps {
   query: string;
   chat_id: string;
+  onMessage: (message: string) => void;
 }
 const URL = window._env_.URL_API;
 
@@ -18,7 +21,7 @@ const PATH_DEFAULT = "/api/v1/chat_router";
 const useInteract = () => {
   const { dispatchChat } = useContext(ContextChat) || {};
   // const { keycloak } = useKeycloak();
-  const interactChat = async ({ query, chat_id }: interactProps) => {
+  const interactChat = async ({ query, chat_id, onMessage }: interactProps) => {
     if (!dispatchChat) {
       return null;
     }
@@ -38,7 +41,7 @@ const useInteract = () => {
     eventSource.onmessage = function (event) {
       const newMessage = event.data;
       if (newMessage !== ":\n\n") data += newMessage;
-
+      onMessage(newMessage);
       dispatchChat({ type: ADD_MESSAGE_BOT, payload: data });
     };
 

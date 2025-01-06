@@ -29,12 +29,13 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
   const [feature, setFeature] = React.useState("");
   const [files, setFiles] = React.useState<File[]>([]); // Gerenciar arquivos carregados
   const [error, setError] = React.useState<string | null>(null);
-
+  const [isTyping, setIsTyping] = React.useState(false);
   const { stateChat, dispatchChat } =
     React.useContext(ContextChat) || undefined;
 
   const handleMessageChange = (event: any) => {
     setMessage(event.target.value);
+    setIsTyping(event.target.value.length > 0);
   };
 
   const handleSendMessage = () => {
@@ -75,6 +76,13 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
   const removeFile = (index: number) => {
     setFiles(files.filter((_, i) => i !== index));
   };
+
+  const iconStyle = {
+    transition: "transform 0.3s ease, opacity 0.3s ease, color 0.3s ease",
+    opacity: isTyping ? 1 : 0.8,
+    color: isTyping ? "#aaa" : "#333",
+  };
+
   return (
     <Paper
       component="form"
@@ -202,7 +210,7 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
               component="label"
               color="primary"
               size="small"
-              style={{ color: "#333" }}
+              style={{ ...iconStyle, color: "#333" }}
             >
               <AttachFileRoundedIcon />
               <input type="file" multiple hidden onChange={handleFileUpload} />
@@ -215,8 +223,8 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
               aria-label="send message"
               style={
                 feature.includes("reasoning")
-                  ? { backgroundColor: "#cde5f7" }
-                  : {}
+                  ? { backgroundColor: "#cde5f7", ...iconStyle }
+                  : { ...iconStyle }
               }
               onClick={() => {
                 if (feature.includes("reasoning")) {
@@ -242,8 +250,8 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
               size="small"
               style={
                 feature.includes("web_search")
-                  ? { backgroundColor: "#cde5f7" }
-                  : {}
+                  ? { backgroundColor: "#cde5f7", ...iconStyle }
+                  : { ...iconStyle }
               }
               aria-label="send message"
               onClick={() => {
@@ -270,6 +278,13 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
           size="small"
           aria-label="send message"
           onClick={handleSendMessage}
+          disabled={!isTyping}
+          style={{
+            transition: "opacity 0.3s ease, transform 0.3s ease",
+            opacity: isTyping ? 1 : 0.5, // Suaviza a opacidade
+            transform: isTyping ? "scale(1)" : "scale(0.9)", // Adiciona uma leve redução
+            pointerEvents: isTyping ? "auto" : "none", // Evita cliques quando desativado
+          }}
           // disabled={stateChat && stateChat.loading_generate_llm}
         >
           <ArrowCircleRightRoundedIcon

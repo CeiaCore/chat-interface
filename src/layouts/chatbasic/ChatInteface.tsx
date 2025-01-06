@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import ChatBasicInterface, {
   ChatBasicInterfaceProps,
 } from "../../pages/chat/chatbasic/ChatBasicInterface";
+import TesteChatBasicInterface from "../../pages/chat/chatbasic/TesteChatBasicInterface";
 
 export interface ChatInterfaceBasicProps {
   LOGO_CHAT: string;
@@ -23,7 +24,7 @@ const ChatInteface = ({
     setOpenReference: setOpenReference,
   };
 
-  return <ChatBasicInterface props={chat_interface_props} />;
+  return <TesteChatBasicInterface props={chat_interface_props} />;
 };
 
 export default ChatInteface;
