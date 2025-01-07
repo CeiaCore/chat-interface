@@ -7,10 +7,10 @@
 }
 
 .option {
-  border: 0.5px solid #c9c9c9;
+  border: 0.5px solid #e3e3e3;
   border-radius: 10px;
-  padding: 5px;
-  transition: 0.3s;
+  padding: 10px;
+  transition: 0.1s;
 }
 
 .option:hover {

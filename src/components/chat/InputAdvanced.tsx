@@ -17,11 +17,33 @@ import { Alert, Snackbar, Tooltip } from "@mui/material";
 import { TbWorldSearch } from "react-icons/tb";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoIosCloseCircle } from "react-icons/io";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 interface InputProps {
   chat_id: string;
   BOT_NAME: string;
 }
+
+const theme = createTheme({
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: "#131313", // Cor do background
+          padding: "5px",
+          color: "white", // Cor do texto
+          borderRadius: "7px",
+          fontSize: "14px", // Tamanho da fonte
+          paddingLeft: "10px",
+          paddingRight: "10px",
+        },
+        arrow: {
+          color: "#131313", // Cor da seta
+        },
+      },
+    },
+  },
+});
 
 export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
   const [message, setMessage] = React.useState("");
@@ -55,6 +77,7 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
     }
 
     setMessage("");
+    setIsTyping(false);
   };
 
   const handleKeyDown = (event: any) => {
@@ -79,8 +102,8 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
 
   const iconStyle = {
     transition: "transform 0.3s ease, opacity 0.3s ease, color 0.3s ease",
-    opacity: isTyping ? 1 : 0.8,
-    color: isTyping ? "#aaa" : "#333",
+    opacity: isTyping ? 1 : 1,
+    color: isTyping ? "#333" : "#333",
   };
 
   return (
@@ -93,8 +116,12 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
         flexDirection: "column",
         padding: "10px 7px 7px 7px",
         boxShadow: "none",
-        backgroundColor: "#f5f5f5",
+        // backgroundColor: "#f5f5f5",
+        backgroundColor: "#fff",
         borderRadius: "20px",
+        border: "1px solid  #b9b9b9",
+        transition: ".2s",
+        transform: isTyping ? "scale(1.01)" : "scale(1)", // Adiciona uma leve redução
       }}
     >
       <Snackbar
@@ -184,8 +211,9 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
             outline: "none",
             fontWeight: 400,
             width: "95%",
-            fontSize: ".93rem",
-            backgroundColor: "#f5f5f5",
+            fontSize: "1rem",
+            backgroundColor: "#fff",
+            transition: ".1s",
             lineHeight: "1.5",
             marginTop: "5px",
             marginLeft: "10px",
@@ -205,73 +233,84 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
             alignContent: "center",
           }}
         >
-          <Tooltip title="Anexar arquivos" arrow placement="left">
-            <IconButton
-              component="label"
-              color="primary"
-              size="small"
-              style={{ ...iconStyle, color: "#333" }}
-            >
-              <AttachFileRoundedIcon />
-              <input type="file" multiple hidden onChange={handleFileUpload} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Reflexão avançada" arrow placement="right">
-            <IconButton
-              color="primary"
-              size="small"
-              aria-label="send message"
-              style={
-                feature.includes("reasoning")
-                  ? { backgroundColor: "#cde5f7", ...iconStyle }
-                  : { ...iconStyle }
-              }
-              onClick={() => {
-                if (feature.includes("reasoning")) {
-                  setFeature("");
-                } else {
-                  setFeature("reasoning");
-                }
-              }}
-              disabled={stateChat && stateChat.loading_generate_llm}
-            >
-              <FaRegLightbulb
+          <ThemeProvider theme={theme}>
+            <Tooltip title="Anexar arquivos" arrow placement="left">
+              <IconButton
+                component="label"
+                color="primary"
+                size="small"
+                style={{ ...iconStyle, color: "#333" }}
+              >
+                <AttachFileRoundedIcon />
+                <input
+                  type="file"
+                  multiple
+                  hidden
+                  onChange={handleFileUpload}
+                />
+              </IconButton>
+            </Tooltip>
+          </ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <Tooltip title="Reflexão avançada" arrow placement="right">
+              <IconButton
+                color="primary"
+                size="small"
+                aria-label="send message"
                 style={
                   feature.includes("reasoning")
-                    ? { color: "#0385ff" }
-                    : { color: "#333" }
+                    ? { backgroundColor: "#cde5f7", ...iconStyle }
+                    : { ...iconStyle }
                 }
-              />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Buscar na web" arrow placement="right">
-            <IconButton
-              color="primary"
-              size="small"
-              style={
-                feature.includes("web_search")
-                  ? { backgroundColor: "#cde5f7", ...iconStyle }
-                  : { ...iconStyle }
-              }
-              aria-label="send message"
-              onClick={() => {
-                if (feature.includes("web_search")) {
-                  setFeature("");
-                } else {
-                  setFeature("web_search");
-                }
-              }}
-              disabled={stateChat && stateChat.loading_generate_llm}
-            >
-              <TbWorldSearch
+                onClick={() => {
+                  if (feature.includes("reasoning")) {
+                    setFeature("");
+                  } else {
+                    setFeature("reasoning");
+                  }
+                }}
+                disabled={stateChat && stateChat.loading_generate_llm}
+              >
+                <FaRegLightbulb
+                  style={
+                    feature.includes("reasoning")
+                      ? { color: "#0385ff" }
+                      : { color: "#333" }
+                  }
+                />
+              </IconButton>
+            </Tooltip>
+          </ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <Tooltip title="Buscar na web" arrow placement="right">
+              <IconButton
+                color="primary"
+                size="small"
                 style={
                   feature.includes("web_search")
-                    ? { color: "#0385ff" }
-                    : { color: "#333" }
+                    ? { backgroundColor: "#cde5f7", ...iconStyle }
+                    : { ...iconStyle }
                 }
-              />
-            </IconButton>
-          </Tooltip>
+                aria-label="send message"
+                onClick={() => {
+                  if (feature.includes("web_search")) {
+                    setFeature("");
+                  } else {
+                    setFeature("web_search");
+                  }
+                }}
+                disabled={stateChat && stateChat.loading_generate_llm}
+              >
+                <TbWorldSearch
+                  style={
+                    feature.includes("web_search")
+                      ? { color: "#0385ff" }
+                      : { color: "#333" }
+                  }
+                />
+              </IconButton>
+            </Tooltip>
+          </ThemeProvider>
         </div>
         <IconButton
           color="primary"
@@ -281,7 +320,7 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
           disabled={!isTyping}
           style={{
             transition: "opacity 0.3s ease, transform 0.3s ease",
-            opacity: isTyping ? 1 : 0.5, // Suaviza a opacidade
+            opacity: isTyping ? 1 : 0.2, // Suaviza a opacidade
             transform: isTyping ? "scale(1)" : "scale(0.9)", // Adiciona uma leve redução
             pointerEvents: isTyping ? "auto" : "none", // Evita cliques quando desativado
           }}

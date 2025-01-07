@@ -13,6 +13,7 @@ import useInteract from "../../../hooks/chat/useInteraction";
 import DotLoader from "react-spinners/DotLoader";
 import SyncLoader from "react-spinners/SyncLoader";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 export interface ChatBasicInterfaceProps {
   chat_id: string | undefined;
   LOGO_CHAT: string;
@@ -181,96 +182,98 @@ const TesteChatBasicInterface = ({
   // };
 
   const qwer = `
+---
 
-Claro! Aqui está um exemplo de um texto com diversos recursos de **Markdown** para mostrar como posso organizar a informação de maneira visualmente interessante:
+# 🌟 **Resumo: A Revolução Digital**  
+
+A **Revolução Digital** é um marco histórico que transformou a maneira como vivemos, trabalhamos e nos conectamos. Este resumo apresenta os principais aspectos dessa transformação.
 
 ---
 
-# Guia Completo de Markdown
+## 🚀 **O que é a Revolução Digital?**  
+A Revolução Digital refere-se à transição de tecnologias analógicas para digitais, que começou no século XX e continua a moldar o mundo moderno.
 
-Markdown é uma linguagem de marcação simples, mas poderosa, que permite formatar texto de maneira fácil e legível. Aqui estão alguns dos principais recursos que você pode usar para organizar seus textos.
-
-## 1. **Cabeçalhos**
-
-Os cabeçalhos são usados para estruturar o conteúdo de maneira hierárquica. O número de # define o nível do cabeçalho:
-
-### Nível 1 (Título principal)
-#### Nível 2 (Subtítulo)
-##### Nível 3 (Sub-subtítulo)
-
-## 2. **Negrito e Itálico**
-
-Você pode destacar palavras ou frases com **negrito** e *itálico*:
-
-- **Negrito**: **texto em negrito**
-- *Itálico*: *texto em itálico*
-- **Negrito e *Itálico* juntos**: **texto em negrito e *itálico* juntos**
-
-## 3. **Listas**
-
-### Listas não ordenadas
-- Item 1
-- Item 2
-  - Subitem 1
-  - Subitem 2
-
-### Listas ordenadas
-1. Primeiro item
-2. Segundo item
-   1. Subitem A
-   2. Subitem B
-
-## 4. **Links e Imagens**
-
-Você pode incluir links e imagens facilmente:
-
-- [Google](https://www.google.com)
-- ![Imagem exemplo](https://via.placeholder.com/150)
-
-## 5. **Citações**
-
-As citações são usadas para destacar citações ou referências:
-
-> "O Markdown é uma linguagem de marcação leve."
-
-## 6. **Código**
-
-Você pode formatar trechos de código em uma linha ou em blocos:
-
-- **Código em uma linha**: print("Hello, World!")
-  
-- **Bloco de código**:
-  python
-  def saudacao():
-      print("Olá, mundo!")
-  
-
-## 7. **Tabelas**
-
-Você pode criar tabelas de forma simples:
-
-| Nome     | Idade | Profissão     |
-|----------|-------|---------------|
-| João     | 30    | Desenvolvedor |
-| Maria    | 25    | Designer      |
-
-## 8. **Separadores**
-
-Você pode usar separadores horizontais para dividir seções:
+**Principais características:**
+- Automação de processos.
+- Conectividade global através da internet.
+- Produção e consumo de dados em larga escala.
 
 ---
 
-## 9. **Emoji**
+## 🔑 **Principais Marcos**  
 
-Markdown também suporta emojis! 🎉🚀
+1. **Década de 1940: O Início**  
+   - Criação dos primeiros computadores, como o ENIAC.
 
-## 10. **Concluindo**
+2. **Década de 1980: A Popularização do PC**  
+   - Surgimento de empresas como a Microsoft e a Apple.  
+   - Computadores pessoais tornam-se acessíveis.
 
-O Markdown é uma excelente maneira de organizar seu conteúdo com simplicidade e eficiência. Experimente os recursos acima para ver como eles podem melhorar sua escrita!
+3. **Década de 1990: A Era da Internet**  
+   - Expansão da World Wide Web.  
+   - Navegadores como o Netscape revolucionam a navegação.
+
+4. **Século XXI: O Boom Tecnológico**  
+   - Smartphones e redes sociais conectam bilhões de pessoas.  
+   - Avanços em inteligência artificial (IA) e big data.
 
 ---
 
-Espero que esse exemplo tenha ajudado a mostrar algumas das possibilidades! Se quiser algo mais específico, posso adaptar o conteúdo para suas necessidades.`;
+## 📊 **Impactos da Revolução Digital**  
+
+### **🌐 Na Sociedade**  
+- **Educação:** Aprendizado online e acesso global ao conhecimento.  
+- **Comunicação:** Redes sociais e mensagens instantâneas.
+
+### **🏢 Nos Negócios**  
+- E-commerce cresce exponencialmente.  
+- Modelos de negócios baseados em plataformas (Uber, Airbnb).  
+
+### **🤖 Na Tecnologia**  
+- Automação e inteligência artificial transformam indústrias.  
+- Internet das Coisas (IoT) conecta dispositivos no dia a dia.  
+
+---
+
+## 💡 **Benefícios e Desafios**  
+
+### **✅ Benefícios:**  
+- Acesso à informação em tempo real.  
+- Aumento da produtividade e eficiência.
+
+### **⚠️ Desafios:**  
+- Privacidade e segurança de dados.  
+- Exclusão digital em regiões menos desenvolvidas.
+
+---
+
+## 📘 **Curiosidades**  
+
+| Data Importante    | Evento                                  | Impacto                                  |
+|--------------------|-----------------------------------------|------------------------------------------|
+| **1989**           | Criação da World Wide Web              | Facilitou o acesso à internet.          |
+| **2007**           | Lançamento do iPhone                   | Popularizou os smartphones.             |
+| **2023**           | Expansão de IA generativa (ex: ChatGPT)| Transformou a interação com a tecnologia.|
+
+---
+
+## ✨ **Conclusão**  
+A **Revolução Digital** transformou o mundo como o conhecemos, trazendo avanços inimagináveis e desafios que ainda enfrentamos. Continuar adaptando-se a essas mudanças é essencial para um futuro sustentável e inovador.
+
+---
+
+> "A tecnologia deve ser uma ferramenta para unir as pessoas, não para dividi-las." – Anônimo  
+
+---
+
+### **Quer saber mais?**  
+- [História da Internet](https://www.historyofinternet.com)  
+- [Como a IA está mudando o mundo](https://www.aiexamples.com)
+
+--- 
+
+Espero que tenha gostado deste resumo! Se precisar de ajustes ou de outro tema, é só pedir. 😊
+  `;
 
   return (
     <>
@@ -337,7 +340,22 @@ Espero que esse exemplo tenha ajudado a mostrar algumas das possibilidades! Se q
                         </span>
                       ))} */}
                     <div>
-                      <ReactMarkdown className={styles.markdown}>
+                      <ReactMarkdown
+                        components={{
+                          a: ({ node, href, ...props }) => (
+                            <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              {...props}
+                            >
+                              {props.children}
+                            </a>
+                          ),
+                        }}
+                        className={styles.markdown}
+                        remarkPlugins={[remarkGfm]}
+                      >
                         {qwer}
                       </ReactMarkdown>
                     </div>
@@ -359,7 +377,7 @@ Espero que esse exemplo tenha ajudado a mostrar algumas das possibilidades! Se q
                       setOpenReference(!openReference);
                     }}
                   >
-                    Fontes
+                    Ver fontes
                   </div>
                 )}
                 <Feedback

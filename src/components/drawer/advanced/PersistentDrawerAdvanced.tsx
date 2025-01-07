@@ -434,12 +434,13 @@ export default function PersistentDrawerAdvanced({
                 <PiChatTeardropText
                   style={{
                     marginLeft: "5px",
+                    marginRight: "5px",
                     height: "20px",
                     width: "20px",
                     color: "#333",
                   }}
                 />
-                <p>Novo Chat</p>
+                <p>Nova conversa</p>
               </li>
             </Link>
             <Link to="/gpts">
@@ -459,10 +460,11 @@ export default function PersistentDrawerAdvanced({
                     marginLeft: "5px",
                     height: "18px",
                     width: "18px",
+                    marginRight: "7px",
                     color: "#6A6A6A",
                   }}
                 />
-                <p>GPTs</p>
+                <p>Agentes</p>
               </li>
             </Link>
           </ul>
@@ -544,14 +546,6 @@ export default function PersistentDrawerAdvanced({
                           className={styles.li}
                           key={index}
                         >
-                          <History
-                            style={{
-                              marginLeft: "5px",
-                              height: "20px",
-                              width: "20px",
-                              color: "#9E9E9E",
-                            }}
-                          />
                           <p className={styles.p_li}>{element.chat_label}</p>
                           <div className={styles.options}>
                             <div
@@ -644,14 +638,6 @@ export default function PersistentDrawerAdvanced({
                           className={styles.li}
                           key={index}
                         >
-                          <History
-                            style={{
-                              marginLeft: "5px",
-                              height: "20px",
-                              width: "20px",
-                              color: "#9E9E9E",
-                            }}
-                          />
                           <p className={styles.p_li}>{element.chat_label}</p>
                           <div className={styles.options}>
                             <div
@@ -728,14 +714,6 @@ export default function PersistentDrawerAdvanced({
                         className={styles.li}
                         key={index}
                       >
-                        <History
-                          style={{
-                            marginLeft: "5px",
-                            height: "20px",
-                            width: "20px",
-                            color: "#9E9E9E",
-                          }}
-                        />
                         <p className={styles.p_li}>{element.chat_label}</p>
                         <div className={styles.options}>
                           <div

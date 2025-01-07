@@ -6,6 +6,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close"; // Ícone de fechar
 import styles from "./Dislike.module.css";
 
 type FeedbackOptions = {
@@ -34,6 +36,7 @@ interface FormDialogProps {
   indexFeedback: number;
   setFeedback: (index: number) => void;
 }
+
 const feedbackOptions: FeedbackOptions[] = [
   { label: "Não é factualmente correta", value: "factually_incorrect" },
   { label: "Não gostei do estilo", value: "disliked_style" },
@@ -42,6 +45,10 @@ const feedbackOptions: FeedbackOptions[] = [
     value: "incorrect_history_usage",
   },
   { label: "Resposta preguiçosa", value: "lazy_response" },
+  {
+    label: "Referências recuperadas estão incorretas",
+    value: "source_incorrect",
+  },
 ];
 
 export default function FormDialog({
@@ -92,9 +99,35 @@ export default function FormDialog({
           event.preventDefault();
           handleDislike(observation);
         },
+        sx: {
+          borderRadius: "15px",
+          paddingTop: 1,
+          paddingBottom: 1,
+        },
       }}
     >
-      <DialogTitle>Forneça feedback adicional</DialogTitle>
+      <DialogTitle
+        sx={{
+          fontWeight: "600",
+          fontSize: "1.125rem;",
+          fontFamily:
+            "ui-sans-serif,-apple-system,system-ui,Segoe UI,Helvetica,Apple Color Emoji,Arial,sans-serif,Segoe UI Emoji,Segoe UI Symbol",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        Forneça feedback adicional
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            color: "#333",
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div className={styles.box_options}>
@@ -119,13 +152,13 @@ export default function FormDialog({
           value={observation}
           onChange={(e) => setObservation(e.target.value)}
           sx={{
-            "& .MuiInput-underline:before": { borderBottomColor: "#333" }, // Cor antes do foco
-            "& .MuiInput-underline:after": { borderBottomColor: "#333" }, // Cor depois do foco
+            "& .MuiInput-underline:before": { borderBottomColor: "#333" },
+            "& .MuiInput-underline:after": { borderBottomColor: "#333" },
             "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
               borderBottomColor: "#333",
-            }, // Cor ao passar o mouse
-            "& .MuiFormLabel-root": { color: "#333" }, // Cor do label
-            "& .MuiFormLabel-root.Mui-focused": { color: "#333" }, // Cor do label ao focar
+            },
+            "& .MuiFormLabel-root": { color: "#333" },
+            "& .MuiFormLabel-root.Mui-focused": { color: "#333" },
           }}
         />
         <TextField
@@ -136,22 +169,34 @@ export default function FormDialog({
           value={expectedResponse}
           onChange={(e) => setExpectedResponse(e.target.value)}
           sx={{
-            "& .MuiInput-underline:before": { borderBottomColor: "#333" }, // Cor antes do foco
-            "& .MuiInput-underline:after": { borderBottomColor: "#333" }, // Cor depois do foco
+            "& .MuiInput-underline:before": { borderBottomColor: "#333" },
+            "& .MuiInput-underline:after": { borderBottomColor: "#333" },
             "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
               borderBottomColor: "#333",
-            }, // Cor ao passar o mouse
-            "& .MuiFormLabel-root": { color: "#333" }, // Cor do label
-            "& .MuiFormLabel-root.Mui-focused": { color: "#333" }, // Cor do label ao focar
+            },
+            "& .MuiFormLabel-root": { color: "#333" },
+            "& .MuiFormLabel-root.Mui-focused": { color: "#333" },
           }}
         />
       </DialogContent>
-      <DialogActions>
-        <Button style={{ color: "#333" }} onClick={handleClose}>
-          Cancelar
-        </Button>
-        <Button style={{ color: "#333" }} type="submit">
-          Submeter
+      <DialogActions
+        style={{
+          paddingRight: "20px",
+        }}
+      >
+        <Button
+          style={{
+            color: "#fff",
+            backgroundColor: "#333",
+            borderRadius: "10px",
+            fontSize: ".85rem",
+            fontWeight: "600",
+            fontFamily:
+              "ui-sans-serif,-apple-system,system-ui,Segoe UI,Helvetica,Apple Color Emoji,Arial,sans-serif,Segoe UI Emoji,Segoe UI Symbol",
+          }}
+          type="submit"
+        >
+          Enviar
         </Button>
       </DialogActions>
     </Dialog>

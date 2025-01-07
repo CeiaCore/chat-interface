@@ -1,79 +1,141 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
-const TypingEffect = ({ stream, fadeSpeed = 1000 }) => {
+const ChatBoxWithSmoothChunks = () => {
   const [renderedChunks, setRenderedChunks] = useState([]);
+  const chatBoxRef = useRef(null);
+  const [response, setResponse] = useState(null);
 
   useEffect(() => {
-    const handleStream = async () => {
-      for await (const chunk of stream) {
-        // Adiciona o chunk com opacidade inicial 0
-        setRenderedChunks((prev) => [
-          ...prev,
-          { text: chunk, opacity: 0, id: prev.length },
-        ]);
+    if (response) {
+      processAssistantResponse(response);
+    }
+  }, [response]);
 
-        // Atualiza a opacidade do último chunk para 1 após renderizar
-        setTimeout(() => {
-          setRenderedChunks((prev) =>
-            prev.map((item, index) =>
-              index === prev.length - 1 ? { ...item, opacity: 1 } : item
-            )
-          );
-        }, 50); // Pequeno delay para iniciar o fade-in
+  const processAssistantResponse = async (response) => {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+    let buffer = "";
+
+    while (!done) {
+      const { value, done: readerDone } = await reader.read();
+      done = readerDone;
+
+      if (value) {
+        const chunk = decoder.decode(value);
+        buffer += chunk;
+
+        const lines = buffer.split("\n");
+        for (let i = 0; i < lines.length - 1; i++) {
+          const line = lines[i].trim();
+          if (line) {
+            addChunk(line);
+          }
+        }
+        buffer = lines[lines.length - 1];
       }
+    }
+  };
+
+  const addChunk = (text) => {
+    const id = `${Date.now()}-${Math.random()}`;
+    setRenderedChunks((prevChunks) => [
+      ...prevChunks,
+      { text: formatMessage(text), opacity: 0, id },
+    ]);
+
+    // Atualizar a opacidade após uma pequena espera
+    setTimeout(() => {
+      setRenderedChunks((prevChunks) =>
+        prevChunks.map((chunk) =>
+          chunk.id === id ? { ...chunk, opacity: 1 } : chunk
+        )
+      );
+    }, 10);
+
+    scrollToBottom();
+  };
+
+  const formatMessage = (message) => {
+    const rawHTML = marked.parse(message);
+    return DOMPurify.sanitize(rawHTML);
+  };
+
+  const scrollToBottom = () => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  };
+
+  const mockStreamedResponse = () => {
+    const encoder = new TextEncoder();
+    const chunks = [
+      "Hello, how can I help you?\n",
+      "Let me think...\n",
+      "Here's some information for you:\n",
+      "- Item 1\n",
+      "- Item 2\n",
+    ];
+
+    let currentChunk = 0;
+
+    return new ReadableStream({
+      start(controller) {
+        const pushChunk = () => {
+          if (currentChunk < chunks.length) {
+            controller.enqueue(encoder.encode(chunks[currentChunk]));
+            currentChunk++;
+            setTimeout(pushChunk, 200); // Simula streaming com 1 segundo de intervalo
+          } else {
+            controller.close();
+          }
+        };
+        pushChunk();
+      },
+    });
+  };
+
+  const handleMockResponse = () => {
+    const mockResponse = {
+      body: mockStreamedResponse(),
     };
-
-    handleStream();
-  }, [stream]);
+    setResponse(mockResponse);
+  };
 
   return (
-    <div style={{ display: "inline", whiteSpace: "pre-wrap" }}>
-      {renderedChunks.map(({ text, opacity, id }) => (
-        <span
-          key={id}
-          style={{
-            display: "inline-block",
-            opacity,
-            transition: `opacity 0.4s ease-in-out`,
-          }}
-        >
-          {text}
-        </span>
-      ))}
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      <h1>Chat Simulation</h1>
+      <button onClick={handleMockResponse} style={{ marginBottom: "10px" }}>
+        Start Mock Stream
+      </button>
+      <div
+        id="chat-box"
+        ref={chatBoxRef}
+        style={{
+          maxHeight: "300px",
+          overflowY: "auto",
+          border: "1px solid #ccc",
+          padding: "10px",
+          borderRadius: "5px",
+        }}
+      >
+        {renderedChunks.map(({ text, opacity, id }) => (
+          <span
+            key={id}
+            style={{
+              display: "block",
+              opacity: opacity,
+              transition: "opacity 0.5s ease-in-out", // Suavizar transição
+              marginBottom: "5px",
+            }}
+            dangerouslySetInnerHTML={{ __html: text }}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
-const simulateStream = async function* () {
-  const chunks = [
-    "Claro! ",
-    "Você ",
-    "uma ",
-    "história ",
-    "épica ",
-    "para ",
-    "você.",
-  ];
-
-  for (const chunk of chunks) {
-    yield chunk;
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Simula delay do backend
-  }
-};
-
-const Teste = () => {
-  return (
-    <div
-      style={{
-        padding: "20px",
-        fontFamily: "Arial, sans-serif",
-        fontSize: "18px",
-      }}
-    >
-      <h1>Chatbot</h1>
-      <TypingEffect stream={simulateStream()} fadeSpeed={300} />
-    </div>
-  );
-};
-
-export default Teste;
+export default ChatBoxWithSmoothChunks;

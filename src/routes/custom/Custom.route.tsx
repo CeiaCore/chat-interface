@@ -6,10 +6,13 @@ import HomeB from "../../pages/home/homeB/HomeB";
 import { HomeBConfig } from "./config/home/HomeB.config";
 import { CustomConfig } from "./Custom.config";
 import { useState } from "react";
-import Teste from "./Teste";
 import ChatInteface, {
   ChatInterfaceBasicProps,
 } from "../../layouts/chatbasic/ChatInteface";
+import ChatBoxWithMock from "./Teste";
+import PersistentDrawerAdvanced from "../../components/drawer/advanced/PersistentDrawerAdvanced";
+import GPTs from "../../pages/gpts/GPTs";
+import FormGpt from "../../pages/gpts/form/FormGpt";
 
 export function CustomRoute() {
   const config = CustomConfig;
@@ -24,12 +27,17 @@ export function CustomRoute() {
   return (
     <AuthProvider>
       <ChatProvider>
-        <PersistentDrawerLeft>
+        <PersistentDrawerAdvanced
+          openReference={openReference}
+          setOpenReference={setOpenReference}
+        >
           <Routes>
+            <Route path="/gpts" element={<GPTs />} />
+            <Route path="/gpts/edit" element={<FormGpt />} />
             {config.home === "HomeB" && (
               <Route path="/" element={<HomeB home_config={HomeBConfig} />} />
             )}
-            <Route path="/teste" element={<Teste />} />
+            <Route path="/teste" element={<ChatBoxWithMock />} />
 
             <Route
               path="/c/:chat_id"
@@ -38,7 +46,7 @@ export function CustomRoute() {
 
             <Route path="*" element={<div>Not Found</div>} />
           </Routes>
-        </PersistentDrawerLeft>
+        </PersistentDrawerAdvanced>
       </ChatProvider>
     </AuthProvider>
   );
