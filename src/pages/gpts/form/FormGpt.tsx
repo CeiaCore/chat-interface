@@ -28,8 +28,9 @@ const FormGpt = () => {
         <h5 className={styles.title}>Configurar</h5>
         <form>
           {/* <form onSubmit={handleSubmit}> */}
-          <Grid mt={2} container spacing={2}>
-            <Grid item xs={12}>
+          {/* <Grid style={{ backgroundColor: "red" }} mt={2} container spacing={2}> */}
+          <div>
+            <Grid mt={2} item xs={12}>
               <h6 className={styles.text_label}>Nome</h6>
 
               <TextField
@@ -50,7 +51,7 @@ const FormGpt = () => {
                 required
               />
             </Grid>
-            <Grid mt={1} item xs={12}>
+            <Grid mt={2} item xs={12}>
               <h6 className={styles.text_label}>Descrição</h6>
 
               <TextField
@@ -71,7 +72,7 @@ const FormGpt = () => {
                 required
               />
             </Grid>
-            <Grid mt={1} item xs={12}>
+            <Grid mt={2} item xs={12}>
               <h6 className={styles.text_label}>Prompt</h6>
               <TextField
                 label="Forneça uma instrução para o seu GPT. O que ele pode fazer? O que ele deve evitar?"
@@ -92,11 +93,11 @@ const FormGpt = () => {
                 required
               />
             </Grid>
-            <Grid mt={1} item xs={12}>
+            <Grid mt={2} item xs={12}>
               <h6 className={styles.text_label}>Base de Conhecimento</h6>
               <ButtonUpload functions={() => {}} value="Carregar Arquivos" />
             </Grid>
-            <Grid sx={{ display: "fle" }} mt={1} item xs={12}>
+            {/* <Grid sx={{ display: "fle" }} mt={2} item xs={12}>
               <h6 className={styles.text_label}>Ferramentas</h6>
               <FormControl component="fieldset" variant="standard">
                 <FormGroup>
@@ -141,12 +142,13 @@ const FormGpt = () => {
                   />
                 </FormGroup>
               </FormControl>
-            </Grid>
-            <Grid mt={1} item xs={12}>
-              <h6 className={styles.text_label}>Submeter</h6>
+            </Grid> */}
+            <Grid mt={4} item xs={12}>
+              <h6 className={styles.text_label}>Concluir</h6>
               <ButtonForms functions={() => {}} value="Submeter GPT" />
             </Grid>
-          </Grid>
+          </div>
+          {/* </Grid> */}
         </form>
       </div>
       <div className={styles.pre_chat}>

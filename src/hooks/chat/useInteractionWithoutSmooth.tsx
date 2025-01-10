@@ -12,19 +12,19 @@ import { ContextChat } from "../../context/ChatContext";
 interface interactProps {
   query: string;
   chat_id: string;
-  onMessage: (message: string) => void;
 }
 const URL = window._env_.URL_API;
 
 const PATH_DEFAULT = "/api/v1/chat_router";
 
-const useInteract = () => {
+const useInteractionWithoutSmooth = () => {
   const { dispatchChat } = useContext(ContextChat) || {};
   // const { keycloak } = useKeycloak();
-  const interactChat = async ({ query, chat_id, onMessage }: interactProps) => {
+  const interactChat = async ({ query, chat_id }: interactProps) => {
     if (!dispatchChat) {
       return null;
     }
+    dispatchChat({ type: LOADING_GENERATE_LLM_TRUE });
 
     const url = `${URL}${PATH_DEFAULT}/stream?query=${encodeURIComponent(
       query
@@ -36,21 +36,20 @@ const useInteract = () => {
       },
     });
 
-    let data = "";
+    let dataChunks: string[] = [];
 
     eventSource.onmessage = function (event) {
       const newMessage = event.data;
-      if (newMessage !== ":\n\n") data += newMessage;
-      onMessage(newMessage);
+      if (newMessage !== ":\n\n") dataChunks.push(newMessage);
+      const data = dataChunks.join("");
       dispatchChat({ type: ADD_MESSAGE_BOT, payload: data });
     };
 
     eventSource.onerror = function () {
       eventSource.close();
-
       dispatchChat({ type: LOADING_GENERATE_LLM_FALSE });
     };
   };
   return { interactChat };
 };
-export default useInteract;
+export default useInteractionWithoutSmooth;

@@ -5,19 +5,20 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 
 import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
-import useInteract from "../../hooks/chat/useInteractionWithoutSmooth";
-import { ContextChat } from "../../context/ChatContext";
-import {
-  ACTIVE_SCROLL,
-  ADD_MESSAGE,
-  LOADING_GENERATE_LLM_TRUE,
-} from "../../context/types/types";
+
 import { FaRegLightbulb } from "react-icons/fa";
 import { Alert, Snackbar, Tooltip } from "@mui/material";
 import { TbWorldSearch } from "react-icons/tb";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoIosCloseCircle } from "react-icons/io";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  ACTIVE_SCROLL,
+  ADD_MESSAGE,
+  LOADING_GENERATE_LLM_TRUE,
+} from "../../../context/types/types";
+import { ContextChat } from "../../../context/ChatContext";
+import useInteractionWithoutSmooth from "../../../hooks/chat/useInteractionWithoutSmooth";
 
 interface InputProps {
   chat_id: string;
@@ -45,9 +46,9 @@ const theme = createTheme({
   },
 });
 
-export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
+export default function InputPreChat({ chat_id, BOT_NAME }: InputProps) {
   const [message, setMessage] = React.useState("");
-  const { interactChat } = useInteract();
+  const { interactChat } = useInteractionWithoutSmooth();
   const [feature, setFeature] = React.useState("");
   const [files, setFiles] = React.useState<File[]>([]); // Gerenciar arquivos carregados
   const [error, setError] = React.useState<string | null>(null);
@@ -112,7 +113,8 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
       sx={{
         p: "2px 4px",
         display: "flex",
-        width: "100%",
+        width: "90%",
+        margin: "0 auto",
         flexDirection: "column",
         padding: "10px 7px 7px 7px",
         backgroundColor: "#f4f4f4",

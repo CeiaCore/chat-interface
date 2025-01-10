@@ -9,11 +9,10 @@ import { ContextChat } from "../../../context/ChatContext";
 import useGetById from "../../../hooks/chat/useGetById";
 import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
 import InputAdvanced from "../../../components/chat/InputAdvanced";
-import useInteract from "../../../hooks/chat/useInteraction";
-import DotLoader from "react-spinners/DotLoader";
-import SyncLoader from "react-spinners/SyncLoader";
-import Markdown from "react-markdown";
+import useInteract from "../../../hooks/chat/useInteractionWithoutSmooth";
 import remarkGfm from "remark-gfm";
+import { GooSpinner } from "react-spinners-kit";
+
 export interface ChatBasicInterfaceProps {
   chat_id: string | undefined;
   LOGO_CHAT: string;
@@ -83,7 +82,8 @@ const TesteChatBasicInterface = ({
 
   // Estado para controlar mensagens já renderizadas
   const [renderedMessages, setRenderedMessages] = useState<number[]>([]);
-
+  const [message_temp, setMessageTemp] = useState("");
+  const [isStreaming, setIsStreaming] = useState(false);
   useEffect(() => {
     if (stateChat?.messages) {
       // Adiciona os índices das mensagens ao estado quando renderizadas
@@ -96,13 +96,21 @@ const TesteChatBasicInterface = ({
   }, [stateChat?.messages]);
 
   const fullText = renderedChunks.map(({ text }) => text).join("");
-
+  let var_chunk = "";
   const InteractionTest = () => {
     interactChat({
       chat_id: String(chat_id),
-      query: "Explique detalhadamente o que é Enap",
+      onStart: () => {
+        console.log("Transmissão começou.");
+        setIsStreaming(true); // Marca o início do streaming
+      },
+
+      query: `Explique o que é enap e use tabelas para os conceitos`,
       onMessage: (chunk) => {
         console.log("Nova chunk recebida:", chunk);
+        var_chunk += chunk;
+        setMessageTemp(var_chunk);
+        processStream(chunk);
 
         // Adiciona o chunk com opacidade inicial 0
         setRenderedChunks((prev) => [
@@ -128,6 +136,10 @@ const TesteChatBasicInterface = ({
           );
         }, 200);
         // Atualize o estado ou a interface do usuário com a nova mensagem
+      },
+      onEnd: () => {
+        console.log("Transmissão terminou.");
+        setIsStreaming(false); // Marca o fim do streaming
       },
     });
   };
@@ -181,99 +193,167 @@ const TesteChatBasicInterface = ({
   //   });
   // };
 
-  const qwer = `
----
+  const [renderedChunks2, setRenderedChunks2] = useState([]);
+  const chatBoxRef = useRef(null);
+  const [response, setResponse] = useState(null);
 
-# 🌟 **Resumo: A Revolução Digital**  
+  const processAssistantResponse = async (response) => {
+    // const reader = response.body.getReader();
+    // const decoder = new TextDecoder();
+    let done = false;
+    let buffer = "";
 
-A **Revolução Digital** é um marco histórico que transformou a maneira como vivemos, trabalhamos e nos conectamos. Este resumo apresenta os principais aspectos dessa transformação.
+    // while (!done) {
+    // const { value, done: readerDone } = await reader.read();
+    // done = readerDone;
 
----
+    // if (value) {
 
-## 🚀 **O que é a Revolução Digital?**  
-A Revolução Digital refere-se à transição de tecnologias analógicas para digitais, que começou no século XX e continua a moldar o mundo moderno.
+    const chunk = response;
+    buffer += chunk;
+    const lines = buffer.replace(/\n\s+/g, " ").trim();
+    // const lines = buffer.split("\n");
+    for (let i = 0; i < lines.length - 1; i++) {
+      const line = lines[i].trim();
 
-**Principais características:**
-- Automação de processos.
-- Conectividade global através da internet.
-- Produção e consumo de dados em larga escala.
+      if (line) {
+        addChunk(line);
+      }
+    }
+    buffer = lines[lines.length - 1];
+  };
+  // };
+  // };
 
----
+  const bufferRef = useRef(""); // Buffer para acumular chunks incompletos
+  const processStream = (incomingChunk) => {
+    bufferRef.current += incomingChunk; // Acumula o chunk no buffer
+    const lines = bufferRef.current.split("\n"); // Divide o buffer em linhas
 
-## 🔑 **Principais Marcos**  
+    // Processa todas as linhas completas, exceto a última
+    for (let i = 0; i < lines.length - 1; i++) {
+      const line = lines[i].trim();
+      if (line) {
+        addChunk(line);
+      }
+    }
 
-1. **Década de 1940: O Início**  
-   - Criação dos primeiros computadores, como o ENIAC.
+    // Atualiza o buffer com a última linha (incompleta)
+    bufferRef.current = lines[lines.length - 1];
+  };
 
-2. **Década de 1980: A Popularização do PC**  
-   - Surgimento de empresas como a Microsoft e a Apple.  
-   - Computadores pessoais tornam-se acessíveis.
+  const addChunk = (text) => {
+    const id = `${Date.now()}-${Math.random()}`;
+    setRenderedChunks2((prevChunks) => [
+      ...prevChunks,
+      { text: formatMessage(text), opacity: 0, id },
+    ]);
 
-3. **Década de 1990: A Era da Internet**  
-   - Expansão da World Wide Web.  
-   - Navegadores como o Netscape revolucionam a navegação.
+    // Atualizar a opacidade após uma pequena espera
+    setTimeout(() => {
+      setRenderedChunks2((prevChunks) =>
+        prevChunks.map((chunk) =>
+          chunk.id === id ? { ...chunk, opacity: 1 } : chunk
+        )
+      );
+    }, 200);
 
-4. **Século XXI: O Boom Tecnológico**  
-   - Smartphones e redes sociais conectam bilhões de pessoas.  
-   - Avanços em inteligência artificial (IA) e big data.
+    scrollToBottom();
+  };
 
----
+  const formatMessage = (message) => {
+    // const sanitizedMessage = message.replace(/\n/g, "<br>");
+    // const rawHTML = marked.parse(message);
+    // return DOMPurify.sanitize(rawHTML);
+    return message;
+  };
 
-## 📊 **Impactos da Revolução Digital**  
+  const scrollToBottom = () => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  };
 
-### **🌐 Na Sociedade**  
-- **Educação:** Aprendizado online e acesso global ao conhecimento.  
-- **Comunicação:** Redes sociais e mensagens instantâneas.
+  const mockStreamedResponse = () => {
+    const encoder = new TextEncoder();
+    // const chunks = [
+    //   "Hello, how can I help you?\n",
+    //   "Let me think...\n",
+    //   "Here's some information for you:\n",
+    //   "- Item 1\n",
+    //   "- Item 2\n",
+    // ];
 
-### **🏢 Nos Negócios**  
-- E-commerce cresce exponencialmente.  
-- Modelos de negócios baseados em plataformas (Uber, Airbnb).  
+    const chunks = [
+      "Com",
+      "preendo. Para que eu possa te ajudar da melhor forma, por favor,",
+      "especifique o que você gostaria que eu explicasse sobre a ENAP. \n",
+      "Seja mais específico sobre qual assunto ou tópico você tem interesse, assim poderei fornecer informações relevantes e detalhadas.",
+      "*   **Definição e funcionamento da ENAP**?",
+      "*   **Cursos e serviços oferecidos pela ENAP**?",
+      "*   **Gratuidade e custos dos serviços da ENAP**?",
+      "*   **Informações gerais sobre a ENAP**?",
+      "Com mais detalhes, poderei te dar uma resposta mais completa e útil.\n",
+    ];
 
-### **🤖 Na Tecnologia**  
-- Automação e inteligência artificial transformam indústrias.  
-- Internet das Coisas (IoT) conecta dispositivos no dia a dia.  
+    let currentChunk = 0;
 
----
+    return new ReadableStream({
+      start(controller) {
+        const pushChunk = () => {
+          if (currentChunk < renderedChunks.length) {
+            controller.enqueue(
+              encoder.encode(renderedChunks[currentChunk].text)
+            );
+            currentChunk++;
+            console.log(renderedChunks[currentChunk].text);
 
-## 💡 **Benefícios e Desafios**  
+            setTimeout(pushChunk, 1); // Simula streaming com 1 segundo de intervalo
+          } else {
+            controller.close();
+          }
+        };
+        pushChunk();
+      },
+    });
+  };
 
-### **✅ Benefícios:**  
-- Acesso à informação em tempo real.  
-- Aumento da produtividade e eficiência.
+  // const handleMockResponse = () => {
+  //   const mockResponse = {
+  //     body: mockStreamedResponse(),
+  //   };
+  //   setResponse(mockResponse);
+  // };
 
-### **⚠️ Desafios:**  
-- Privacidade e segurança de dados.  
-- Exclusão digital em regiões menos desenvolvidas.
+  const qwer = `| **Serviço**                  | **Descrição**                                                                                                                                                       |
 
----
+|------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-## 📘 **Curiosidades**  
+| Cursos e Programas          | Cursos de curta e longa duração, especializações e mestrados para servidores públicos, oferecidos nas modalidades presencial e a distância.                                                                |
 
-| Data Importante    | Evento                                  | Impacto                                  |
-|--------------------|-----------------------------------------|------------------------------------------|
-| **1989**           | Criação da World Wide Web              | Facilitou o acesso à internet.          |
-| **2007**           | Lançamento do iPhone                   | Popularizou os smartphones.             |
-| **2023**           | Expansão de IA generativa (ex: ChatGPT)| Transformou a interação com a tecnologia.|
+| Pesquisas e Estudos         | Desenvolvimento de pesquisas na área de gestão pública para a produção de conhecimento e inovação das práticas administrativas.                                                                           |
 
----
+| Publicações e Materiais     | Disponibilização de livros, artigos, cartilhas e outros materiais para o aprimoramento dos servidores e da gestão pública.                                                                                     |
 
-## ✨ **Conclusão**  
-A **Revolução Digital** transformou o mundo como o conhecemos, trazendo avanços inimagináveis e desafios que ainda enfrentamos. Continuar adaptando-se a essas mudanças é essencial para um futuro sustentável e inovador.
+| Eventos e Seminários        | Promoção de eventos para o debate de temas relevantes e troca de experiências em gestão pública.                                                                                                      |
 
----
+| Plataformas e Ambientes Virtuais| Disponibilização de plataformas online para cursos, eventos, materiais e conteúdos sobre gestão pública. |
 
-> "A tecnologia deve ser uma ferramenta para unir as pessoas, não para dividi-las." – Anônimo  
 
----
 
-### **Quer saber mais?**  
-- [História da Internet](https://www.historyofinternet.com)  
-- [Como a IA está mudando o mundo](https://www.aiexamples.com)
+Aqui está a tabela renderizada com os dados fornecidos:
 
---- 
+| **Serviço**                  | **Descrição**                                                                                                                                                       |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Cursos e Programas**       | Cursos de curta e longa duração, especializações e mestrados para servidores públicos, oferecidos nas modalidades presencial e a distância.                        |
+| **Pesquisas e Estudos**      | Desenvolvimento de pesquisas na área de gestão pública para a produção de conhecimento e inovação das práticas administrativas.                                    |
+| **Publicações e Materiais**  | Disponibilização de livros, artigos, cartilhas e outros materiais para o aprimoramento dos servidores e da gestão pública.                                         |
+| **Eventos e Seminários**     | Promoção de eventos para o debate de temas relevantes e troca de experiências em gestão pública.                                                                  |
+| **Plataformas e Ambientes Virtuais** | Disponibilização de plataformas online para cursos, eventos, materiais e conteúdos sobre gestão pública.                                                        |
 
-Espero que tenha gostado deste resumo! Se precisar de ajustes ou de outro tema, é só pedir. 😊
-  `;
+
+
+`;
 
   return (
     <>
@@ -297,6 +377,9 @@ Espero que tenha gostado deste resumo! Se precisar de ajustes ou de outro tema, 
             ) : (
               <div className={`${styles.message} ${styles.bot}`}>
                 <img
+                  onClick={() => {
+                    InteractionTest();
+                  }}
                   style={{
                     position: "absolute",
                     top: "15px",
@@ -340,7 +423,7 @@ Espero que tenha gostado deste resumo! Se precisar de ajustes ou de outro tema, 
                         </span>
                       ))} */}
                     <div>
-                      <ReactMarkdown
+                      {/* <ReactMarkdown
                         components={{
                           a: ({ node, href, ...props }) => (
                             <a
@@ -357,20 +440,76 @@ Espero que tenha gostado deste resumo! Se precisar de ajustes ou de outro tema, 
                         remarkPlugins={[remarkGfm]}
                       >
                         {qwer}
-                      </ReactMarkdown>
+                      </ReactMarkdown> */}
+                      <div
+                        style={{ transition: "1s" }}
+                        id="chat-box"
+                        ref={chatBoxRef}
+                      >
+                        {isStreaming ? (
+                          <>
+                            {renderedChunks2.map(({ text, opacity, id }) => (
+                              <span
+                                key={id}
+                                style={{
+                                  display: "block",
+                                  opacity: opacity,
+                                  transition: "opacity 2s ease",
+                                }}
+                                // dangerouslySetInnerHTML={{ __html: text }}
+                              >
+                                <ReactMarkdown
+                                  components={{
+                                    a: ({ node, href, ...props }) => (
+                                      <a
+                                        href={href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        {...props}
+                                      >
+                                        {props.children}
+                                      </a>
+                                    ),
+                                  }}
+                                  className={styles.markdown}
+                                  remarkPlugins={[remarkGfm]}
+                                >
+                                  {text}
+                                </ReactMarkdown>
+                              </span>
+                            ))}
+                          </>
+                        ) : (
+                          <ReactMarkdown
+                            components={{
+                              a: ({ node, href, ...props }) => (
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  {...props}
+                                >
+                                  {props.children}
+                                </a>
+                              ),
+                            }}
+                            className={styles.markdown}
+                            remarkPlugins={[remarkGfm]}
+                          >
+                            {message_temp}
+                          </ReactMarkdown>
+                        )}
+                      </div>
                     </div>
                   </>
                 ) : (
-                  <div
-                    style={{
-                      transform: "scale(1.5)",
-                      marginLeft: "15px",
-                    }}
-                  >
-                    <DotLoader size={20} color="#6e6d6d" />
+                  <div>
+                    <GooSpinner size={27} color="#333" />
                   </div>
                 )}
-                {stateChat && !stateChat?.loading_generate_llm && (
+
+                {/* {stateChat && !stateChat?.loading_generate_llm && ( */}
+                {false && (
                   <div
                     className={styles.source}
                     onClick={() => {
@@ -380,12 +519,14 @@ Espero que tenha gostado deste resumo! Se precisar de ajustes ou de outro tema, 
                     Ver fontes
                   </div>
                 )}
-                <Feedback
-                  handleClickOpen={handleClickOpen}
-                  setIndexFeedback={setIndexFeedback}
-                  indexFeedback={indexFeedback}
-                  index={index}
-                />
+                {false && (
+                  <Feedback
+                    handleClickOpen={handleClickOpen}
+                    setIndexFeedback={setIndexFeedback}
+                    indexFeedback={indexFeedback}
+                    index={index}
+                  />
+                )}
               </div>
             )}
           </>

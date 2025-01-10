@@ -2,13 +2,15 @@ import styles from "./ChatBasicInterface.module.css";
 
 import ReactMarkdown from "react-markdown";
 import Feedback from "../../../components/chat/Feedback";
-import Input from "../../../components/chat/Input";
+
 import FormDialog from "../../../components/chat/Dislike";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ContextChat } from "../../../context/ChatContext";
 import useGetById from "../../../hooks/chat/useGetById";
 import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
 import InputAdvanced from "../../../components/chat/InputAdvanced";
+import remarkGfm from "remark-gfm";
+import { GooSpinner } from "react-spinners-kit";
 
 export interface ChatBasicInterfaceProps {
   chat_id: string | undefined;
@@ -26,6 +28,7 @@ const ChatBasicInterface = ({
   const [open, setOpen] = React.useState(false);
   const [indexFeedback, setIndexFeedback]: any = React.useState("");
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null); // Estado para controlar o hover
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -108,63 +111,17 @@ const ChatBasicInterface = ({
                 {element.message}
               </div>
             ) : (
-              <div className={`${styles.message} ${styles.bot}`}>
-                <img
-                  style={{
-                    position: "absolute",
-                    top: "15px",
-                    left: "-45px",
-                    width: "32px",
-                  }}
-                  src={LOGO_CHAT}
-                  alt="Logo"
-                />
+              <div
+                className={`${styles.message} ${styles.bot}`}
+                onMouseEnter={() => setHoveredIndex(index)} // Define o índice quando o mouse entra
+                onMouseLeave={() => setHoveredIndex(null)} // Reseta o índice quando o mouse sai
+              >
                 {element.message && element.message.length > 0 ? (
                   <ReactMarkdown
                     components={{
-                      h1: ({ node, ...props }) => (
-                        <h1
-                          style={{
-                            fontSize: "2em",
-                            fontWeight: "bold",
-                            marginBottom: "0.5em",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      h2: ({ node, ...props }) => (
-                        <h2
-                          style={{
-                            fontSize: "1.75em",
-                            fontWeight: "bold",
-                            marginBottom: "0.5em",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      h3: ({ node, ...props }) => (
-                        <h3
-                          style={{
-                            fontSize: "1.5em",
-                            fontWeight: "bold",
-                            marginBottom: "0.5em",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      p: ({ node, ...props }) => (
-                        <p
-                          style={{ lineHeight: "1.6", marginBottom: "1em" }}
-                          {...props}
-                        />
-                      ),
                       a: ({ node, href, ...props }) => (
                         <a
                           href={href}
-                          style={{
-                            color: "#007bff",
-                            textDecoration: "underline",
-                          }}
                           target="_blank"
                           rel="noopener noreferrer"
                           {...props}
@@ -172,120 +129,41 @@ const ChatBasicInterface = ({
                           {props.children}
                         </a>
                       ),
-                      img: ({ node, src, alt, ...props }) => (
-                        <img
-                          src={src}
-                          alt={alt}
-                          style={{
-                            maxWidth: "100%",
-                            borderRadius: "8px",
-                            margin: "1em 0",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      code: ({ inline, className, children, ...props }) => (
-                        <code
-                          style={{
-                            backgroundColor: "#f5f5f5",
-                            padding: inline ? "0.2em 0.4em" : "1em",
-                            borderRadius: "4px",
-                            display: inline ? "inline" : "block",
-                            whiteSpace: "pre-wrap",
-                          }}
-                          {...props}
-                        >
-                          {children}
-                        </code>
-                      ),
-                      blockquote: ({ node, ...props }) => (
-                        <blockquote
-                          style={{
-                            borderLeft: "4px solid #ccc",
-                            margin: "1em 0",
-                            paddingLeft: "1em",
-                            fontStyle: "italic",
-                            color: "#666",
-                          }}
-                          {...props}
-                        >
-                          {props.children}
-                        </blockquote>
-                      ),
-                      ul: ({ node, ...props }) => (
-                        <ul
-                          style={{
-                            paddingLeft: "1.5em",
-                            marginBottom: "1em",
-                            listStyleType: "disc",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      ol: ({ node, ...props }) => (
-                        <ol
-                          style={{
-                            paddingLeft: "1.5em",
-                            marginBottom: "1em",
-                            listStyleType: "decimal",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      li: ({ node, ...props }) => (
-                        <li
-                          style={{
-                            marginBottom: "0.5em",
-                            position: "relative",
-                            paddingLeft: "1.5em",
-                          }}
-                          {...props}
-                        >
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "0",
-                              top: "1em",
-                              width: "0.38em",
-                              height: "0.38em",
-                              backgroundColor: "#333",
-                              borderRadius: "50%",
-                              display: "inline-block",
-                            }}
-                          />
-                          {props.children}
-                        </li>
-                      ),
                     }}
+                    className={styles.markdown}
+                    remarkPlugins={[remarkGfm]}
                   >
                     {element.message}
                   </ReactMarkdown>
                 ) : (
-                  <div
-                    style={{
-                      height: "12px",
-                      width: "12px",
-                      borderRadius: "7px",
-                      backgroundColor: "#333",
-                    }}
-                    className={styles.cursor}
-                  ></div>
+                  <div>
+                    <GooSpinner size={27} color="#333" />
+                  </div>
                 )}
-
+                {!stateChat?.loading_generate_llm && (
+                  <div
+                    className={styles.source}
+                    onClick={() => {
+                      setOpenReference(!openReference);
+                    }}
+                  >
+                    Ver fontes
+                  </div>
+                )}
                 <div
-                  className={styles.source}
-                  onClick={() => {
-                    setOpenReference(!openReference);
+                  style={{
+                    height: "20px",
                   }}
                 >
-                  Fontes
+                  {hoveredIndex === index && (
+                    <Feedback
+                      handleClickOpen={handleClickOpen}
+                      setIndexFeedback={setIndexFeedback}
+                      indexFeedback={indexFeedback}
+                      index={index}
+                    />
+                  )}
                 </div>
-                <Feedback
-                  handleClickOpen={handleClickOpen}
-                  setIndexFeedback={setIndexFeedback}
-                  indexFeedback={indexFeedback}
-                  index={index}
-                />
               </div>
             )}
           </>

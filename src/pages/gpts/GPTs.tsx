@@ -127,15 +127,15 @@ const GPTs = () => {
   return (
     <Container maxWidth="lg" className={styles.container}>
       <Box className={styles.header}>
-        <h4 className={styles.title}>Explore GPTs</h4>
+        <h4 className={styles.title}>Explore Agentes</h4>
         <p className={styles.subtitle}>
           Crie versões personalizadas do seu Chat que combinam instruções,
           conhecimento extra e qualquer combinação de habilidades.
         </p>
-        <ButtonCustom value="Criar GPT" to="/gpts/edit" />
+        <ButtonCustom value="Criar agente" to="/gpts/edit" />
         <Box className={styles.searchSection}>
           <TextField
-            placeholder="Buscar GPTs"
+            placeholder="Buscar Agente"
             variant="outlined"
             size="medium"
             fullWidth
@@ -143,7 +143,7 @@ const GPTs = () => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderRadius: "20px",
+                  borderRadius: "15px",
                   width: "60%",
                   borderColor: "rgb(223, 223, 223)", // Cor da borda padrão
                 },
@@ -178,7 +178,7 @@ const GPTs = () => {
         maxWidth="sm"
       >
         <Link to={"/gpts/edit"}>
-          <Tooltip title="Editar GPT" arrow placement="right">
+          <Tooltip title="Editar Agente" arrow placement="right">
             <IconButton
               aria-label="close"
               onClick={handleClose}
@@ -232,7 +232,7 @@ const GPTs = () => {
                   AlecrinBy AlecrinBy Alecrin AlecrinBy AlecrinBy Alecrin
                 </p>
               </div>
-
+              {/* 
               <div className={styles.capabilities}>
                 <h5>Capacidades</h5>
                 <li className={styles.items}>
@@ -244,7 +244,7 @@ const GPTs = () => {
                 <li className={styles.items}>
                   <FaRegCheckCircle color={"rgb(0, 138, 7)"} /> Buscar na web
                 </li>
-              </div>
+              </div> */}
 
               <ButtonStartChat value="Iniciar Chat" />
             </>
@@ -257,7 +257,7 @@ const GPTs = () => {
         onChange={handleTabChange}
         style={{
           backgroundColor: "#F8F8F8",
-          width: "195px",
+          width: "225px",
           borderRadius: "10px",
         }}
         sx={{
@@ -275,15 +275,17 @@ const GPTs = () => {
           style={{
             fontSize: ".8rem",
             color: "#333", // Cor do texto da aba selecionada
+            fontFamily: "Inter",
           }}
           label="Geral"
         />
         <Tab
           style={{
             color: "#333", // Cor do texto da aba selecionada
+            fontFamily: "Inter",
             fontSize: ".8rem",
           }}
-          label="Meus GPTs"
+          label="Meus Agentes"
         />
       </Tabs>
       {false && (
@@ -301,7 +303,7 @@ const GPTs = () => {
       )}
       {activeTab === 0 && (
         <div className={styles.container_topics}>
-          <h5 className={styles.title_topics}>GPTs</h5>
+          <h5 className={styles.title_topics}>Agentes</h5>
           <div className={styles.container_cards} style={{}}>
             {featuredApps.map((app, index) => (
               <AppCard onclick={handleOpen} app={app} />
@@ -309,7 +311,7 @@ const GPTs = () => {
           </div>
 
           <h5 style={{ marginTop: "30px" }} className={styles.title_topics}>
-            Produtividade
+            Automação
           </h5>
           <div className={styles.container_cards}>
             {featuredApps.map((app, index) => (

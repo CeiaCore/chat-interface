@@ -1,3 +1,4 @@
+import { PiChatTeardropText } from "react-icons/pi";
 import styles from "./AppCard.module.css";
 
 interface AppCardProps {
@@ -15,7 +16,15 @@ const AppCard = ({ app, onclick }: AppCardProps) => {
       }}
       className={styles.card}
     >
-      <img className={styles.image} src="/teste.png" />
+      <PiChatTeardropText
+        className={styles.icon}
+        style={{
+          marginLeft: "5px",
+          height: "15px",
+          width: "15px",
+          color: "#333",
+        }}
+      />
       <div className={styles.card_content}>
         <h6 className={styles.card_title}>{app.title}</h6>
         <p className={styles.card_description}>{app.description}</p>

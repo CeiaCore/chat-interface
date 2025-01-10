@@ -413,7 +413,7 @@ export default function PersistentDrawerAdvanced({
         }}
       >
         <DrawerHeader style={{ height: "20px" }}>
-          <img style={{ height: "15px" }} src={logodrawer} />
+          {/* <img style={{ height: "15px" }} src={logodrawer} /> */}
           <IconButton onClick={toggleDrawer}>
             {theme.direction === "ltr" ? (
               <TbLayoutSidebarLeftCollapse color="#7B7B7B" />

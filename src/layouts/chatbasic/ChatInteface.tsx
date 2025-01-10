@@ -24,7 +24,7 @@ const ChatInteface = ({
     setOpenReference: setOpenReference,
   };
 
-  return <TesteChatBasicInterface props={chat_interface_props} />;
+  return <ChatBasicInterface props={chat_interface_props} />;
 };
 
 export default ChatInteface;

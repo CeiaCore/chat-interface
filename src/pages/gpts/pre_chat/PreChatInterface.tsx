@@ -9,6 +9,7 @@ import { ContextChat } from "../../../context/ChatContext";
 import useGetById from "../../../hooks/chat/useGetById";
 import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
 import InputAdvanced from "../../../components/chat/InputAdvanced";
+import remarkGfm from "remark-gfm";
 
 export interface ChatBasicInterfaceProps {
   chat_id: string | undefined;
@@ -111,49 +112,9 @@ const PreChatInterface = ({
                 {element.message && element.message.length > 0 ? (
                   <ReactMarkdown
                     components={{
-                      h1: ({ node, ...props }) => (
-                        <h1
-                          style={{
-                            fontSize: "2em",
-                            fontWeight: "bold",
-                            marginBottom: "0.5em",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      h2: ({ node, ...props }) => (
-                        <h2
-                          style={{
-                            fontSize: "1.75em",
-                            fontWeight: "bold",
-                            marginBottom: "0.5em",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      h3: ({ node, ...props }) => (
-                        <h3
-                          style={{
-                            fontSize: "1.5em",
-                            fontWeight: "bold",
-                            marginBottom: "0.5em",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      p: ({ node, ...props }) => (
-                        <p
-                          style={{ lineHeight: "1.6", marginBottom: "1em" }}
-                          {...props}
-                        />
-                      ),
                       a: ({ node, href, ...props }) => (
                         <a
                           href={href}
-                          style={{
-                            color: "#007bff",
-                            textDecoration: "underline",
-                          }}
                           target="_blank"
                           rel="noopener noreferrer"
                           {...props}
@@ -161,91 +122,9 @@ const PreChatInterface = ({
                           {props.children}
                         </a>
                       ),
-                      img: ({ node, src, alt, ...props }) => (
-                        <img
-                          src={src}
-                          alt={alt}
-                          style={{
-                            maxWidth: "100%",
-                            borderRadius: "8px",
-                            margin: "1em 0",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      code: ({ inline, className, children, ...props }) => (
-                        <code
-                          style={{
-                            backgroundColor: "#f5f5f5",
-                            padding: inline ? "0.2em 0.4em" : "1em",
-                            borderRadius: "4px",
-                            display: inline ? "inline" : "block",
-                            whiteSpace: "pre-wrap",
-                          }}
-                          {...props}
-                        >
-                          {children}
-                        </code>
-                      ),
-                      blockquote: ({ node, ...props }) => (
-                        <blockquote
-                          style={{
-                            borderLeft: "4px solid #ccc",
-                            margin: "1em 0",
-                            paddingLeft: "1em",
-                            fontStyle: "italic",
-                            color: "#666",
-                          }}
-                          {...props}
-                        >
-                          {props.children}
-                        </blockquote>
-                      ),
-                      ul: ({ node, ...props }) => (
-                        <ul
-                          style={{
-                            paddingLeft: "1.5em",
-                            marginBottom: "1em",
-                            listStyleType: "disc",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      ol: ({ node, ...props }) => (
-                        <ol
-                          style={{
-                            paddingLeft: "1.5em",
-                            marginBottom: "1em",
-                            listStyleType: "decimal",
-                          }}
-                          {...props}
-                        />
-                      ),
-                      li: ({ node, ...props }) => (
-                        <li
-                          style={{
-                            marginBottom: "0.5em",
-                            position: "relative",
-                            paddingLeft: "1.5em",
-                          }}
-                          {...props}
-                        >
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "0",
-                              top: "1em",
-                              width: "0.38em",
-                              height: "0.38em",
-                              backgroundColor: "#333",
-                              borderRadius: "50%",
-                              display: "inline-block",
-                            }}
-                          />
-                          {props.children}
-                        </li>
-                      ),
                     }}
+                    className={styles.markdown}
+                    remarkPlugins={[remarkGfm]}
                   >
                     {element.message}
                   </ReactMarkdown>
@@ -268,7 +147,7 @@ const PreChatInterface = ({
         <div className={styles.inputContainer}>
           <div className={styles.input}>
             {/* <Input chat_id={chat_id} /> */}
-            <Input chat_id={chat_id} />
+            <InputAdvanced chat_id={chat_id} />
           </div>
           {/* <div onClick={() => teste()}>AQUII</div> */}
         </div>

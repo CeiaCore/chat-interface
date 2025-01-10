@@ -5,7 +5,7 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 
 import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
-import useInteract from "../../hooks/chat/useInteraction";
+import useInteract from "../../hooks/chat/useInteractionWithoutSmooth";
 import { ContextChat } from "../../context/ChatContext";
 import {
   ACTIVE_SCROLL,

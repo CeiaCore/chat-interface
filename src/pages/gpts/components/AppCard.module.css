@@ -1,9 +1,10 @@
 .card {
   display: flex;
-  border-radius: 20px;
+  border-radius: 10px;
   height: 100px;
-  padding: 5px;
-  width: 320px;
+  padding: 10px;
+  position: relative;
+  width: 250px;
   gap: 10px;
   font-family: Inter;
   background-color: rgb(250, 250, 250);
@@ -22,6 +23,10 @@
 }
 .image {
   border-radius: 20px;
+}
+.icon {
+  position: absolute;
+  right: 20px;
 }
 
 .card_description {

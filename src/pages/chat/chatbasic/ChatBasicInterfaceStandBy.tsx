@@ -1,15 +1,14 @@
 import styles from "./ChatBasicInterface.module.css";
-import Logo from "../../../assets/logos/chat_logo.png";
-
 import ReactMarkdown from "react-markdown";
 import React, { useContext } from "react";
 import { ContextChat } from "../../../context/ChatContext";
 import InputStandBy from "../../../components/chat/InputStandBy";
 import { useNavigate } from "react-router-dom";
 import useCreateChat from "../../../hooks/chat/useCreateChat";
-import useInteract from "../../../hooks/chat/useInteraction";
+import useInteractionWithoutSmooth from "../../../hooks/chat/useInteractionWithoutSmooth";
 import useGetAllMethod from "../../../hooks/chat/useGetAllMethod";
-
+// import SkewLoader from "react-spinners/SkewLoader";
+import { GooSpinner } from "react-spinners-kit";
 interface ChatBasicInterfaceStandByProps {
   user_id: string;
 }
@@ -23,11 +22,9 @@ const ChatBasicInterfaceStandBy = ({
 
   const navigate = useNavigate();
 
-  const { interactChat } = useInteract();
+  const { interactChat } = useInteractionWithoutSmooth();
 
   React.useEffect(() => {
-    console.log("AQUIIi", user_id);
-
     if (stateChat?.messages.length !== 0 && user_id) {
       createChat({ user_id: user_id }).then((result) => {
         if (result?.chat_id) {
@@ -58,16 +55,6 @@ const ChatBasicInterfaceStandBy = ({
                   </div>
                 ) : (
                   <div className={`${styles.message} ${styles.bot}`}>
-                    <img
-                      style={{
-                        position: "absolute",
-                        top: "15px",
-                        left: "-45px",
-                        width: "32px",
-                      }}
-                      src={Logo}
-                      alt="Logo"
-                    />
                     {element.message && element.message.length > 0 ? (
                       <ReactMarkdown
                         components={{
@@ -102,15 +89,9 @@ const ChatBasicInterfaceStandBy = ({
                         {element.message}
                       </ReactMarkdown>
                     ) : (
-                      <div
-                        style={{
-                          height: "12px",
-                          width: "12px",
-                          borderRadius: "7px",
-                          backgroundColor: "#333",
-                        }}
-                        className={styles.cursor}
-                      ></div>
+                      <div>
+                        <GooSpinner size={27} color="#333" />
+                      </div>
                     )}
                   </div>
                 )}

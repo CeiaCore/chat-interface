@@ -71,12 +71,24 @@ const ChatBoxWithSmoothChunks = () => {
 
   const mockStreamedResponse = () => {
     const encoder = new TextEncoder();
+    // const chunks = [
+    //   "Hello, how can I help you?\n",
+    //   "Let me think...\n",
+    //   "Here's some information for you:\n",
+    //   "- Item 1\n",
+    //   "- Item 2\n",
+    // ];
+
     const chunks = [
-      "Hello, how can I help you?\n",
-      "Let me think...\n",
-      "Here's some information for you:\n",
-      "- Item 1\n",
-      "- Item 2\n",
+      "Com",
+      "preendo. Para que eu possa te ajudar da melhor forma, por favor,",
+      "especifique o que você gostaria que eu explicasse sobre a ENAP. \n",
+      "Seja mais específico sobre qual assunto ou tópico você tem interesse, assim poderei fornecer informações relevantes e detalhadas.",
+      "*   **Definição e funcionamento da ENAP**?",
+      "*   **Cursos e serviços oferecidos pela ENAP**?",
+      "*   **Gratuidade e custos dos serviços da ENAP**?",
+      "*   **Informações gerais sobre a ENAP**?",
+      "Com mais detalhes, poderei te dar uma resposta mais completa e útil.\n",
     ];
 
     let currentChunk = 0;
@@ -87,7 +99,9 @@ const ChatBoxWithSmoothChunks = () => {
           if (currentChunk < chunks.length) {
             controller.enqueue(encoder.encode(chunks[currentChunk]));
             currentChunk++;
-            setTimeout(pushChunk, 200); // Simula streaming com 1 segundo de intervalo
+            console.log(chunks[currentChunk]);
+
+            setTimeout(pushChunk, 1); // Simula streaming com 1 segundo de intervalo
           } else {
             controller.close();
           }
@@ -101,6 +115,7 @@ const ChatBoxWithSmoothChunks = () => {
     const mockResponse = {
       body: mockStreamedResponse(),
     };
+
     setResponse(mockResponse);
   };
 

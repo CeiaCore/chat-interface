@@ -44,7 +44,7 @@ const HomeB = ({ home_config }: { home_config: IHomeBConfig }) => {
     dispatchChat({ type: LOADING_GENERATE_LLM_TRUE });
     const bot_message = { rule: "bot", message: "", metadata: "" };
     dispatchChat({ type: ADD_MESSAGE, payload: bot_message });
-    setState(false);
+    // setState(false);
     dispatchChat({ type: SET_NEW_CHAT_TRUE });
   }
   return (
