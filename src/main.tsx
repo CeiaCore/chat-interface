@@ -3,24 +3,28 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import { CustomRoute } from "./routes/custom/Custom.route";
-import FirebaseProtectRoute from "./services/apis/auth/firebase/FirebaseProtectRoute";
+
 import LoginA from "./pages/login/loginA/LoginA";
+import { useHandleLoginFirebase } from "./services/apis/auth/firebase/HandleLogin";
 
-createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
-  <BrowserRouter>
-    <Routes>
-      <Route
-        path="/*"
-        element={
-          <FirebaseProtectRoute>
-            <CustomRoute />
-          </FirebaseProtectRoute>
-        }
-      />
+function Main() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/*" element={<CustomRoute />} />
 
-      <Route path="/login" element={<LoginA />} />
-    </Routes>
-  </BrowserRouter>
-  // </StrictMode>
-);
+        <Route path="/login" element={<AuthMiddleware />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+const AuthMiddleware = () => {
+  const { handleLogin, loading, message } = useHandleLoginFirebase();
+
+  return (
+    <LoginA handleLogin={handleLogin} isLoading={loading} message={message} />
+  );
+};
+
+createRoot(document.getElementById("root")!).render(<Main />);

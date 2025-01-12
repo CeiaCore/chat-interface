@@ -16,6 +16,7 @@ interface ICustomConfig {
   //templates
   home: string;
   login: string;
+  logout_function: () => void;
 }
 
 // Example Usage

@@ -113,12 +113,14 @@ interface PersistentDrawerLeftProps {
   children: React.ReactNode;
   setOpenReference: (value: boolean) => void;
   openReference: boolean;
+  handleLogout: () => void;
 }
 
 export default function PersistentDrawerAdvanced({
   children,
   openReference,
   setOpenReference,
+  handleLogout,
 }: PersistentDrawerLeftProps) {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
@@ -218,8 +220,9 @@ export default function PersistentDrawerAdvanced({
     handleMoreOptionsMenuClose();
   };
 
-  const handleLogout = () => {
+  const handleLogoutFunction = () => {
     handleMoreOptionsMenuClose();
+    handleLogout();
 
     try {
       // keycloak.logout();
@@ -362,8 +365,8 @@ export default function PersistentDrawerAdvanced({
               sx={{ bgcolor: deepOrange[500], width: "30px", height: "30px" }}
             >
               {stateAuth?.user &&
-                stateAuth?.user?.user_name &&
-                stateAuth?.user?.user_name[0].toLocaleUpperCase()}
+                stateAuth?.user?.email &&
+                stateAuth?.user?.email[0].toLocaleUpperCase()}
             </Avatar>
           </IconButton>
           <CustomMenu
@@ -386,7 +389,7 @@ export default function PersistentDrawerAdvanced({
             </MenuItem>
             <MenuItem
               onClick={() => {
-                handleLogout();
+                handleLogoutFunction();
               }}
             >
               <ListItemIcon>

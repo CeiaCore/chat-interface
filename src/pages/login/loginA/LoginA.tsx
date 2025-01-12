@@ -9,7 +9,8 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import logo from "../../../assets/logolarge.png";
-import { Button } from "@mui/material";
+import styles from "./LoginA.module.css";
+import { GooSpinner } from "react-spinners-kit";
 // import ForgotPassword from './ForgotPassword';
 // import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 // import AppTheme from '../shared-theme/AppTheme';
@@ -38,7 +39,21 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function LoginA(props: { disableCustomTheme?: boolean }) {
+interface handleLoginInterface {
+  (email: string, password: string): Promise<void>;
+}
+
+interface LoginAProps {
+  handleLogin: handleLoginInterface;
+  message: string;
+  isLoading: boolean;
+}
+
+export default function LoginA({
+  handleLogin,
+  isLoading,
+  message,
+}: LoginAProps) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
@@ -54,15 +69,14 @@ export default function LoginA(props: { disableCustomTheme?: boolean }) {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (emailError || passwordError) {
       event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    handleLogin({ email: data.get("email"), password: data.get("password") });
   };
 
   const validateInputs = () => {
@@ -73,7 +87,7 @@ export default function LoginA(props: { disableCustomTheme?: boolean }) {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+      setEmailErrorMessage("Por favor insira um email válido");
       isValid = false;
     } else {
       setEmailError(false);
@@ -82,7 +96,7 @@ export default function LoginA(props: { disableCustomTheme?: boolean }) {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("A senha precisa ter pelo menos 6 caracteres");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -93,12 +107,9 @@ export default function LoginA(props: { disableCustomTheme?: boolean }) {
   };
 
   return (
-    <div {...props}>
+    <div>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
-        {/* <ColorModeSelect
-          sx={{ position: "fixed", top: "1rem", right: "1rem" }}
-        /> */}
         <Card variant="outlined">
           <img
             style={{
@@ -149,6 +160,17 @@ export default function LoginA(props: { disableCustomTheme?: boolean }) {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     height: "50px", // Altura do campo
+
+                    "& fieldset": {
+                      borderRadius: "5px",
+                      borderColor: "rgb(138, 138, 138)", // Cor da borda padrão
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "rgb(92, 92, 92)", // Cor da borda padrão
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "rgb(78, 78, 78)", // Cor da borda ao focar
+                    },
                   },
                 }}
                 autoFocus
@@ -174,21 +196,38 @@ export default function LoginA(props: { disableCustomTheme?: boolean }) {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     height: "50px", // Altura do campo
+
+                    "& fieldset": {
+                      borderColor: "rgb(138, 138, 138)", // Cor da borda padrão
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "rgb(92, 92, 92)", // Cor da borda padrão
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "rgb(78, 78, 78)", // Cor da borda ao focar
+                    },
                   },
                 }}
                 variant="outlined"
                 color={passwordError ? "error" : "primary"}
               />
             </FormControl>
+            {message && message}
+            <button onClick={validateInputs} className={styles.button}>
+              {isLoading ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <GooSpinner size={27} color="#fff" />
+                </div>
+              ) : (
+                "Entrar"
+              )}
+            </button>
           </Box>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            onClick={validateInputs}
-          >
-            Sign in
-          </Button>
         </Card>
       </SignInContainer>
     </div>
