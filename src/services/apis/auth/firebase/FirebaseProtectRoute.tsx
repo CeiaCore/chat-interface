@@ -5,6 +5,7 @@ import { ReactNode, useContext, useEffect } from "react";
 import { ContextAuth } from "../../../../context/AuthContext.js";
 import { LOAD_USER } from "../../../../context/types/types.js";
 import Loading from "../../../../pages/loading/Loading.js";
+import { getIdTokenResult } from "firebase/auth";
 
 interface props {
   children: ReactNode;
@@ -16,11 +17,14 @@ const FirebaseProtectRoute = ({ children }: props) => {
 
   useEffect(() => {
     if (user && dispatchAuth) {
-      const user_info = {
-        email: user.email,
-        user_id: user.uid,
-      };
-      dispatchAuth({ type: LOAD_USER, payload: user_info });
+      getIdTokenResult(user).then((claims) => {
+        const user_info = {
+          email: user.email,
+          user_id: user.uid,
+          department: claims.claims.department,
+        };
+        dispatchAuth({ type: LOAD_USER, payload: user_info });
+      });
     }
   }, [user, dispatchAuth]);
 

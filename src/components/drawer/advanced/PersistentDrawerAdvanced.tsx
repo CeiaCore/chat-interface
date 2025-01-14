@@ -175,6 +175,7 @@ export default function PersistentDrawerAdvanced({
     setProfileAnchorEl(null);
     setNotificationsAnchorEl(null);
   };
+
   useGetAll({ user_id: stateAuth?.user.user_id });
 
   // Lista de notificações fictícias com data
