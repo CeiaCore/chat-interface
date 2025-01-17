@@ -7,8 +7,6 @@ interface AppCardProps {
 }
 
 const AppCard = ({ app, onclick }: AppCardProps) => {
-  console.log(onclick);
-
   return (
     <div
       onClick={() => {

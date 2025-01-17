@@ -155,14 +155,14 @@ const ChatBasicInterface = ({
                     height: "20px",
                   }}
                 >
-                  {hoveredIndex === index && (
-                    <Feedback
-                      handleClickOpen={handleClickOpen}
-                      setIndexFeedback={setIndexFeedback}
-                      indexFeedback={indexFeedback}
-                      index={index}
-                    />
-                  )}
+                  <Feedback
+                    handleClickOpen={handleClickOpen}
+                    message={element?.message}
+                    setIndexFeedback={setIndexFeedback}
+                    indexFeedback={indexFeedback}
+                    index={index}
+                    hoveredIndex={hoveredIndex}
+                  />
                 </div>
               </div>
             )}

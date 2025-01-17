@@ -11,7 +11,7 @@
 
   .pre_chat {
     padding-top: 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
     /* background-color: #fcfcfc; */
     flex: 1;
     border-left: 1px solid #d4d4d4;

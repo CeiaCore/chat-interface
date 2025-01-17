@@ -107,7 +107,7 @@ export default function LoginA({
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
@@ -155,7 +155,7 @@ export default function LoginA({
                 id="email"
                 type="email"
                 name="email"
-                placeholder="your@email.com"
+                placeholder="seu@email.com"
                 autoComplete="email"
                 sx={{
                   "& .MuiOutlinedInput-root": {
@@ -181,7 +181,7 @@ export default function LoginA({
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Senha</FormLabel>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}
@@ -227,6 +227,7 @@ export default function LoginA({
                 "Entrar"
               )}
             </button>
+            <div className={styles.marca_dagua}></div>
           </Box>
         </Card>
       </SignInContainer>

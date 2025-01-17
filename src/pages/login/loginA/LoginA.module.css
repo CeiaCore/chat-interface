@@ -15,3 +15,11 @@
 .button:hover {
   background-color: #ea5600;
 }
+
+.marca_dagua {
+  height: 50px;
+  margin-top: 30px;
+  background-image: url("../../../assets/marca_dagua.png");
+  background-position: center;
+  background-repeat: no-repeat;
+}

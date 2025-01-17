@@ -53,6 +53,7 @@ import LinkReference from "./references/LinkReference";
 import DocReference from "./references/DocReference";
 import DBReference from "./references/DBReference";
 import CSVReference from "./references/CSVReference";
+import { useGetAllNotification } from "../../../hooks/notification/useGetAllNotification";
 
 const drawerWidth = 260;
 
@@ -131,6 +132,7 @@ export default function PersistentDrawerAdvanced({
   const { deleteChat } = useDeleteChat();
   const { getData } = useGetAllMethod();
   const { stateAuth } = useContext(ContextAuth) || {};
+  const { notifications } = useGetAllNotification();
 
   const navigate = useNavigate();
 
@@ -179,19 +181,64 @@ export default function PersistentDrawerAdvanced({
   useGetAll({ user_id: stateAuth?.user.user_id });
 
   // Lista de notificações fictícias com data
-  const notifications = [
-    // { id: 1, message: "Nova mensagem recebida", date: "2024-11-05 10:15 AM" },
-    // {
-    //   id: 2,
-    //   message: "Atualização do sistema disponível",
-    //   date: "2024-11-04 02:30 PM",
-    // },
-    // {
-    //   id: 3,
-    //   message: "Reunião agendada para amanhã",
-    //   date: "2024-11-03 09:00 AM",
-    // },
-  ];
+  // const notifications = [
+  //   {
+  //     id: 1,
+  //     title: "MUI X v8 alpha",
+  //     description:
+  //       "Check our plans for the upcoming stable in the announcement blog post.",
+  //     date: "2024-11-05 10:15 AM",
+  //   },
+  //   {
+  //     id: 1,
+  //     title: "MUI X v8 alpha",
+  //     description:
+  //       "Check our plans for the upcoming stable in the announcement blog post.",
+  //     date: "2024-11-05 10:15 AM",
+  //   },
+  //   {
+  //     id: 1,
+  //     title: "MUI X v8 alpha",
+  //     description:
+  //       "Check our plans for the upcoming stable in the announcement blog post.",
+  //     date: "2024-11-05 10:15 AM",
+  //   },
+  //   {
+  //     id: 1,
+  //     title: "MUI X v8 alpha",
+  //     description:
+  //       "Check our plans for the upcoming stable in the announcement blog post.",
+  //     date: "2024-11-05 10:15 AM",
+  //   },
+  //   {
+  //     id: 1,
+  //     title: "MUI X v8 alpha",
+  //     description:
+  //       "Check our plans for the upcoming stable in the announcement blog post.",
+  //     date: "2024-11-05 10:15 AM",
+  //   },
+  //   {
+  //     id: 1,
+  //     title: "MUI X v8 alpha",
+  //     description:
+  //       "Check our plans for the upcoming stable in the announcement blog post.",
+  //     date: "2024-11-05 10:15 AM",
+  //   },
+  //   {
+  //     id: 1,
+  //     title: "MUI X v8 alpha",
+  //     description:
+  //       "Check our plans for the upcoming stable in the announcement blog post.",
+  //     date: "2024-11-05 10:15 AM",
+  //   },
+  //   {
+  //     id: 1,
+  //     title: "MUI X v8 alpha",
+  //     description:
+  //       "Check our plans for the upcoming stable in the announcement blog post.",
+  //     date: "2024-11-05 10:15 AM",
+  //   },
+  // ];
   const today = new Date();
   const startOfToday = new Date(
     today.getFullYear(),
@@ -325,11 +372,17 @@ export default function PersistentDrawerAdvanced({
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}></Typography>
           {/* Ícone de Notificações com Menu */}
           <IconButton
+            sx={{
+              backgroundColor: "#f7f7f7",
+            }}
             color="inherit"
-            disabled={true}
             onClick={handleNotificationsMenuOpen}
           >
-            <Badge badgeContent={notifications.length} color="error">
+            <Badge
+              variant="dot"
+              badgeContent={notifications.length}
+              color="error"
+            >
               <IoNotificationsOutline size={20} color="#707070" />
             </Badge>
           </IconButton>
@@ -338,32 +391,88 @@ export default function PersistentDrawerAdvanced({
             open={Boolean(notificationsAnchorEl)}
             onClose={handleMenuClose}
             keepMounted
+            PaperProps={{
+              style: {
+                borderRadius: "15px", // Adiciona borda arredondada
+                width: "320px",
+                boxShadow:
+                  " rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px", // Reduz a sombra
+              },
+            }}
           >
-            <Typography sx={{ px: 2, py: 1, fontWeight: "bold" }}>
-              Notificações
-            </Typography>
-            <Divider />
-            {notifications.length ? (
+            {notifications?.length ? (
               notifications.map((notification) => (
-                <MenuItem key={notification.id} onClick={handleMenuClose}>
+                <div
+                  style={{
+                    padding: "10px 20px 10px 20px",
+                    borderBottom: "1px solid #c9c9c9",
+                  }}
+                >
                   <Box>
-                    <Typography variant="body2">
-                      {notification.message}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {notification.date}
-                    </Typography>
+                    <p
+                      style={{
+                        fontSize: "1rem",
+                        marginTop: "5px",
+                        fontWeight: 600,
+                        fontFamily: "Inter",
+                        marginBottom: "5px",
+                        margin: 0,
+                      }}
+                    >
+                      {notification.title}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: ".875rem",
+                        marginTop: "5px",
+                        fontFamily: "Inter",
+                        lineHeight: "1.5",
+                        marginBottom: "5px",
+                        fontWeight: "400",
+                        margin: 0,
+                        color: "rgb(48, 55, 65)",
+                      }}
+                    >
+                      {notification.description}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: ".7rem",
+                        marginTop: "15px",
+                        fontFamily: "Inter",
+                        marginBottom: "15px",
+                        margin: 0,
+                        color: "rgb(110, 110, 110)",
+                      }}
+                    >
+                      {new Intl.DateTimeFormat("pt-BR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                      }).format(new Date(notification.date))}
+                    </p>
                   </Box>
-                </MenuItem>
+                </div>
               ))
             ) : (
               <MenuItem onClick={handleMenuClose}>Nenhuma notificação</MenuItem>
             )}
           </CustomMenu>
           {/* Ícone de Perfil com Menu */}
-          <IconButton color="inherit" onClick={handleProfileMenuOpen}>
+          <IconButton
+            sx={{ ml: 0.5 }}
+            color="inherit"
+            onClick={handleProfileMenuOpen}
+          >
             <Avatar
-              sx={{ bgcolor: deepOrange[500], width: "30px", height: "30px" }}
+              sx={{
+                bgcolor: deepOrange[500],
+                width: "30px",
+                height: "30px",
+              }}
             >
               {stateAuth?.user &&
                 stateAuth?.user?.email &&
@@ -375,6 +484,13 @@ export default function PersistentDrawerAdvanced({
             open={Boolean(profileAnchorEl)}
             onClose={handleMenuClose}
             keepMounted
+            PaperProps={{
+              style: {
+                borderRadius: "15px", // Adiciona borda arredondada
+                boxShadow:
+                  " rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px", // Reduz a sombra
+              },
+            }}
           >
             <MenuItem disabled={true} onClick={handleMenuClose}>
               <ListItemIcon>
