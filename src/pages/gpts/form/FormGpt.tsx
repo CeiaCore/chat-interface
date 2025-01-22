@@ -57,7 +57,7 @@ const FormGpt = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/knowledge_router/pre-chat/",
+        "http://localhost:8000/api/v1/knowledge_router/upload/",
         {
           method: "POST",
           body: formData,

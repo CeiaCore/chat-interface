@@ -54,6 +54,7 @@ import DocReference from "./references/DocReference";
 import DBReference from "./references/DBReference";
 import CSVReference from "./references/CSVReference";
 import { useGetAllNotification } from "../../../hooks/notification/useGetAllNotification";
+import PdfWebReference from "./references/PdfWebReference";
 
 const drawerWidth = 260;
 
@@ -279,71 +280,6 @@ export default function PersistentDrawerAdvanced({
     }
   };
   const params = useLocation();
-
-  const references = [
-    {
-      data: {
-        title: "Nome do arquivo",
-        content:
-          "Aqui contem os chunks dos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
-        link: "https://www.google.com/",
-        detail: {
-          page: 5,
-        },
-      },
-      type: "link",
-    },
-    {
-      data: {
-        title: "Nome do arquivo .doc",
-        content:
-          "Aqui contem os chunks  ui contem os chunk ui contem os chunk ui contem os chunk ui contem os chunkui contem os chunkui contem os chunk  ui contem os chunk ui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunk ui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunk ui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem osui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunkui contem os chunk chunkui contem os chunkui contem os chunkui contem os chunkdos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
-        detail: {
-          page: 5,
-        },
-        link: "https://www.google.com/",
-      },
-      type: "doc",
-    },
-
-    {
-      data: {
-        title: "Nome do arquivo",
-        content: "Requisitos Não Funcionais",
-        detail: {
-          page: 5,
-        },
-        link: "https://www.google.com/",
-      },
-      type: "pdf",
-    },
-    {
-      data: {
-        title: "Nome do banco de dados",
-        content:
-          "Aqui contem os chunks dos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
-        detail: {
-          page: 5,
-          table_name: "nome da tabela",
-        },
-        link: "https://www.google.com/",
-      },
-      type: "db",
-    },
-
-    {
-      data: {
-        title: "Nome do arquivo",
-        content:
-          "Aqui contem os chunks dos documentos recuperados Aqui contem osdas as dsd chunks dos documentos recuperados Aqui contem os chunks dosasd asd documentos recuperados Aqui contem os chunks dos documentos ads recuperados Aqui contem os chunks dos documentos recuperadosasd Aqui contem os chunks dos documentos recuperados",
-        detail: {
-          page: 5,
-        },
-        link: "https://www.google.com/",
-      },
-      type: "csv",
-    },
-  ];
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -931,30 +867,35 @@ export default function PersistentDrawerAdvanced({
         >
           <Divider style={{ marginBottom: "10px" }} />
           <ul className={openReference && `${styles.box_reference}`}>
-            {references.map((reference) => (
+            {stateChat?.references.map((reference) => (
               <>
                 <>
-                  {reference.type === "pdf" && (
+                  {reference.source_type === "pdf" && (
                     <PdfReference reference={reference} />
                   )}
                 </>
                 <>
-                  {reference.type === "link" && (
+                  {reference.source_type === "web" && (
                     <LinkReference reference={reference} />
                   )}
                 </>
                 <>
-                  {reference.type === "doc" && (
+                  {reference.source_type === "pdf-url" && (
+                    <PdfWebReference reference={reference} />
+                  )}
+                </>
+                <>
+                  {reference.source_type === "doc" && (
                     <DocReference reference={reference} />
                   )}
                 </>
                 <>
-                  {reference.type === "db" && (
+                  {reference.source_type === "db" && (
                     <DBReference reference={reference} />
                   )}
                 </>
                 <>
-                  {reference.type === "csv" && (
+                  {reference.source_type === "csv" && (
                     <CSVReference reference={reference} />
                   )}
                 </>

@@ -22,6 +22,7 @@ import {
   SET_NEW_CHAT_TRUE,
   SET_NEW_CHAT_FALSE,
   ADD_MESSAGE_BOT_CHUNK_LIST,
+  ADD_REFERENCE,
 } from "./types/types";
 
 // Interfaces
@@ -37,10 +38,28 @@ export interface ChatInfo {
   chat_label: string;
 }
 
+// export interface Document {
+//   content: string;
+//   context: string;
+//   source: string; // URL | FILE PATH | FILENAME
+//   soure_type: string; //pdf | docx | web
+//   source_description: string;
+//   page: number
+// }
+
 export interface Chat {
   id: string;
   messages: Message[];
   history_context?: Record<string, unknown>[];
+}
+
+export interface Reference {
+  content: string;
+  context: string;
+  source: string;
+  source_type: string;
+  source_description: string;
+  page: unknown;
 }
 
 export interface StateChat {
@@ -56,6 +75,7 @@ export interface StateChat {
   load_notification: Record<string, unknown>[];
   new_chat: boolean;
   list_chunks: string[];
+  references: Reference[];
 }
 
 export interface ActionChat {
@@ -87,6 +107,7 @@ const initialState: StateChat = {
   load_notification: [],
   new_chat: false,
   list_chunks: [],
+  references: [],
 };
 
 // Reducer
@@ -127,6 +148,10 @@ function reducer(stateChat: StateChat, actionChat: ActionChat): StateChat {
           actionChat.payload as string;
       }
       return { ...stateChat, message_test: actionChat.payload as string };
+    }
+
+    case ADD_REFERENCE: {
+      return { ...stateChat, references: actionChat.payload as Reference[] };
     }
 
     case ADD_MESSAGE_BOT_CHUNK_LIST: {

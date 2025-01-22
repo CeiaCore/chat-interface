@@ -7,7 +7,11 @@ import FormDialog from "../../../components/chat/Dislike";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ContextChat } from "../../../context/ChatContext";
 import useGetById from "../../../hooks/chat/useGetById";
-import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
+import {
+  ACTIVE_SCROLL,
+  ADD_REFERENCE,
+  DEACTIVE_SCROLL,
+} from "../../../context/types/types";
 import InputAdvanced from "../../../components/chat/InputAdvanced";
 import remarkGfm from "remark-gfm";
 import { GooSpinner } from "react-spinners-kit";
@@ -25,6 +29,8 @@ const ChatBasicInterface = ({
   props: ChatBasicInterfaceProps;
 }) => {
   const { stateChat, dispatchChat } = useContext(ContextChat) || {};
+
+  const [indexReference, setIndexReference] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [indexFeedback, setIndexFeedback]: any = React.useState("");
   const messageEndRef = useRef<HTMLDivElement | null>(null);
@@ -34,6 +40,7 @@ const ChatBasicInterface = ({
   };
 
   useEffect(() => {
+    setIndexReference(null);
     if (stateChat && stateChat.is_active_scroll && messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -140,16 +147,30 @@ const ChatBasicInterface = ({
                     <GooSpinner size={27} color="#333" />
                   </div>
                 )}
-                {!stateChat?.loading_generate_llm && (
-                  <div
-                    className={styles.source}
-                    onClick={() => {
-                      setOpenReference(!openReference);
-                    }}
-                  >
-                    Ver fontes
-                  </div>
-                )}
+                {!stateChat?.loading_generate_llm &&
+                  element?.metadata.length > 0 && (
+                    <div
+                      className={styles.source}
+                      onClick={() => {
+                        setIndexReference(index);
+
+                        if (indexReference === null) {
+                          setOpenReference(true);
+                        } else {
+                          if (index === indexReference) {
+                            setOpenReference(!openReference);
+                            setIndexReference(null);
+                          }
+                        }
+                        dispatchChat({
+                          type: ADD_REFERENCE,
+                          payload: element?.metadata,
+                        });
+                      }}
+                    >
+                      Ver fontes
+                    </div>
+                  )}
                 <div
                   style={{
                     height: "20px",

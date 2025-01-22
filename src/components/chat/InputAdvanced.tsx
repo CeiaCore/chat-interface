@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
-
+import { useRef } from "react";
 import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
 import useInteract from "../../hooks/chat/useInteractionWithoutSmooth";
 import { ContextChat } from "../../context/ChatContext";
@@ -60,6 +60,8 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
     setIsTyping(event.target.value.length > 0);
   };
 
+  const textareaRef = useRef();
+
   const handleSendMessage = () => {
     dispatchChat({ type: ACTIVE_SCROLL });
     if (message.trim() !== "") {
@@ -114,6 +116,7 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
         display: "flex",
         width: "100%",
         flexDirection: "column",
+        cursor: "text",
         padding: "10px 7px 7px 7px",
         backgroundColor: "#f4f4f4",
         // backgroundColor: "#fff",
@@ -121,7 +124,11 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
         boxShadow: "rgba(255, 255, 255, 0.92) 0px 0px 30px 20px", // Sombra suave e fraca
         // border: "1px solid  #b9b9b9",
         transition: ".2s",
-        transform: isTyping ? "scale(1.01)" : "scale(1)", // Adiciona uma leve redução
+      }}
+      onClick={(e) => {
+        if (!e.target.closest(".no-focus")) {
+          textareaRef.current.focus();
+        }
       }}
     >
       <Snackbar
@@ -200,6 +207,7 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
       </div>
       <div>
         <TextareaAutosize
+          ref={textareaRef}
           placeholder={`Envie uma mensagem para  ${BOT_NAME}`}
           value={message}
           onChange={handleMessageChange}
@@ -214,12 +222,11 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
             width: "95%",
             fontSize: "1rem",
             backgroundColor: "#f4f4f4",
-
             transition: ".1s",
             lineHeight: "1.5",
             marginTop: "5px",
             marginLeft: "10px",
-            fontFamily: "Inter",
+            fontFamily: "system-ui",
           }}
         />
       </div>

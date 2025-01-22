@@ -2,6 +2,7 @@ import { useContext } from "react";
 import {
   ADD_MESSAGE_BOT,
   ADD_MESSAGE_BOT_CHUNK_LIST,
+  ADD_METADATA_MESSAGE_BOT,
   LOADING_GENERATE_LLM_FALSE,
   LOADING_GENERATE_LLM_TRUE,
 } from "../../context/types/types";
@@ -40,9 +41,24 @@ const useInteractionWithoutSmooth = () => {
 
     eventSource.onmessage = function (event) {
       const newMessage = event.data;
-      if (newMessage !== ":\n\n") dataChunks.push(newMessage);
-      const data = dataChunks.join("");
-      dispatchChat({ type: ADD_MESSAGE_BOT, payload: data });
+
+      if (newMessage.includes("references: ")) {
+        const jsonData = newMessage.replace("references: ", "").trim();
+        try {
+          const parsedData = JSON.parse(jsonData);
+
+          dispatchChat({
+            type: ADD_METADATA_MESSAGE_BOT,
+            payload: parsedData,
+          });
+        } catch (e) {
+          console.error("Erro ao parsear JSON:", e);
+        }
+      } else {
+        if (newMessage !== ":\n\n") dataChunks.push(newMessage);
+        const data = dataChunks.join("");
+        dispatchChat({ type: ADD_MESSAGE_BOT, payload: data });
+      }
     };
 
     eventSource.onerror = function () {

@@ -2,6 +2,7 @@ interface Cards {
   title: string;
   image: string;
   size?: string;
+  query: string;
 }
 export interface IHomeBConfig {
   starting_title: string;
@@ -24,18 +25,21 @@ export const HomeBConfig: IHomeBConfig = {
       image:
         "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
       size: "large",
+      query: "ola como vai?",
     },
     {
       title: "Obtenha um plano de exercícios",
       image:
         "https://static.vecteezy.com/system/resources/thumbnails/022/515/438/small/ai-generative3d-texture-colorful-abstract-background-for-desktop-wallpaper-image-free-photo.jpg",
       size: "small",
+      query: "ola como vai?",
     },
     {
       title: "Encontre uma receita que contenha os itens em sua geladeira",
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4XdCTkQbdHUwEoS4qyka8twyh2Au3yL_rgNA23rzSZ3jcfLjqCjnHE2uDzQGc5oC7KfM&usqp=CAU",
       size: "small",
+      query: "ola como vai?",
     },
   ],
 
@@ -45,18 +49,21 @@ export const HomeBConfig: IHomeBConfig = {
       image:
         "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
       size: "large",
+      query: "ola como vai?",
     },
     {
       title: "Obtenha um plano de exercícios",
       image:
         "https://static.vecteezy.com/system/resources/thumbnails/022/515/438/small/ai-generative3d-texture-colorful-abstract-background-for-desktop-wallpaper-image-free-photo.jpg",
       size: "small",
+      query: "ola como vai?",
     },
     {
       title: "Encontre uma receita que contenha os itens em sua geladeira",
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4XdCTkQbdHUwEoS4qyka8twyh2Au3yL_rgNA23rzSZ3jcfLjqCjnHE2uDzQGc5oC7KfM&usqp=CAU",
       size: "small",
+      query: "ola como vai?",
     },
   ],
   session_c: [
@@ -65,18 +72,21 @@ export const HomeBConfig: IHomeBConfig = {
       image:
         "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
       size: "large",
+      query: "ola como vai?",
     },
     {
       title: "Obtenha um plano de exercícios",
       image:
         "https://static.vecteezy.com/system/resources/thumbnails/022/515/438/small/ai-generative3d-texture-colorful-abstract-background-for-desktop-wallpaper-image-free-photo.jpg",
       size: "small",
+      query: "ola como vai?",
     },
     {
       title: "Encontre uma receita que contenha os itens em sua geladeira",
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4XdCTkQbdHUwEoS4qyka8twyh2Au3yL_rgNA23rzSZ3jcfLjqCjnHE2uDzQGc5oC7KfM&usqp=CAU",
       size: "small",
+      query: "ola como vai?",
     },
   ],
 };

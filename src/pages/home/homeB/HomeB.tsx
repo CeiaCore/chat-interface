@@ -12,9 +12,14 @@ import { ContextAuth } from "../../../context/AuthContext";
 import InputStandByAdvanced from "../../../components/chat/InputStandByAdvanced";
 import { IHomeBConfig } from "../../../routes/custom/config/home/HomeB.config";
 
-const Card = ({ image, title, size }) => {
+const Card = ({ image, title, size, handleCreateChat, query }) => {
   return (
-    <div className={styles.card}>
+    <div
+      onClick={() => {
+        handleCreateChat(query);
+      }}
+      className={styles.card}
+    >
       <img src={image} className={styles.cardImage} />
       <div className={styles.cardText}>
         <h3 style={{ fontSize: size === "large" ? "1.8rem" : "1.2rem" }}>
@@ -39,12 +44,13 @@ const HomeB = ({ home_config }: { home_config: IHomeBConfig }) => {
     if (!dispatchChat) {
       return null;
     }
+
     const user_message = { rule: "user", message: text };
     dispatchChat({ type: ADD_MESSAGE, payload: user_message });
     dispatchChat({ type: LOADING_GENERATE_LLM_TRUE });
     const bot_message = { rule: "bot", message: "", metadata: "" };
     dispatchChat({ type: ADD_MESSAGE, payload: bot_message });
-    // setState(false);
+    setState(false);
     dispatchChat({ type: SET_NEW_CHAT_TRUE });
   }
   return (
@@ -59,7 +65,13 @@ const HomeB = ({ home_config }: { home_config: IHomeBConfig }) => {
             {home_config.session_a
               .filter((element) => element.size === "large")
               .map((card) => (
-                <Card image={card.image} title={card.title} size={card.size} />
+                <Card
+                  query={card.query}
+                  handleCreateChat={handleCreateChat}
+                  image={card.image}
+                  title={card.title}
+                  size={card.size}
+                />
               ))}
 
             {/* Cards pequenos empilhados */}
@@ -68,6 +80,8 @@ const HomeB = ({ home_config }: { home_config: IHomeBConfig }) => {
                 .filter((element) => element.size === "small")
                 .map((card) => (
                   <Card
+                    query={card.query}
+                    handleCreateChat={handleCreateChat}
                     image={card.image}
                     title={card.title}
                     size={card.size}
@@ -81,7 +95,13 @@ const HomeB = ({ home_config }: { home_config: IHomeBConfig }) => {
             {home_config.session_b
               .filter((element) => element.size === "large")
               .map((card) => (
-                <Card image={card.image} title={card.title} size={card.size} />
+                <Card
+                  query={card.query}
+                  handleCreateChat={handleCreateChat}
+                  image={card.image}
+                  title={card.title}
+                  size={card.size}
+                />
               ))}
 
             {/* Cards pequenos empilhados */}
@@ -90,6 +110,8 @@ const HomeB = ({ home_config }: { home_config: IHomeBConfig }) => {
                 .filter((element) => element.size === "small")
                 .map((card) => (
                   <Card
+                    query={card.query}
+                    handleCreateChat={handleCreateChat}
                     image={card.image}
                     title={card.title}
                     size={card.size}
@@ -103,7 +125,13 @@ const HomeB = ({ home_config }: { home_config: IHomeBConfig }) => {
             {home_config.session_c
               .filter((element) => element.size === "large")
               .map((card) => (
-                <Card image={card.image} title={card.title} size={card.size} />
+                <Card
+                  query={card.query}
+                  handleCreateChat={handleCreateChat}
+                  image={card.image}
+                  title={card.title}
+                  size={card.size}
+                />
               ))}
 
             {/* Cards pequenos empilhados */}
@@ -112,6 +140,8 @@ const HomeB = ({ home_config }: { home_config: IHomeBConfig }) => {
                 .filter((element) => element.size === "small")
                 .map((card) => (
                   <Card
+                    query={card.query}
+                    handleCreateChat={handleCreateChat}
                     image={card.image}
                     title={card.title}
                     size={card.size}

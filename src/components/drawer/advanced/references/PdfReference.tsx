@@ -13,20 +13,10 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 // Import styles
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { Reference } from "../../../../context/ChatContext";
 // Create new plugin instance
-interface ReferenceProps {
-  data: {
-    link: string;
-    content: string;
-    title: string;
-    detail: {
-      page: number;
-    };
-  };
-  type: string;
-}
 
-const PdfReference = ({ reference }: { reference: ReferenceProps }) => {
+const PdfReference = ({ reference }: { reference: Reference }) => {
   const [open, setOpen] = useState(false);
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
@@ -62,18 +52,16 @@ const PdfReference = ({ reference }: { reference: ReferenceProps }) => {
             pdf
           </span>
           <FaRegFilePdf />
-          <p className={styles.reference_title}>{reference?.data?.title}</p>
+          <p className={styles.reference_title}>{reference?.content}</p>
         </div>
-        <p style={{ fontSize: ".7rem" }}>
-          Página {reference?.data?.detail?.page}
-        </p>
+        <p style={{ fontSize: ".7rem" }}>Página {Number(reference?.page)}</p>
         <p style={{ fontSize: ".85rem", height: "200px" }}>
-          {reference?.data?.content}
+          {reference?.content}
         </p>
       </li>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
-        <DialogTitle>{reference.data.title}</DialogTitle>
+        <DialogTitle>{reference?.source}</DialogTitle>
         <DialogContent dividers>
           <Typography variant="body2" style={{ whiteSpace: "pre-line" }}>
             <div
@@ -83,7 +71,7 @@ const PdfReference = ({ reference }: { reference: ReferenceProps }) => {
             >
               <Viewer
                 fileUrl="/teste.pdf"
-                initialPage={reference?.data?.detail?.page - 1}
+                initialPage={Number(reference?.page) - 1}
                 plugins={[defaultLayoutPluginInstance]}
               />
             </div>
