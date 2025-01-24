@@ -10,6 +10,7 @@ import useGetById from "../../../hooks/chat/useGetById";
 import { ACTIVE_SCROLL, DEACTIVE_SCROLL } from "../../../context/types/types";
 import InputAdvanced from "../../../components/chat/InputAdvanced";
 import remarkGfm from "remark-gfm";
+import { PiChatTeardropText } from "react-icons/pi";
 
 export interface ChatBasicInterfaceProps {
   chat_id: string | undefined;
@@ -98,9 +99,28 @@ const PreChatInterface = ({
         setFeedback={setFeedback}
         indexFeedback={indexFeedback}
       />
-
       <div className={styles.container}>
-        <h5 className={styles.title}>Testar</h5>
+        <h5 className={styles.title}>Chat</h5>
+        {stateChat?.messages.length <= 0 && (
+          <div
+            style={{
+              display: "flex", // Define flexbox
+              alignItems: "center", // Centraliza verticalmente
+              justifyContent: "center", // Centraliza horizontalmente
+              height: "calc(100vh - 300px)", // Certifique-se de que o container tenha altura suficiente
+            }}
+          >
+            <PiChatTeardropText
+              style={{
+                marginLeft: "5px",
+                marginRight: "5px",
+                height: "40px",
+                width: "40px",
+                color: "rgb(172, 172, 172)",
+              }}
+            />
+          </div>
+        )}
         {stateChat?.messages?.map((element: any, index: any) => (
           <>
             {element.rule === "user" ? (

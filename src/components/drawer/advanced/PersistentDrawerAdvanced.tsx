@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -33,7 +33,11 @@ import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarLeftCollapseFilled,
 } from "react-icons/tb";
-import { IoClose, IoNotificationsOutline } from "react-icons/io5";
+import {
+  IoChevronBackOutline,
+  IoClose,
+  IoNotificationsOutline,
+} from "react-icons/io5";
 import { GrAppsRounded } from "react-icons/gr";
 import styles from "./PersistentDrawerAdvanced.module.css";
 import { PiBooks, PiChatTeardropText } from "react-icons/pi";
@@ -181,65 +185,6 @@ export default function PersistentDrawerAdvanced({
 
   useGetAll({ user_id: stateAuth?.user.user_id });
 
-  // Lista de notificações fictícias com data
-  // const notifications = [
-  //   {
-  //     id: 1,
-  //     title: "MUI X v8 alpha",
-  //     description:
-  //       "Check our plans for the upcoming stable in the announcement blog post.",
-  //     date: "2024-11-05 10:15 AM",
-  //   },
-  //   {
-  //     id: 1,
-  //     title: "MUI X v8 alpha",
-  //     description:
-  //       "Check our plans for the upcoming stable in the announcement blog post.",
-  //     date: "2024-11-05 10:15 AM",
-  //   },
-  //   {
-  //     id: 1,
-  //     title: "MUI X v8 alpha",
-  //     description:
-  //       "Check our plans for the upcoming stable in the announcement blog post.",
-  //     date: "2024-11-05 10:15 AM",
-  //   },
-  //   {
-  //     id: 1,
-  //     title: "MUI X v8 alpha",
-  //     description:
-  //       "Check our plans for the upcoming stable in the announcement blog post.",
-  //     date: "2024-11-05 10:15 AM",
-  //   },
-  //   {
-  //     id: 1,
-  //     title: "MUI X v8 alpha",
-  //     description:
-  //       "Check our plans for the upcoming stable in the announcement blog post.",
-  //     date: "2024-11-05 10:15 AM",
-  //   },
-  //   {
-  //     id: 1,
-  //     title: "MUI X v8 alpha",
-  //     description:
-  //       "Check our plans for the upcoming stable in the announcement blog post.",
-  //     date: "2024-11-05 10:15 AM",
-  //   },
-  //   {
-  //     id: 1,
-  //     title: "MUI X v8 alpha",
-  //     description:
-  //       "Check our plans for the upcoming stable in the announcement blog post.",
-  //     date: "2024-11-05 10:15 AM",
-  //   },
-  //   {
-  //     id: 1,
-  //     title: "MUI X v8 alpha",
-  //     description:
-  //       "Check our plans for the upcoming stable in the announcement blog post.",
-  //     date: "2024-11-05 10:15 AM",
-  //   },
-  // ];
   const today = new Date();
   const startOfToday = new Date(
     today.getFullYear(),
@@ -281,6 +226,12 @@ export default function PersistentDrawerAdvanced({
   };
   const params = useLocation();
 
+  useEffect(() => {
+    if (params.pathname === "/gpts/edit") {
+      setOpen(false);
+    }
+  }, [params.pathname]);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -296,15 +247,23 @@ export default function PersistentDrawerAdvanced({
               <h2 style={{ color: "#333" }}>Dalle 2</h2>
             </div>
           </Link> */}
+          {params.pathname === "/gpts/edit" ? (
+            <Link to="/gpts">
+              <IconButton color="inherit" edge="start">
+                <IoChevronBackOutline size={25} color="#333" />
+              </IconButton>
+            </Link>
+          ) : (
+            <IconButton
+              color="inherit"
+              onClick={toggleDrawer}
+              edge="start"
+              sx={{ mr: 2, display: open ? "none" : "inline-flex" }}
+            >
+              <HiMenuAlt1 color="#7B7B7B" />
+            </IconButton>
+          )}
 
-          <IconButton
-            color="inherit"
-            onClick={toggleDrawer}
-            edge="start"
-            sx={{ mr: 2, display: open ? "none" : "inline-flex" }}
-          >
-            <HiMenuAlt1 color="#7B7B7B" />
-          </IconButton>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}></Typography>
           {/* Ícone de Notificações com Menu */}
           <IconButton
