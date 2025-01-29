@@ -60,6 +60,7 @@ export interface Reference {
   source_type: string;
   source_description: string;
   page: unknown;
+  document_id: string;
 }
 
 export interface StateChat {

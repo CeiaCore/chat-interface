@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   ADD_MESSAGE_BOT,
   ADD_MESSAGE_BOT_CHUNK_LIST,
@@ -12,24 +12,25 @@ import { ContextChat } from "../../context/ChatContext";
 
 interface interactProps {
   query: string;
+  prompt: string;
   chat_id: string;
 }
 const URL = window._env_.URL_API;
 
-const PATH_DEFAULT = "/api/v1/chat_router";
+const PATH_DEFAULT = "/api/v1/knowledge_router";
 
-const useInteractionWithoutSmooth = () => {
+const usePreChatInteractionWithoutSmooth = () => {
   const { dispatchChat } = useContext(ContextChat) || {};
 
-  const interactGenericChat = async ({ query, chat_id }: interactProps) => {
+  const interactPreChat = async ({ query, prompt, chat_id }: interactProps) => {
     if (!dispatchChat) {
       return null;
     }
     dispatchChat({ type: LOADING_GENERATE_LLM_TRUE });
 
-    const url = `${URL}${PATH_DEFAULT}/stream?query=${encodeURIComponent(
+    const url = `${URL}${PATH_DEFAULT}/pre-chat-stream?query=${encodeURIComponent(
       query
-    )}&chat_id=${encodeURIComponent(chat_id)}`;
+    )}&prompt=${encodeURIComponent(prompt)}&id=${encodeURIComponent(chat_id)}`;
 
     const eventSource = new EventSourcePolyfill(url, {
       headers: {
@@ -66,6 +67,6 @@ const useInteractionWithoutSmooth = () => {
       dispatchChat({ type: LOADING_GENERATE_LLM_FALSE });
     };
   };
-  return { interactGenericChat };
+  return { interactPreChat };
 };
-export default useInteractionWithoutSmooth;
+export default usePreChatInteractionWithoutSmooth;

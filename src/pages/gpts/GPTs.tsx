@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -28,8 +28,14 @@ import ButtonForms from "./components/ButtonForms";
 import ButtonStartChat from "./components/ButtonStartChat";
 import { FiEdit } from "react-icons/fi";
 import { Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMdMore } from "react-icons/io";
+import useCreatePreChat from "../../hooks/knowledge/useCreatePreChat";
+import { ContextAuth } from "../../context/AuthContext";
+import { ContextChat } from "../../context/ChatContext";
+import { GooSpinner } from "react-spinners-kit";
+import useGetKnowledgeByUser from "../../hooks/knowledge/useGetKnowledgeByUser";
+import useGetAllKnowledge from "../../hooks/knowledge/useGetAllPublicKnwledge";
 const GPTs = () => {
   const [activeTab, setActiveTab] = useState(0);
 
@@ -37,6 +43,16 @@ const GPTs = () => {
     setActiveTab(newValue);
   };
 
+  const { stateAuth } = useContext(ContextAuth) || {};
+  const { stateChat } = useContext(ContextChat) || {};
+  const [contentCard, setContentCard] = useState({
+    name: "",
+    description: "",
+    user_id: "",
+    id: "",
+  });
+  const { createPreChat } = useCreatePreChat();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -47,81 +63,34 @@ const GPTs = () => {
     setOpen(false);
   };
 
+  const { knowledges } = useGetKnowledgeByUser({
+    user_id: stateAuth?.user.user_id,
+  });
+  const { public_knowledges } = useGetAllKnowledge();
+
   const featuredApps = [
     {
-      title: "ChatGPT",
-      description: "AI model that engages in human-like conversations.",
-      likes: "78.9K",
-      img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-    },
-    {
-      title: "ChatGPT",
-      description: "AI model that engages in human-like conversations.",
-      likes: "78.9K",
-      img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-    },
-    {
-      title: "ChatGPT",
-      description: "AI model that engages in human-like conversations.",
-      likes: "78.9K",
-      img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-    },
-    {
-      title: "ChatGPT",
-      description: "AI model that engages in human-like conversations.",
-      likes: "78.9K",
-      img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-    },
-    {
-      title: "DALL-E",
-      description: "Creates images from textual descriptions using AI.",
-      likes: "52.3K",
-      img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-    },
-    {
-      title: "Jasper AI",
-      description: "Assists in creating written content using AI.",
-      likes: "36.7K",
-      img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-    },
-    {
-      title: "GitHub Copilot",
-      description: "AI tool that offers coding suggestions for developers.",
-      likes: "64.1K",
-      img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-    },
-    {
-      title: "GitHub Copilot",
+      name: "Sumarizador",
       description:
-        "AI tool that offers coding suggestions for developers. AI tool that offers coding suggestions for developers. AI tool that offers coding suggestions for developers. AI tool that offers coding suggestions for developers.",
-      likes: "64.1K",
+        "Resumidor de Texto é uma ferramenta online que agrupa um texto em um comprimento curto especificado. Ele condensa um longo artigo aos pontos principais.",
       img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
     },
     {
-      title: "GitHub Copilot",
-      description: "AI tool that offers coding suggestions for developers.",
-      likes: "64.1K",
+      name: "Analisador de Dados",
+      description:
+        "Drope qualquer arquivo e veja como posso ajudar a analizar e visualizar seus dados.",
       img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
     },
   ];
 
-  const myGpts = {
-    public: [
-      {
-        title: "Public GPT 1",
-        description: "A public GPT example.",
-        likes: "10.2K",
-        img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-      },
-    ],
-    private: [
-      {
-        title: "Private GPT 1",
-        description: "A private GPT example.",
-        likes: "5.6K",
-        img: "https://t3.ftcdn.net/jpg/05/71/06/76/360_F_571067620_JS5T5TkDtu3gf8Wqm78KoJRF1vobPvo6.jpg",
-      },
-    ],
+  const handleCreatePreChat = () => {
+    createPreChat({
+      user_id: stateAuth?.user.user_id,
+    }).then((result) => {
+      if (result && result.chat_id) {
+        navigate(`/gpts/edit/${result.chat_id}`);
+      }
+    });
   };
 
   return (
@@ -132,7 +101,12 @@ const GPTs = () => {
           Crie versões personalizadas do seu Chat que combinam instruções,
           conhecimento extra e qualquer combinação de habilidades.
         </p>
-        <ButtonCustom value="Criar agente" to="/gpts/edit" />
+        <ButtonCustom
+          handleFunction={() => {
+            handleCreatePreChat();
+          }}
+          value={stateChat?.loading ? "Iniciando..." : "Iniciar agente"}
+        />
         <Box className={styles.searchSection}>
           <TextField
             placeholder="Buscar Agente"
@@ -177,26 +151,19 @@ const GPTs = () => {
         fullWidth
         maxWidth="sm"
       >
-        <Link to={"/gpts/edit"}>
-          <Tooltip title="Editar Agente" arrow placement="right">
-            <IconButton
-              aria-label="close"
-              onClick={handleClose}
-              style={{ position: "absolute", left: 8, top: 8 }}
-            >
-              <FiEdit style={{ color: "#333", width: "20px" }} />
-            </IconButton>
-          </Tooltip>
-        </Link>
-        <Tooltip title="Opções" arrow placement="right">
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            style={{ position: "absolute", left: 40, top: 8 }}
-          >
-            <IoMdMore style={{ color: "#333", width: "20px" }} />
-          </IconButton>
-        </Tooltip>
+        {stateAuth?.user.user_id === contentCard.user_id && (
+          <Link to={"/gpts/edit"}>
+            <Tooltip title="Editar Agente" arrow placement="right">
+              <IconButton
+                aria-label="close"
+                onClick={handleClose}
+                style={{ position: "absolute", left: 8, top: 8 }}
+              >
+                <FiEdit style={{ color: "#333", width: "20px" }} />
+              </IconButton>
+            </Tooltip>
+          </Link>
+        )}
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -211,26 +178,14 @@ const GPTs = () => {
             </div>
           ) : (
             <>
-              <div className={styles.box_image}>
-                <img src={"/teste.png"} className={styles.image} />
-              </div>
               <div className={styles.box_title}>
-                <h3>Um grande titulo associado</h3>
+                <h3>{contentCard.name}</h3>
               </div>
               <div className={styles.author}>
-                <p>By Alecrin</p>
+                <p>By User</p>
               </div>
               <div className={styles.description}>
-                <p>
-                  By Alecrin By AlecrinBy AlecrinBy AlecrinBy AlecrinBy
-                  AlecrinBy AlecrinBy AlecrinBy AlecrinBy AlecrinBy AlecrinBy
-                  AlecrinBy Alecrin By AlecrinBy AlecrinBy AlecrinBy AlecrinBy
-                  AlecrinBy AlecrinBy AlecrinBy AlecrinBy AlecrinBy AlecrinBy
-                  AlecrinBy AlecrinBy AlecrinBy AlecrinBy AlecrinBy AlecrinBy
-                  AlecrinBy AlecrinBy AlecrinBy Alecrin AlecrinBy AlecrinBy
-                  Alecrin AlecrinBy AlecrinBy Alecrin A AlecrinBy Alecrin
-                  AlecrinBy AlecrinBy Alecrin AlecrinBy AlecrinBy Alecrin
-                </p>
+                <p>{contentCard.description}</p>
               </div>
               {/* 
               <div className={styles.capabilities}>
@@ -246,7 +201,10 @@ const GPTs = () => {
                 </li>
               </div> */}
 
-              <ButtonStartChat value="Iniciar Chat" />
+              <ButtonStartChat
+                to={`/g/${contentCard.id}`}
+                value="Iniciar Chat"
+              />
             </>
           )}
         </DialogContent>
@@ -303,19 +261,26 @@ const GPTs = () => {
       )}
       {activeTab === 0 && (
         <div className={styles.container_topics}>
-          <h5 className={styles.title_topics}>Agentes</h5>
-          <div className={styles.container_cards} style={{}}>
-            {featuredApps.map((app, index) => (
-              <AppCard onclick={handleOpen} app={app} />
-            ))}
-          </div>
-
+          {public_knowledges.length > 0 && (
+            <>
+              <h5 className={styles.title_topics}>Agentes Públicos</h5>
+              <div className={styles.container_cards}>
+                {public_knowledges.map((app) => (
+                  <AppCard
+                    setContentCard={setContentCard}
+                    onclick={handleOpen}
+                    app={app}
+                  />
+                ))}
+              </div>
+            </>
+          )}
           <h5 style={{ marginTop: "30px" }} className={styles.title_topics}>
-            Automação
+            Por Ceia
           </h5>
-          <div className={styles.container_cards}>
+          <div style={{ opacity: "50%" }} className={styles.container_cards}>
             {featuredApps.map((app, index) => (
-              <AppCard onclick={handleOpen} app={app} />
+              <AppCard onclick={() => {}} app={app} />
             ))}
           </div>
         </div>
@@ -328,18 +293,46 @@ const GPTs = () => {
               Públicos
             </h5>
             <div className={styles.container_cards}>
-              {myGpts.public.map((gpt, index) => (
-                <AppCard onclick={handleOpen} app={gpt} />
-              ))}
+              {knowledges.length > 0 && (
+                <>
+                  <div className={styles.container_cards}>
+                    {knowledges.map((app) => (
+                      <>
+                        {!app?.private && (
+                          <AppCard
+                            setContentCard={setContentCard}
+                            onclick={handleOpen}
+                            app={app}
+                          />
+                        )}
+                      </>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             <h5 style={{ marginTop: "30px" }} className={styles.title_topics}>
               Privados
             </h5>
             <div className={styles.container_cards}>
-              {myGpts.private.map((gpt, index) => (
-                <AppCard onclick={handleOpen} app={gpt} />
-              ))}
+              {knowledges.length > 0 && (
+                <>
+                  <div className={styles.container_cards}>
+                    {knowledges.map((app) => (
+                      <>
+                        {app?.private && (
+                          <AppCard
+                            setContentCard={setContentCard}
+                            onclick={handleOpen}
+                            app={app}
+                          />
+                        )}
+                      </>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </>

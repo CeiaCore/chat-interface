@@ -1,16 +1,20 @@
-import { Link } from "react-router-dom";
 import styles from "./Button.module.css";
 
 interface ButtonCustom {
-  value: string;
-  to: string;
+  value: any;
+  handleFunction: () => void;
 }
 
-const ButtonCustom = ({ value, to }: ButtonCustom) => {
+const ButtonCustom = ({ handleFunction, value }: ButtonCustom) => {
   return (
-    <Link to={to}>
-      <button className={styles.button}>{value}</button>
-    </Link>
+    <button
+      onClick={() => {
+        handleFunction();
+      }}
+      className={styles.button}
+    >
+      {value}
+    </button>
   );
 };
 

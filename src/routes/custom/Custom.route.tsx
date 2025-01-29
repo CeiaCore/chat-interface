@@ -15,6 +15,7 @@ import GPTs from "../../pages/gpts/GPTs";
 import FormGpt from "../../pages/gpts/form/FormGpt";
 import FirebaseProtectRoute from "../../services/apis/auth/firebase/FirebaseProtectRoute";
 import { useHandleLogoutFirebase } from "../../services/apis/auth/firebase/HandleLogout";
+import HomeKnowledge from "../../pages/home/homeKnowledge/HomeKnowledge";
 
 export function CustomRoute() {
   const config = CustomConfig;
@@ -38,7 +39,15 @@ export function CustomRoute() {
           >
             <Routes>
               <Route path="/gpts" element={<GPTs />} />
-              <Route path="/gpts/edit" element={<FormGpt />} />
+              <Route
+                path="/gpts/edit/:session_id"
+                element={
+                  <FormGpt
+                    openReference={openReference}
+                    setOpenReference={setOpenReference}
+                  />
+                }
+              />
               {config.home === "HomeB" && (
                 <Route path="/" element={<HomeB home_config={HomeBConfig} />} />
               )}
@@ -48,6 +57,8 @@ export function CustomRoute() {
                 path="/c/:chat_id"
                 element={<ChatInteface props={chat_interface_props} />}
               />
+
+              <Route path="/g/:knowledge_id" element={<HomeKnowledge />} />
 
               <Route path="*" element={<div>Not Found</div>} />
             </Routes>

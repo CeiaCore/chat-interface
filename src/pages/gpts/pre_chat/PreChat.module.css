@@ -26,10 +26,11 @@
     font-style: italic;
   }
   .source {
-    width: 60px;
+    width: 90px;
     font-weight: 500;
     font-size: 0.8rem;
     display: flex;
+    padding: 5px;
     align-items: center;
     justify-content: center;
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,

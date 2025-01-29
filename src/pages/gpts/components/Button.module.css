@@ -2,13 +2,16 @@
   border: none;
   color: #fff;
   background-color: #333;
-  padding: 15px;
+  padding: 12px;
   border-radius: 10px;
   margin-top: 20px;
   cursor: pointer;
   font-size: 0.9rem;
+  width: 150px;
   font-family: "Inter";
   font-weight: 500;
+  display: flex;
+  justify-content: center;
 }
 .button:hover {
   background-color: #444444;

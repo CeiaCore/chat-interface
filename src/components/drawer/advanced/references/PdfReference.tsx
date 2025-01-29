@@ -16,6 +16,10 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { Reference } from "../../../../context/ChatContext";
 // Create new plugin instance
 
+const URL = window._env_.URL_API;
+
+const PATH_DEFAULT = "/api/v1/knowledge_router/pdf";
+
 const PdfReference = ({ reference }: { reference: Reference }) => {
   const [open, setOpen] = useState(false);
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -52,9 +56,11 @@ const PdfReference = ({ reference }: { reference: Reference }) => {
             pdf
           </span>
           <FaRegFilePdf />
-          <p className={styles.reference_title}>{reference?.content}</p>
+          <p className={styles.reference_title}>{reference?.source}</p>
         </div>
-        <p style={{ fontSize: ".7rem" }}>Página {Number(reference?.page)}</p>
+        <p style={{ fontSize: ".7rem" }}>
+          Página {Number(reference?.page) + 1}
+        </p>
         <p style={{ fontSize: ".85rem", height: "200px" }}>
           {reference?.content}
         </p>
@@ -70,8 +76,8 @@ const PdfReference = ({ reference }: { reference: Reference }) => {
               }}
             >
               <Viewer
-                fileUrl="/teste.pdf"
-                initialPage={Number(reference?.page) - 1}
+                fileUrl={`${URL}${PATH_DEFAULT}/${reference?.document_id}`}
+                initialPage={Number(reference?.page)}
                 plugins={[defaultLayoutPluginInstance]}
               />
             </div>

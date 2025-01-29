@@ -227,7 +227,7 @@ export default function PersistentDrawerAdvanced({
   const params = useLocation();
 
   useEffect(() => {
-    if (params.pathname === "/gpts/edit") {
+    if (params.pathname.includes("/gpts/edit")) {
       setOpen(false);
     }
   }, [params.pathname]);
@@ -247,7 +247,7 @@ export default function PersistentDrawerAdvanced({
               <h2 style={{ color: "#333" }}>Dalle 2</h2>
             </div>
           </Link> */}
-          {params.pathname === "/gpts/edit" ? (
+          {params.pathname.includes("/gpts/edit") ? (
             <Link to="/gpts">
               <IconButton color="inherit" edge="start">
                 <IoChevronBackOutline size={25} color="#333" />
@@ -811,7 +811,7 @@ export default function PersistentDrawerAdvanced({
         }}
       >
         <DrawerHeader style={{ height: "20px" }}>
-          <p style={{ fontWeight: 700, fontSize: "0.9rem" }}>Referências</p>
+          <p style={{ fontWeight: 700, fontSize: "0.9rem" }}>Fontes</p>
           <IconButton
             onClick={() => {
               setOpenReference(false);

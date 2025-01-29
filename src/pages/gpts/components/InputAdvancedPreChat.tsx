@@ -5,23 +5,25 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 import { useRef } from "react";
 import ArrowCircleRightRoundedIcon from "@mui/icons-material/ArrowCircleRightRounded";
-import { ContextChat } from "../../context/ChatContext";
-import {
-  ACTIVE_SCROLL,
-  ADD_MESSAGE,
-  LOADING_GENERATE_LLM_TRUE,
-} from "../../context/types/types";
+
 import { FaRegLightbulb } from "react-icons/fa";
 import { Alert, Snackbar, Tooltip } from "@mui/material";
 import { TbWorldSearch } from "react-icons/tb";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoIosCloseCircle } from "react-icons/io";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useInteractionWithoutSmooth from "../../hooks/chat/useInteractionWithoutSmooth";
+import { ContextChat } from "../../../context/ChatContext";
+import {
+  ACTIVE_SCROLL,
+  ADD_MESSAGE,
+  LOADING_GENERATE_LLM_TRUE,
+} from "../../../context/types/types";
+import usePreChatInteractionWithoutSmooth from "../../../hooks/knowledge/usePreChatInteractionWithoutSmooth";
 
 interface InputProps {
   chat_id: string;
   BOT_NAME: string;
+  prompt: string;
 }
 
 const theme = createTheme({
@@ -45,9 +47,13 @@ const theme = createTheme({
   },
 });
 
-export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
+export default function InputAdvancedPreChat({
+  chat_id,
+  BOT_NAME,
+  prompt,
+}: InputProps) {
   const [message, setMessage] = React.useState("");
-  const { interactGenericChat } = useInteractionWithoutSmooth();
+  const { interactPreChat } = usePreChatInteractionWithoutSmooth();
   const [feature, setFeature] = React.useState("");
   const [files, setFiles] = React.useState<File[]>([]); // Gerenciar arquivos carregados
   const [error, setError] = React.useState<string | null>(null);
@@ -72,8 +78,9 @@ export default function InputAdvanced({ chat_id, BOT_NAME }: InputProps) {
       const bot_message = { rule: "bot", message: "", metadata: "" };
       dispatchChat({ type: ADD_MESSAGE, payload: bot_message });
 
-      interactGenericChat({
+      interactPreChat({
         chat_id: chat_id,
+        prompt: prompt,
         query: message,
       });
     }

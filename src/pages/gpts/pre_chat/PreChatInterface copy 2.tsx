@@ -2,7 +2,7 @@ import styles from "./PreChat.module.css";
 
 import ReactMarkdown from "react-markdown";
 import Feedback from "../../../components/chat/Feedback";
-
+import Input from "../../../components/chat/Input";
 import FormDialog from "../../../components/chat/Dislike";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ContextChat } from "../../../context/ChatContext";
@@ -15,36 +15,34 @@ import {
 } from "../../../context/types/types";
 import InputAdvanced from "../../../components/chat/InputAdvanced";
 import remarkGfm from "remark-gfm";
-import { GooSpinner } from "react-spinners-kit";
-import InputAdvancedPreChat from "../components/InputAdvancedPreChat";
 import { PiChatTeardropText } from "react-icons/pi";
+import InputAdvancedPreChat from "../components/InputAdvancedPreChat";
+import { GooSpinner } from "react-spinners-kit";
 
-export interface ChatBasicInterfaceProps {
+export interface PreChatBasicInterfaceProps {
   chat_id: string | undefined;
   LOGO_CHAT: string;
-  setOpenReference: (isOpen: boolean) => void;
-  openReference: boolean | undefined;
   prompt: string;
+  setOpenReference: (value: boolean) => void;
 }
 
 const PreChatInterface = ({
-  props: { chat_id, LOGO_CHAT, prompt, openReference, setOpenReference },
+  props: { chat_id, LOGO_CHAT, prompt, setOpenReference, openReference },
 }: {
-  props: ChatBasicInterfaceProps;
+  props: PreChatBasicInterfaceProps;
 }) => {
   const { stateChat, dispatchChat } = useContext(ContextChat) || {};
-
-  const [indexReference, setIndexReference] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [indexFeedback, setIndexFeedback]: any = React.useState("");
-  const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [indexReference, setIndexReference] = React.useState(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null); // Estado para controlar o hover
+
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   useEffect(() => {
-    setIndexReference(null);
     if (stateChat && stateChat.is_active_scroll && messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -117,7 +115,6 @@ const PreChatInterface = ({
         setFeedback={setFeedback}
         indexFeedback={indexFeedback}
       />
-
       <div className={styles.container}>
         <h5 className={styles.title}>Chat</h5>
         {stateChat?.messages.length <= 0 && (
@@ -147,11 +144,7 @@ const PreChatInterface = ({
                 {element.message}
               </div>
             ) : (
-              <div
-                className={`${styles.message} ${styles.bot}`}
-                onMouseEnter={() => setHoveredIndex(index)} // Define o índice quando o mouse entra
-                onMouseLeave={() => setHoveredIndex(null)} // Reseta o índice quando o mouse sai
-              >
+              <div className={`${styles.message} ${styles.bot}`}>
                 {element.message && element.message.length > 0 ? (
                   <ReactMarkdown
                     components={{
@@ -176,6 +169,7 @@ const PreChatInterface = ({
                     <GooSpinner size={27} color="#333" />
                   </div>
                 )}
+
                 {!stateChat?.loading_generate_llm &&
                   element?.metadata.length > 0 && (
                     <div

@@ -8,6 +8,7 @@ interface ButtonFormsProps {
 const ButtonForms = ({ value, functions }: ButtonFormsProps) => {
   return (
     <button
+      type="submit"
       onClick={() => {
         functions();
       }}

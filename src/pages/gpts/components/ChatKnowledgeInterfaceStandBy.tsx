@@ -1,4 +1,3 @@
-import styles from "./ChatBasicInterface.module.css";
 import ReactMarkdown from "react-markdown";
 import React, { useContext } from "react";
 import { ContextChat } from "../../../context/ChatContext";
@@ -12,7 +11,7 @@ import { GooSpinner } from "react-spinners-kit";
 interface ChatBasicInterfaceStandByProps {
   user_id: string;
 }
-const ChatBasicInterfaceStandBy = ({
+const ChatKnowledgeInterfaceStandBy = ({
   user_id,
 }: ChatBasicInterfaceStandByProps) => {
   const { stateChat } = useContext(ContextChat) || {};
@@ -24,23 +23,23 @@ const ChatBasicInterfaceStandBy = ({
 
   const { interactGenericChat } = useInteractionWithoutSmooth();
 
-  React.useEffect(() => {
-    if (stateChat?.messages.length !== 0 && user_id) {
-      createChat({ user_id: user_id }).then((result) => {
-        if (result?.chat_id) {
-          navigate(`/c/${result?.chat_id}`);
-          const message = stateChat?.messages[0]?.message;
-          getData({ user_id: user_id });
-          if (message) {
-            interactGenericChat({
-              query: message,
-              chat_id: result?.chat_id,
-            });
-          }
-        }
-      });
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (stateChat?.messages.length !== 0 && user_id) {
+  //     createChat({ user_id: user_id }).then((result) => {
+  //       if (result?.chat_id) {
+  //         navigate(`/c/${result?.chat_id}`);
+  //         const message = stateChat?.messages[0]?.message;
+  //         getData({ user_id: user_id });
+  //         if (message) {
+  //           interactGenericChat({
+  //             query: message,
+  //             chat_id: result?.chat_id,
+  //           });
+  //         }
+  //       }
+  //     });
+  //   }
+  // }, []);
 
   return (
     <>
@@ -110,4 +109,4 @@ const ChatBasicInterfaceStandBy = ({
   );
 };
 
-export default ChatBasicInterfaceStandBy;
+export default ChatKnowledgeInterfaceStandBy;

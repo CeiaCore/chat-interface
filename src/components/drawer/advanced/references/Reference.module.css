@@ -17,6 +17,10 @@
   width: 100%;
   color: #3f3f3f;
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: inherit;
+  width: 75%;
   font-size: 0.9rem;
 }
 
